@@ -1,15 +1,30 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template
+import pymongo
+import pandas as pd
 app = Flask(__name__, template_folder="templates")
+
+mongodb_client = pymongo.MongoClient("mongodb+srv://jai:attendance@cluster0.iofnken.mongodb.net/test")
+my_db = mongodb_client["Student_Database"]
+my_coll = my_db["CSE_5_A"]
+
+data_list = []
+for data in my_coll.find({}, {"_id":0, "Face_Encodings":0, "CDSS_attendance":0}):
+    data_list.append(data)
+
+student_table = pd.DataFrame(data_list)
+
+
 
 teacher_dict = {
 
-    "Umakant_Kulkarni":"Compiler_Design",
+    "Umakant Kulkarni":"Compiler Design",
     "Rashmi_Athnikar":"Software_Engineering",
     "Anand_Vaidya":"Database_Management_System",
     "Yashoda_Sambrani":"Management",
     "Vadvi":"Digital_Communication",
-    "Govind":"Advanced_OOPs"
+    "Govind":"Advanced_OOPs",
+    "a":"b"
 }
 
 usn_list = ["2sd20cs043", "2sd20cs014", "2sd20cs017"]
@@ -23,11 +38,11 @@ def studentIsVaid(usn):
 
 #Function to check validity of teacher logged in
 def isTeacherValid(name, subject):
-
-    if name in teacher_dict.keys() and subject in teacher_dict.values():
-        if teacher_dict[name] is subject:
+    if name in teacher_dict.keys():
+        if teacher_dict[name] == subject:
             return True
-    return False
+    else:
+        return False
 
 @app.route('/')
 def home():
@@ -51,10 +66,11 @@ def home():
 
 @app.route('/teacher/<name>/<subject>')
 def teacher_page(name, subject):
-    
     valid = isTeacherValid(name, subject)
+    print(student_table.head())
+    result = student_table.to_html()
     if valid:
-        return render_template("teacher.html")
+        return render_template("teacher.html", name=name.upper(), subject=subject, result=result)
     else:
         return "Invalid User"
             
@@ -64,7 +80,7 @@ def student_page(usn):
 
     valid_student = studentIsVaid(usn)
     if valid_student:
-        return render_template("student.html")
+        return render_template("student.html", usn=usn.upper())
     else:
         return "Invalid User"
 
