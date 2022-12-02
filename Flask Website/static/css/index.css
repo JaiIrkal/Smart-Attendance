@@ -7,13 +7,66 @@ a:visited {
 }
   
 a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }
   
 a:active {
-    text-decoration: underline;
+    text-decoration: none;
+}
+
+body{
+
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url('/static/images/background-img.jpg');
+}
+
+h1{
+
+    font-size: 80px;
+    margin-left: 50px;
+}
+
+h2{
+
+    font-size: 30px;
+    margin-left: 50px;
+}
+
+h2.label{
+
+    text-align: center;
+    margin-left: 10px;
+}
+
+.content{
+
+    color: white;
 }
 
 .button{
-    color: aqua;
+
+    height: 120px;
+    width: 200px;
+    font-size: x-large;
+    font-weight: bold;
+    background-color: rgb(50, 82, 180);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    position: center;
+    margin: 20px;
+}
+
+.button:hover{
+
+    box-shadow: 0 5px grey;
+    transform: translateY(4px);
+    cursor: pointer;
+}
+
+.buttons_grouped{
+
+    position: relative;
+    padding-left: 35%;
+    padding-top: 2%;
 }
