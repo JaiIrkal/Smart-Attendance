@@ -70,7 +70,8 @@ def teacher_page(name, subject):
     print(student_table.head())
     result = student_table.to_html()
     if valid:
-        return render_template("teacher.html", name=name.upper(), subject=subject, result=result)
+        student_atendance = my_coll.find({});
+        return render_template("teacher.html", subject="CDSS", result=student_atendance)
     else:
         return "Invalid User"
             

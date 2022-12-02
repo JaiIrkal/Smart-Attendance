@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/teacher.css') }}">
     <title>Welcome</title>
 </head>
+
 <body>
     <div class="text-display">
         <h1>Welcome</h1>
@@ -14,7 +16,17 @@
     </div>
     <div class="main-container">
         <h2 class="title">Attendance in {{ subject }}</h2>
-        {{ result }}
+        <table>
+            {% for student in result %}
+            <tr>
+                <th>{{ student.get("Name")}}</th>
+                {% for att in student.get("CDSS_attendance") %}
+                <th> {{ att }} </th>
+                {% endfor%}
+            </tr>
+            {%endfor%}
+        </table>
     </div>
 </body>
+
 </html>
