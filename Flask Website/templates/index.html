@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> -->
+    <link rel="stylesheet" href="/Flask Website/static/css/index.css">
 </head>
 <body>
     
     <div class="content">
-        <h1>Welcome!</h1>
-        <h2>Login to continue</h2>
+        <h1>Welcome!</h1><br>
+        <h2>Login to continue....</h2>
         <h2 class="label">Tell us who you are: </h2>
     </div>
+
     <div class="buttons_grouped">
-        <a href="/studentlogin"><button class="button" >Student</button></a>
+        <a  style='margin-right:75px'href="/studentlogin"><button class="button" >Student</button></a>
         <a href="/teacherlogin"><button class="button" >Teacher</button></a>
     </div>
 </body>
