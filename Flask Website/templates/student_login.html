@@ -4,21 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Student Login</title>
+    <link rel="stylesheet" href="/Flask Website/static/css/student_login.css">
 </head>
+
 <body>
-    <div class="login_container">
-        <div class="login_title">
-            Login
+    <form action="action_page.php" method="post">
+        <div class="imgcontainer">
+          <img src="/Flask Website/static/images/img_avatar2.png" alt="Avatar" class="avatar">
         </div>
-        <!----Student Login Section-------->
-        <div class="student_login">
-            <form action="/teacher" method="POST">
-                <label>USN: <input type="text" name="usn"/></label>
-                <label>Password: <input type="password" name="stu_pass"/></label>
-                <button type="submit" class="button">Login</button>
-            </form>
+      
+        <div class="container">
+
+          <label for="uname"><b>USN</b></label>
+          <input type="text" placeholder="Enter Username" name="uname" required>
+      
+          <label for="psw"><b>Password</b></label>
+          <input type="password" placeholder="Enter Password" name="psw" required>
+      
+          <button style="margin-top:25px ;" type="submit">Login</button>
+
         </div>
-    </div>
+    
+      </form>
 </body>
 </html>
