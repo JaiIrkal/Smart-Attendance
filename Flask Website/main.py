@@ -1,20 +1,11 @@
 from flask import Flask
 from flask import render_template
 import pymongo
-import pandas as pd
 app = Flask(__name__, template_folder="templates")
 
 mongodb_client = pymongo.MongoClient("mongodb+srv://jai:attendance@cluster0.iofnken.mongodb.net/test")
 my_db = mongodb_client["Student_Database"]
 my_coll = my_db["CSE_5_A"]
-
-data_list = []
-for data in my_coll.find({}, {"_id":0, "Face_Encodings":0, "CDSS_attendance":0}):
-    data_list.append(data)
-
-student_table = pd.DataFrame(data_list)
-
-
 
 teacher_dict = {
 
@@ -67,11 +58,9 @@ def home():
 @app.route('/teacher/<name>/<subject>')
 def teacher_page(name, subject):
     valid = isTeacherValid(name, subject)
-    print(student_table.head())
-    result = student_table.to_html()
     if valid:
-        student_atendance = my_coll.find({});
-        return render_template("teacher.html", subject="CDSS", result=student_atendance)
+        student_attendance = my_coll.find({});
+        return render_template("teacher.html",name=name, subject=subject, result=student_attendance)
     else:
         return "Invalid User"
             
