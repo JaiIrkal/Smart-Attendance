@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="198b491e-be42-4395-8614-503129ab1bb9" name="Changes" comment="" />
+    <list default="true" id="198b491e-be42-4395-8614-503129ab1bb9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/creatTImeTable.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/creatTImeTable.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/timeTable.py" beforeDir="false" afterPath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/timeTable.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

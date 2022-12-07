@@ -2,47 +2,62 @@ import pymongo
 from pprint import pprint
 from datetime import datetime
 
-
-
-
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["timetable"]
-mycol = mydb["CSE_5_A"]
-
-
-today = datetime.today().isoweekday()
-print(today)
 
 
 
+def compareTime(time1, time2):
+    t1 = time1.split(":")
+    t2 = time2.split(":")
+    t1[0] = int(t1[0])
+    t1[1]=int(t1[1])
+    t2[0]=int(t2[0])
+    t2[1]=int(t2[1])
+    if(t1[0] > t2[0]):
+        return 1;
+    elif(t1[0]<t2[0]):
+        return -1;
+    else:
+        if(t1[1] > t2[1]):
+            return 1
+        elif(t1[1] < t2[1]):
+            return -1
+        else:
+            return 0
 
 
-x = mycol.find_one({"Day": 9})
-i=1
-a = x.get("Classes")
-# a.append({"Subject_3": {
-#     "Subject_Name": "TEst",
-#     "From": "10:30",
-#     "To": "11:30"
+
+
+def getCurrentPeriod(className):
+    mycol = mydb[f'{className}']
+    day = datetime.today().isoweekday()
+    # currTime = datetime.now().strftime('%H:%M')
+    currTime = "9:00"
+    dayschedule = mycol.find_one({"Day": 2})
+    classes = dayschedule.get("Classes")
+    for sub in classes:
+        subName = sub.get("Subject_Name")
+        startTime = sub.get("From")
+        endTime = sub.get("To")
+
+        if((compareTime(currTime, startTime)==1 and compareTime(currTime,endTime)==-1)or compareTime(currTime,startTime)==0):
+            print(subName, startTime,endTime)
+
+
+
+getCurrentPeriod("CSE_5_A")
+
+
 #
-# }})
+# today = datetime.today().isoweekday()
+# currTim=datetime.now().strftime('%H:%M')
+# print(currTim)
+# print(today)
+#
+# time = "18:57"
+# print(compareTime(currTim,time))
 
-# mycol.find_one_and_update({"Day":7},{
-#     "$set": {
-#     "Classes":a
-# }
-# } )
-
-# print(a)
-
-for b in a:
-    c = b.get("Subject_"+str(i));
-    i=i+1
-    start = b.get("From")
-    end = b.get("To")
-    if(start == "9:00"):
-        print(c)
-        print(start,end)
 
 
 
