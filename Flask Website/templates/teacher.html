@@ -20,6 +20,7 @@
             {% for student in result %}
             <tr>
                 <th>{{ student.get("Name")}}</th>
+                <th>{{ student.get("USN") }}</th>
                 {% for att in student.get("CDSS_attendance") %}
                 <th> {{ att }} </th>
                 {% endfor%}
