@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask import render_template
 import pymongo
 import pandas as pd
@@ -7,6 +7,9 @@ app = Flask(__name__, template_folder="templates")
 mongodb_client = pymongo.MongoClient("mongodb+srv://jai:attendance@cluster0.iofnken.mongodb.net/test")
 my_db = mongodb_client["Student_Database"]
 my_coll = my_db["CSE_5_A"]
+
+classDB = mongodb_client["Class_Database"]
+class5A = classDB["CSE_5_A"]
 
 data_list = []
 for data in my_coll.find({}, {"_id":0, "Face_Encodings":0, "CDSS_attendance":0}):
@@ -18,12 +21,12 @@ student_table = pd.DataFrame(data_list)
 
 teacher_dict = {
 
-    "Umakant Kulkarni":"Compiler Design",
-    "Rashmi_Athnikar":"Software_Engineering",
-    "Anand_Vaidya":"Database_Management_System",
-    "Yashoda_Sambrani":"Management",
-    "Vadvi":"Digital_Communication",
-    "Govind":"Advanced_OOPs",
+    "Umakant Kulkarni":"CDSS",
+    "Rashmi_Athnikar":"SE",
+    "Anand_Vaidya":"DBMS",
+    "Yashoda_Sambrani":"MEPIP",
+    "Vadvi":"DC",
+    "Govind":"AOOP",
     "a":"b"
 }
 
@@ -48,30 +51,40 @@ def isTeacherValid(name, subject):
 def home():
     return render_template("index.html")
 
-#This route is for student login
-# @app.route('/studentlogin', methods = ["GET", "POST"])
-# def student_login():
-
-#     if request.method == "POST":
-#         usn = request.form.get()
-#     return render_template("student_login.html")
+# This route is for student login
+@app.route('/studentlogin', methods = ["GET", "POST"])
+def student_login():
+    if request.method == "POST":
+        usn = request.form.get()
+    return render_template("student_login.html")
 
 #This route is for teacher login
-# @app.route('/teacherlogin', methods = ["GET", "POST"])
-# def teacher_login():
+@app.route('/teacherlogin', methods = ["GET", "POST"])
+def teacher_login():
 
-#     if request.method == "POST":
-#         name = request.form.get()
-#     return render_template("student_login.html")
+    if request.method == "POST":
+        name = request.form.get()
+    return render_template("teacher_login.html")
 
 @app.route('/teacher/<name>/<subject>')
 def teacher_page(name, subject):
     valid = isTeacherValid(name, subject)
-    print(student_table.head())
-    result = student_table.to_html()
+    # print(student_table.head())
+    # result = student_table.to_html()
     if valid:
-        student_atendance = my_coll.find({});
-        return render_template("teacher.html", subject="CDSS", result=student_atendance)
+        conducted = class5A.find_one({})
+        conducted = conducted.get("Course")
+        for cond in conducted:
+            if subject == cond.get("Course_abbrv"):
+                classes = cond.get("Classes_conducted")
+                break;
+
+        attendData =[]
+
+        studDet = my_coll.find({})
+
+
+        return render_template("teacher.html", subject=subject , classes = classes, student = studDet)
     else:
         return "Invalid User"
             

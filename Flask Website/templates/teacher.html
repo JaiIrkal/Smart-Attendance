@@ -10,6 +10,8 @@
 </head>
 
 <body>
+{%set total = 0%}
+{%set presentCount=0   %}
     <div class="text-display">
         <h1>Welcome</h1>
         <h1>{{ name }}</h1>
@@ -17,14 +19,32 @@
     <div class="main-container">
         <h2 class="title">Attendance in {{ subject }}</h2>
         <table>
-            {% for student in result %}
             <tr>
-                <th>{{ student.get("Name")}}</th>
-                {% for att in student.get("CDSS_attendance") %}
-                <th> {{ att }} </th>
-                {% endfor%}
+                <th>    Name    </th>
+                <th>    USN     </th>
+                {% for date in classes %}
+                {% set total = classes|length %}
+                <th> {{ date }} </th>
+                {% endfor %}
+                <th> Percentage</th>
             </tr>
-            {%endfor%}
+            {% for stud in student %}
+            <tr>
+                <td>{{ stud.get("Name") }}</td>
+                <td>{{ stud.get("USN") }}</td>
+                {% for att in stud.get(subject + "_attendance") %}
+                {% if att == 1 %}
+                {% set presentCount = presentCount+1 %}
+                <td> Present </td>
+                {% else %}
+                <td> Absent </td>
+                {% endif %}
+                {% endfor %}
+                {% set percent  = presentCount* 100%}
+                <td> </td>
+
+            </tr>
+            {% endfor %}
         </table>
     </div>
 </body>
