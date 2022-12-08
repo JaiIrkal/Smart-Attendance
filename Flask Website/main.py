@@ -73,18 +73,11 @@ def teacher_page(name, subject):
     # result = student_table.to_html()
     if valid:
         conducted = class5A.find_one({})
-        conducted = conducted.get("Course")
-        for cond in conducted:
-            if subject == cond.get("Course_abbrv"):
-                classes = cond.get("Classes_conducted")
-                break;
-
+        classes = conducted.get("Course").get(f"{subject}").get("Classes_conducted")
+        print(classes)
         attendData =[]
-
         studDet = my_coll.find({})
-
-
-        return render_template("teacher.html", subject=subject , classes = classes, student = studDet)
+        return render_template("teacher.html", subject=subject , classes = classes, student = studDet, name = conducted.get("Course").get(f"{subject}").get("Course_Instructor"))
     else:
         return "Invalid User"
             

@@ -32,23 +32,21 @@ def compareTime(time1, time2):
 def getCurrentPeriod(className):
     mycol = mydb[f'{className}']
     day = datetime.today().isoweekday()
-    # currTime = datetime.now().strftime('%H:%M')
-    currTime = "9:00"
-    dayschedule = mycol.find_one({"Day": 2})
+    currTime = datetime.now().strftime('%H:%M')
+    # currTime = "9:00"
+    dayschedule = mycol.find_one({"Day": day})
     classes = dayschedule.get("Classes")
     for sub in classes:
         subName = sub.get("Subject_Name")
         startTime = sub.get("From")
         endTime = sub.get("To")
-
         if((compareTime(currTime, startTime)==1 and compareTime(currTime,endTime)==-1)or compareTime(currTime,startTime)==0):
-            print(subName, startTime,endTime)
+            return subName
+
+    print("No class scheduled right now!!")
 
 
-
-getCurrentPeriod("CSE_5_A")
-
-
+print( getCurrentPeriod("CSE_5_A"))
 #
 # today = datetime.today().isoweekday()
 # currTim=datetime.now().strftime('%H:%M')

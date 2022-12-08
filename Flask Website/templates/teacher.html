@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+
+{% set counter = {
+    'counter1': 0,
+    'counter2': 0,
+    } %}
+
+{% macro increment(dct, key, inc=1)%}
+    {% if dct.update({key: dct[key] + inc}) %} {% endif %}
+{% endmacro %}
+
+{% macro reset(dct, key)%}
+    {% if dct.update({key: 0})%}{% endif %}
+{% endmacro%}
 <html lang="en">
 
 <head>
@@ -10,42 +23,48 @@
 </head>
 
 <body>
-{%set total = 0%}
-{%set presentCount=0   %}
+
     <div class="text-display">
-        <h1>Welcome</h1>
+        <h1>Welcome, </h1>
         <h1>{{ name }}</h1>
     </div>
     <div class="main-container">
         <h2 class="title">Attendance in {{ subject }}</h2>
-        <table>
+        <div class="table-wrapper">
+        <table class = "fl-table">
+            <thead>
             <tr>
                 <th>    Name    </th>
                 <th>    USN     </th>
                 {% for date in classes %}
-                {% set total = classes|length %}
+                {{ increment(counter, 'counter1') }}
+                {% set total = loop.index  %}
                 <th> {{ date }} </th>
                 {% endfor %}
                 <th> Percentage</th>
             </tr>
+            </thead>
             {% for stud in student %}
+            <tbody>
             <tr>
+                {{ reset(counter, 'counter2')}}
                 <td>{{ stud.get("Name") }}</td>
                 <td>{{ stud.get("USN") }}</td>
                 {% for att in stud.get(subject + "_attendance") %}
                 {% if att == 1 %}
-                {% set presentCount = presentCount+1 %}
-                <td> Present </td>
+                {{ increment(counter, 'counter2') }}
+                <td id ="present"> Present </td>
                 {% else %}
-                <td> Absent </td>
+                <td id = "absent"> Absent </td>
                 {% endif %}
                 {% endfor %}
-                {% set percent  = presentCount* 100%}
-                <td> </td>
-
+                {% set percent = counter.counter2/counter.counter1 * 100 %}
+                <td>{{ percent|round(2,'common') }}</td>
             </tr>
+            </tbody>
             {% endfor %}
         </table>
+            </div>
     </div>
 </body>
 

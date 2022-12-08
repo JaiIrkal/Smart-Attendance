@@ -5,6 +5,8 @@ import cv2
 import face_recognition
 import numpy as np
 import pymongo
+
+
 num = 0
 myclient = pymongo.MongoClient("mongodb://localhost:27017/")
 mydb = myclient["Student_Database"]
@@ -55,23 +57,15 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 
-print(present);
+# print(present);
 
 #mark attendance
 for student in present :
-    print(student);
     stud = mycol.find_one_and_update({"USN":student},{
         "$push":{
-            "CDSS_attendance": datetime.now().strftime('%d/%m/%Y')
+            "CDSS_attendance": 1
         }
     })
 
-    # mark = stud.get("CDSS_attendance")
-    # mark.append( datetime.now().strftime('%d/%m/%Y'))
-    # mycol.find_one_and_update({"USN": student},{
-    #     "$set":{
-    #         "CDSS_attendance": mark
-    #     }
-    # })
 
 
