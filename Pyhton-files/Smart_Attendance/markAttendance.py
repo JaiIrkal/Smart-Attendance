@@ -1,18 +1,20 @@
 import os
 from datetime import datetime
-
 import cv2
 import face_recognition
 import numpy as np
 import pymongo
 
-
-num = 0
-myclient = pymongo.MongoClient("mongodb://localhost:27017/")
+myclient = pymongo.MongoClient("mongodb+srv://ankit:attendance@cluster0.iofnken.mongodb.net/test")
 mydb = myclient["Student_Database"]
 mycol = mydb["CSE_5_A"]
 
+classdb = myclient["Class_Database"]
+classdetails = classdb["CSE_5_A"]
+
+
 present = []
+absent = []
 usn= []
 encodeListKnown=[]
 
@@ -39,7 +41,7 @@ while True:
 
         if matches[matchIndex]:
             name = usn[matchIndex].upper()
-            # print(name)
+            print(name)
             y1, x2, y2, x1 = faceLoc
             y1, x2, y2, x1 = y1 * 4, x2 * 4, y2 * 4, x1 * 4
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
@@ -58,14 +60,34 @@ cap.release()
 cv2.destroyAllWindows()
 
 # print(present);
+course = "CDSS"
+
+#get today date in format (DD/MM/YYYY)
+today = datetime.today().strftime("%d/%m/%Y")
+
+#mark the date on which class was conducted
+a = classdetails.find_one_and_update({"Branch_abbr": "CSE", "Semester":5, "Division":"A" },{
+    "$push":{
+        f"Course.{course}.Classes_conducted": today
+    }
+})
 
 #mark attendance
+
+#
 for student in present :
-    stud = mycol.find_one_and_update({"USN":student},{
+    mycol.find_one_and_update({"USN":student},{
         "$push":{
             "CDSS_attendance": 1
         }
     })
 
-
+for student in usn:
+    if student not in present:
+        absent.append(student)
+        mycol.find_one_and_update({"USN": student}, {
+            "$push": {
+                "CDSS_attendance": 0
+            }
+        })
 

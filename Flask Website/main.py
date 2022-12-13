@@ -2,6 +2,14 @@ from flask import Flask, request
 from flask import render_template
 import pymongo
 import pandas as pd
+
+import uuid
+import logging
+from flask_sessionstore import Session
+from flask_session_captcha import FlaskSessionCaptcha
+from pymongo import MongoClient
+
+
 app = Flask(__name__, template_folder="templates")
 
 mongodb_client = pymongo.MongoClient("mongodb+srv://jai:attendance@cluster0.iofnken.mongodb.net/test")
@@ -10,6 +18,29 @@ my_coll = my_db["CSE_5_A"]
 
 classDB = mongodb_client["Class_Database"]
 class5A = classDB["CSE_5_A"]
+
+mongoClient = MongoClient('localhost', 27017)
+
+
+app.config["SECRET_KEY"] = uuid.uuid4()
+app.config['CAPTCHA_ENABLE'] = True
+
+# Set 5 as character length in captcha
+app.config['CAPTCHA_LENGTH'] = 5
+
+# Set the captcha height and width
+app.config['CAPTCHA_WIDTH'] = 160
+app.config['CAPTCHA_HEIGHT'] = 60
+app.config['SESSION_MONGODB'] = mongoClient
+app.config['SESSION_TYPE'] = 'mongodb'
+
+# Enables server session
+Session(app)
+
+# Initialize FlaskSessionCaptcha
+captcha = FlaskSessionCaptcha(app)
+
+
 
 data_list = []
 for data in my_coll.find({}, {"_id":0, "Face_Encodings":0, "CDSS_attendance":0}):
@@ -84,6 +115,11 @@ def teacher_page(name, subject):
 
 @app.route('/student/<usn>')
 def student_page(usn):
+    if request.method == "POST":
+        if captcha.validate():
+            return "success"
+        else:
+            return "fail"
 
     valid_student = studentIsVaid(usn)
     if valid_student:

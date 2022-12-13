@@ -29,7 +29,7 @@
         <h1>{{ name }}</h1>
     </div>
     <div class="main-container">
-        <h2 class="title">Attendance in {{ subject }}</h2>
+        <h2 class="title">Attendance in {{ subject }} 5-A</h2>
         <div class="table-wrapper">
         <table class = "fl-table">
             <thead>
@@ -59,7 +59,7 @@
                 {% endif %}
                 {% endfor %}
                 {% set percent = counter.counter2/counter.counter1 * 100 %}
-                <td>{{ percent|round(2,'common') }}</td>
+                <td>{{ percent|round(2,'common') }}%</td>
             </tr>
             </tbody>
             {% endfor %}
