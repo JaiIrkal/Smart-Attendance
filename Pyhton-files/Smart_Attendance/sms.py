@@ -23,20 +23,16 @@ import os
 from twilio.rest import Client
 
 account_sid = 'ACee9209e9f050daf64e7866b49d8e2a78'
-auth_token = '13683d6ebd4cbf5706e931e785ec514d'
+auth_token = '514cc260b9638663d4ef701440b5921a'
 client = Client(account_sid, auth_token)
 
 message = client.messages.create(
     from_='whatsapp:+14155238886',
     body='Hello! ',
-    to='whatsapp:+917717720441'
+    to='whatsapp:+916202273766'
 )
 
-message = client.messages.create(
-    messaging_service_sid='MG3504eb416f104cd1265124aaebde8acc',
-    body='hello!!',
-    to='+916202273766'
-)
+
 
 print(message.sid)
 
