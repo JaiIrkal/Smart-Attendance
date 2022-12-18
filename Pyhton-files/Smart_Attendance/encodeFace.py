@@ -3,6 +3,7 @@ import face_recognition
 import numpy
 import os
 
+from werkzeug.utils import secure_filename
 
 path = 'images'
 images = []
@@ -17,13 +18,13 @@ personNames = []
 # print(personNames)
 
 
-def faceEncodings(images):
-    encodeList = []
-    for img in images:
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        encode = face_recognition.face_encodings(img)[0]
-        encodeList.append(encode)
-    return encodeList
+def faceEncodings(img):
+    img.save( os.path.join("./temp/", secure_filename(img.filename)))
+    img  = cv2.imread(f'./temp/{img.filename}')
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    encode = face_recognition.face_encodings(img)[0]
+    os.remove(f'./temp/{img.filename}')
+    return encode
 
 encodeList = faceEncodings(images);
 

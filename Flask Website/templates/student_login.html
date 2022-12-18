@@ -10,7 +10,7 @@
 
 <body>
 
-    <form action="action_page.php" method="post">
+    <form action="/studentlogin" method="POST">
         <div class="imgcontainer">
           <img src="/static/images/img_avatar2.png" alt="Avatar" class="avatar">
         </div>
@@ -18,13 +18,11 @@
         <div class="container">
 
           <label for="uname"><b>USN</b></label>
-          <input type="text" placeholder="Enter Username" name="uname" required>
+          <input type="text" placeholder="Enter Username" name="usn"  value = " {{ request.form.usn }}" required>
       
           <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required>
+          <input type="password" placeholder="Enter Password" name="passw"  value = "{{ request.form.passw }}" required>
 
-
-      
           <button style="margin-top:25px ;" type="submit">Login</button>
 
         </div>

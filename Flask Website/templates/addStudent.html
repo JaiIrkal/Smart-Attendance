@@ -6,41 +6,49 @@
   <link type="stylesheet" href="/static/css/addstudent.css">
 </head>
 <body>
-{% if name %}
-<h1>Hello {{ name }}</h1>
-<br>
-{% else %}
-<h1> What's Your Name</h1>
-<form method = "POST">
-    {{ form.hidden_tag() }}
-    {{ form.name.label() }}
-    {{ form.name() }}
-    {{ form.branch.label }}
-    {{ form.branch() }}
 
+<br>
+
+<form   method = "POST" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+    {{ form.hidden_tag() }}
+    {{ form.name.label }}
+    {{ form.name() }}
+    <br>
+    {{ form.USN.label }}
+    {{ form.USN }}
+
+    <br>
+
+    {{ form.branch.label }}
+    {{ form.branch }}
+    <br>
     {{ form.semester.label }}
-    {{ form.semester() }}
+    {{ form.semester }}
+    <br>
 
     {{ form.division.label }}
-    {{ form .division() }}
+    {{ form.division }}
 
-    {{form.DOB.label }}
-    {{ form.DOB() }}
-
+    <br>
+   {{form.DOB.label }}
+    {{ form.DOB }}
+<br>
     {{  form.email.label }}
-    {{ form.email() }}
-
+    {{ form.email }}
+<br>
     {{ form.mobile.label }}
-    {{ form.mobile() }}
+    {{ form.mobile }}
+<br>
 
-    {{ form.image.label }}
-    {{ form.image() }}
+    <br>
+    <input type="file" name="file" />
+
 
 
 
     <br>
-    {{ form.submit(class="btn btn-primary") }}
+    <button type="submit">Submit</button>
 </form>
-{% endif %}
 </body>
 </html>
