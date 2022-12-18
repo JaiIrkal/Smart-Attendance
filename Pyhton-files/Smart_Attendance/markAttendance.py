@@ -5,6 +5,8 @@ import face_recognition
 import numpy as np
 import pymongo
 
+import mailing
+
 myclient = pymongo.MongoClient("mongodb+srv://ankit:attendance@cluster0.iofnken.mongodb.net/test")
 mydb = myclient["Student_Database"]
 mycol = mydb["CSE_5_A"]
@@ -78,7 +80,7 @@ a = classdetails.find_one_and_update({"Branch_abbr": "CSE", "Semester":5, "Divis
 for student in present :
     mycol.find_one_and_update({"USN":student},{
         "$push":{
-            "CDSS_attendance": 1
+            f"{course}_attendance": 1
         }
     })
 
@@ -87,7 +89,10 @@ for student in usn:
         absent.append(student)
         mycol.find_one_and_update({"USN": student}, {
             "$push": {
-                "CDSS_attendance": 0
+                f"{course}_attendance": 0
             }
         })
+
+
+mailing.sendMail(absent, course, today)
 
