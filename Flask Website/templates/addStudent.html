@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a New Student</title>
+  <link type="stylesheet" href="/static/css/addstudent.css">
+</head>
+<body>
+{% if name %}
+<h1>Hello {{ name }}</h1>
+<br>
+{% else %}
+<h1> What's Your Name</h1>
+<form method = "POST">
+    {{ form.hidden_tag() }}
+    {{ form.name.label() }}
+    {{ form.name() }}
+    {{ form.branch.label }}
+    {{ form.branch() }}
+
+    {{ form.semester.label }}
+    {{ form.semester() }}
+
+    {{ form.division.label }}
+    {{ form .division() }}
+
+    {{form.DOB.label }}
+    {{ form.DOB() }}
+
+    {{  form.email.label }}
+    {{ form.email() }}
+
+    {{ form.mobile.label }}
+    {{ form.mobile() }}
+
+    {{ form.image.label }}
+    {{ form.image() }}
+
+
+
+    <br>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endif %}
+</body>
+</html>

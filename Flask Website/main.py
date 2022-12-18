@@ -3,14 +3,31 @@ from flask import render_template
 import pymongo
 import pandas as pd
 
-import uuid
-import logging
-from flask_sessionstore import Session
-from flask_session_captcha import FlaskSessionCaptcha
-from pymongo import MongoClient
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed, FileRequired
+from wtforms import StringField, SubmitField, SelectField, DateField, FileField, validators
+from wtforms_alchemy import PhoneNumberField
+from wtforms.validators import DataRequired
+import phonenumbers
+
+
+
+#create a form
+class StudentForm(FlaskForm):
+    name= StringField('Name of the Student', validators=[DataRequired()])
+    USN = StringField('Name of the Student',validators=[DataRequired()])
+    branch = SelectField('Branch', choices=[("CSE",'CSE'),('ISE','ISE')])
+    semester = SelectField('Semester', choices=[(1),(2),(3),(4),(5),(6),(7),(8)])
+    division = SelectField("Division", choices=[('A'),('B')])
+    DOB = DateField('Date of Birth')
+    image  = FileField("Photo", validators=[(FileAllowed(['jpg', 'png'], 'Images only!')),FileRequired()])
+    email = StringField("Email", validators=[ (DataRequired()), (validators.Email("Please enter your email address."))])
+    mobile = PhoneNumberField( "Phone Number",validators=[ DataRequired()], region = 'IND')
+    submit = SubmitField("Submit")
 
 
 app = Flask(__name__, template_folder="templates")
+app.config['SECRET_KEY']="my ssecret key"
 
 mongodb_client = pymongo.MongoClient("mongodb+srv://jai:attendance@cluster0.iofnken.mongodb.net/test")
 my_db = mongodb_client["Student_Database"]
@@ -19,34 +36,13 @@ my_coll = my_db["CSE_5_A"]
 classDB = mongodb_client["Class_Database"]
 class5A = classDB["CSE_5_A"]
 
-mongoClient = MongoClient('localhost', 27017)
-
-
-app.config["SECRET_KEY"] = uuid.uuid4()
-app.config['CAPTCHA_ENABLE'] = True
-
-# Set 5 as character length in captcha
-app.config['CAPTCHA_LENGTH'] = 5
-
-# Set the captcha height and width
-app.config['CAPTCHA_WIDTH'] = 160
-app.config['CAPTCHA_HEIGHT'] = 60
-app.config['SESSION_MONGODB'] = mongoClient
-app.config['SESSION_TYPE'] = 'mongodb'
-
-# Enables server session
-Session(app)
-
-# Initialize FlaskSessionCaptcha
-captcha = FlaskSessionCaptcha(app)
 
 
 
-data_list = []
-for data in my_coll.find({}, {"_id":0, "Face_Encodings":0, "CDSS_attendance":0}):
-    data_list.append(data)
 
-student_table = pd.DataFrame(data_list)
+
+
+
 
 
 
@@ -82,6 +78,18 @@ def isTeacherValid(name, subject):
 def home():
     return render_template("index.html")
 
+
+#This is for adding a student
+
+@app.route('/addstudent',methods = ['GET','POST'])
+def addstudent():
+    name = None
+    form = StudentForm()
+    if form.validate_on_submit():
+        name=form.name.data
+        form.name.data=''
+    return render_template("addStudent.html", name=name,form=form)
+
 # This route is for student login
 @app.route('/studentlogin', methods = ["GET", "POST"])
 def student_login():
@@ -100,8 +108,6 @@ def teacher_login():
 @app.route('/teacher/<name>/<subject>')
 def teacher_page(name, subject):
     valid = isTeacherValid(name, subject)
-    # print(student_table.head())
-    # result = student_table.to_html()
     if valid:
         conducted = class5A.find_one({})
         classes = conducted.get("Course").get(f"{subject}").get("Classes_conducted")
@@ -115,12 +121,6 @@ def teacher_page(name, subject):
 
 @app.route('/student/<usn>')
 def student_page(usn):
-    if request.method == "POST":
-        if captcha.validate():
-            return "success"
-        else:
-            return "fail"
-
     valid_student = studentIsVaid(usn)
     if valid_student:
         return render_template("student.html", usn=usn.upper())
