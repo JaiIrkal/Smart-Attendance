@@ -5,17 +5,11 @@ myclient = pymongo.MongoClient("mongodb+srv://ankit:attendance@cluster0.iofnken.
 mydb = myclient["Class_Database"]
 mycol = mydb["CSE_5_A"]
 
-mycol.insert_one({
-    "Semester" : 5,
-    "Division" : "A",
-    "Branch": "Computer Science & Engineering",
-    "Branch_abbr" : "CSE",
-    "Course_count": 6,
-    "Subject_1":{ "Course_Code":"18UHUC500","Course_abbrv": "MEPIP", "Course_Name": "Management, Entrepreneurship and IPR", "Course_Instructor":" Prof. Yashodha S","Classes_conducted": [] },
-    "Subject_2":{"Course_Code":"18UCSC500","Course_abbrv": "DC", "Course_Name": "Data Communication", "Course_Instructor":"Prof. J.V. Vadavi","Classes_conducted": []},
-    "Subject_3":{"Course_Code":"18UHUC501","Course_abbrv": "DBMS", "Course_Name": "Database Management Systems","Course_Instructor":"Prof. Anand Vaidya", "Classes_conducted": []},
-    "Subject_4":{"Course_Code":"18UHUC502","Course_abbrv": "CDSS", "Course_Name": "Compiler Design","Course_Instructor":"Dr. U.P. Kulkarni", "Classes_conducted": []},
-    "Subject_5":{"Course_Code":"18UHUC503","Course_abbrv": "SE", "Course_Name": "Software Engineering","Course_Instructor":"Prof. Rashmi P", "Classes_conducted": []},
-    "Subject_6":{"Course_Code":"18UHUC504","Course_abbrv": "AOOP", "Course_Name": "Advanced Object Oriented Programming","Course_Instructor":"Prof. Govind N", "Classes_conducted": []}
+
+
+mycol.find_one_and_update({},{
+    "$set":{
+        "SE.Classes_conducted": ['1/12/2022','2/12/2022','3/12/2022','4/12/2022','5/12/2022','6/12/2022','7/12/2022','8/12/2022','9/12/2022','10/12/2022','11/12/2022','12/12/2022']
+    },
 })
 

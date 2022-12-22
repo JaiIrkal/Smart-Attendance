@@ -72,6 +72,7 @@ h2{
 .table-wrapper{
     margin: 10px 70px 70px;
     box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+    border: 1px black;
 }
 
 .fl-table {
@@ -85,6 +86,9 @@ h2{
     white-space: nowrap;
     background-color: white;
     overflow : auto;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 
 .fl-table td, .fl-table th {
@@ -179,3 +183,25 @@ overflow:scroll;
         text-align: center;
     }
 }
+
+td:first-child, th:first-child {
+  position:sticky;
+  left:0;
+  z-index:1;
+  background-color: white;
+}
+
+td:last-child, th:last-child{
+position:sticky;
+right:0;
+z-index:1;
+background-color :white;
+}
+
+.tableFixHead th {
+  position: sticky;
+  top: 0;
+  background: #eee;
+  z-index:2
+}
+
