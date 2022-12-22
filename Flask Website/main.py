@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 from wtforms import StringField, SubmitField, SelectField, DateField, FileField, validators
 from wtforms_alchemy import PhoneNumberField
 from wtforms.validators import DataRequired
-from encodeFace import faceEncodings
+# from encodeFace import faceEncodings
 from studentDatabase import addstudentToDatabase
 
 #app configs
@@ -81,7 +81,7 @@ def addstudent():
         dob = request.form['dob']
         f = request.files['file']
         f.save(os.path.join("./uploads/", secure_filename(f.filename)))
-        encode= faceEncodings(f.filename)
+        encode= []
         addstudentToDatabase(USN,name,email,mobile,branch,semester,division,encode.tolist(),dob)
         return 'Student Added'
     return render_template("addStudent.html",form=studentform)
