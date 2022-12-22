@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+
+{% set counter = {
+    'counter1': 0,
+    'counter2': 0,
+    } %}
+
+{% macro increment(dct, key, inc=1)%}
+    {% if dct.update({key: dct[key] + inc}) %} {% endif %}
+{% endmacro %}
+
+{% macro reset(dct, key)%}
+    {% if dct.update({key: 0})%}{% endif %}
+{% endmacro%}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,6 +22,44 @@
 </head>
 <body>
     <h1>HELLO!</h1>
-    <h2>{{ usn }}</h2>
+    <h2>{{ studentDetails.Name }}</h2>
+
+<div class="main-container">
+    <h2> Attendance Details</h2>
+    {% for sub in subjects %}
+    {{ reset(counter, 'counter1')}}
+    <div class="table-wrapper">
+        <h3> Attendance in {{ sub.get("Name") }}</h3>
+        <table class = "fl-table">
+            <thead>
+            {% for date in sub.get("Classes_Conducted") %}
+            {{ increment(counter, 'counter1') }}
+            <th> {{ date }} </th>
+            {% endfor %}
+            <th> Total no of Classes</th>
+            <th> Classes Attended</th>
+            <th> Percentage</th>
+            </thead>
+            <tbody>
+            {{ reset(counter, 'counter2')}}
+            {% for date in sub.get("Classes_attended") %}
+            {% if date == 1 %}
+            {{ increment(counter, 'counter2') }}
+            <td id ="present"> Present </td>
+            {% else %}
+            <td id = "absent"> Absent </td>
+            {% endif %}
+            {% endfor %}
+            {% set percent = counter.counter2/counter.counter1 * 100 %}
+            <td> {{ counter.counter1 }}</td>
+            <td> {{ counter.counter2 }}</td>
+            <td>{{ percent|round(2,'common') }}%</td>
+            </tbody>
+        </table>
+    </div>
+
+    {% endfor %}
+
+</div>
 </body>
 </html>

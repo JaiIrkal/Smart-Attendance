@@ -84,6 +84,7 @@ h2{
     max-width: 100%;
     white-space: nowrap;
     background-color: white;
+    overflow : auto;
 }
 
 .fl-table td, .fl-table th {
@@ -100,7 +101,9 @@ h2{
     color: #ffffff;
     background: #4FC3A1;
 }
-
+.fl-table thead{
+overflow:scroll;
+}
 
 .fl-table thead th:nth-child(odd) {
     color: #ffffff;

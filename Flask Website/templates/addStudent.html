@@ -9,36 +9,35 @@
 
 <br>
 
-<form   method = "POST" enctype="multipart/form-data">
+<form  action="/addstudent" method = "POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
     {{ form.hidden_tag() }}
     {{ form.name.label }}
     {{ form.name() }}
     <br>
     {{ form.USN.label }}
-    {{ form.USN }}
+    {{ form.USN() }}
 
     <br>
 
     {{ form.branch.label }}
-    {{ form.branch }}
+    {{ form.branch() }}
     <br>
     {{ form.semester.label }}
-    {{ form.semester }}
+    {{ form.semester() }}
     <br>
 
     {{ form.division.label }}
-    {{ form.division }}
+    {{ form.division() }}
 
     <br>
-   {{form.DOB.label }}
-    {{ form.DOB }}
+    Date of Birth <input type ="date" name ="dob">
 <br>
     {{  form.email.label }}
-    {{ form.email }}
+    {{ form.email() }}
 <br>
     {{ form.mobile.label }}
-    {{ form.mobile }}
+    {{ form.mobile() }}
 <br>
 
     <br>

@@ -68,11 +68,13 @@ course = "CDSS"
 today = datetime.today().strftime("%d/%m/%Y")
 
 #mark the date on which class was conducted
-a = classdetails.find_one_and_update({"Branch_abbr": "CSE", "Semester":5, "Division":"A" },{
-    "$push":{
-        f"Course.{course}.Classes_conducted": today
-    }
-})
+i = 1
+for i in range(1,6):
+    a = classdetails.find_one_and_update({f"Subject_{i}.Course_abbrv": course},{
+        "$push":{
+            f"Subject_{i}.Classes_conducted": today
+        }
+        })
 
 #mark attendance
 
