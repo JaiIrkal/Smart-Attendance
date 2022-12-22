@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Add a New Student</title>
-  <link type="stylesheet" href="/static/css/addstudent.css">
+    <title>Add a New Student text</title>
+
+    <link rel="stylesheet" href="{{  url_for('static', filename='/css/addstudent.css') }}">
 </head>
 <body>
 
-<br>
+<br> 
+
+
+<div class="center">
 
 <form  action="/addstudent" method = "POST" enctype="multipart/form-data">
     {{ form.csrf_token }}
@@ -31,7 +35,8 @@
     {{ form.division() }}
 
     <br>
-    Date of Birth <input type ="date" name ="dob">
+    <label for="dob">Date Of Birth</label>
+    <input type ="date" name ="dob">
 <br>
     {{  form.email.label }}
     {{ form.email() }}
@@ -41,13 +46,15 @@
 <br>
 
     <br>
-    <input type="file" name="file" />
+    <input  class="choosefile" type="file" name="file" />
 
 
 
 
     <br>
-    <button type="submit">Submit</button>
+    <button class="button" type="submit">Submit</button>
 </form>
+
+</div>
 </body>
 </html>
