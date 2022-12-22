@@ -89,11 +89,16 @@ def addstudent():
 # This route is for student login
 @app.route('/studentlogin', methods = ["GET", "POST"])
 def student_login():
+    logintable = studentdb['Student_Logins']
     if(request.method == 'POST'):
         usn = request.form['usn']
         passw = request.form['passw']
-        session['loggedin'] = True
-        session['id'] = usn
+        user = logintable.find_one({"USN": f"{usn}"})
+        if(usn is not None):
+            if(user.get("PASSW") == passw):
+                session['loggedin'] = True
+                session['id'] = usn
+                session['class']= user.get("Class")
         return redirect( url_for("student_page"))
     return render_template("student_login.html")
 
@@ -122,8 +127,8 @@ def teacher_page(name, subject):
 @app.route('/student', methods = ["GET"])
 def student_page():
     if(request.method=="GET"):
-        usn = "2SD20CS017"
-        classname="CSE_5_A"
+        usn = session['id']
+        classname=session['class']
         classDetails = classdb[classname]
         classObject = classDetails.find_one({})
         print(classObject)
