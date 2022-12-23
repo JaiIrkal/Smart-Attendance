@@ -82,7 +82,7 @@ def addstudent():
         dob = request.form['dob']
         f = request.files['file']
         f.save(os.path.join("./uploads/", secure_filename(f.filename)))
-        encode= []
+        encode= faceEncodings(f.filename)
         addstudentToDatabase(USN,name,email,mobile,branch,semester,division,encode.tolist(),dob)
         return 'Student Added'
     return render_template("addStudent.html",form=studentform)
