@@ -1,79 +1,6 @@
-/* a:link {
-    text-decoration: none;
-}
-  
-a:visited {
-    text-decoration: none;
-}
-  
-a:hover {
-    text-decoration: none;
-}
-  
-a:active {
-    text-decoration: none;
-}
 
 body{
-
-    font-family: Arial, Helvetica, sans-serif;
-    background-image: url('/static/images/background-img.jpg');
-}
-
-h1{
-
-    font-size: 80px;
-    margin-left: 50px;
-}
-
-h2{
-
-    font-size: 30px;
-    margin-left: 50px;
-}
-
-h2.label{
-
-    text-align: center;
-    margin-left: 10px;
-}
-
-.content{
-
-    color: white;
-}
-
-.button{
-
-    height: 120px;
-    width: 200px;
-    font-size: x-large;
-    font-weight: bold;
-    background-color: rgb(50, 82, 180);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    position: center;
-    margin: 20px;
-}
-
-.button:hover{
-
-    box-shadow: 0 5px grey;
-    transform: translateY(4px);
-    cursor: pointer;
-}
-
-.buttons_grouped{
-
-    position: relative;
-    padding-left: 35%;
-    padding-top: 2%;
-} */
-
-
-body{
-    background-color: rgb(60, 87, 87);
+    background-color: rgb(139, 245, 245);
 }
 
 .content {
@@ -96,7 +23,7 @@ body{
   }
 
   .button {
-    background-color: rgb(60, 173, 172); /* Green */
+    background-color: rgb(3, 52, 51); /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -106,13 +33,15 @@ body{
     font-size: 30px;
     border-radius: 8px;
     color: white;
+    font-weight: bold;
   }
 
   h1{
-        color: rgb(68, 155, 218);
+        color: rgb(20, 59, 87);
         font-size: 50px;
   }
 
   h2{
-    color: bisque;
+    color: rgb(145, 81, 4);
+    font-size: 30px;
   }
