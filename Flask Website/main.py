@@ -5,10 +5,11 @@ import os
 from flask_uploads import UploadSet, IMAGES, configure_uploads
 from flask_wtf import FlaskForm
 from werkzeug.utils import secure_filename
+from werkzeug.datastructures import  FileStorage
 from wtforms import StringField, SubmitField, SelectField, DateField, FileField, validators
-from wtforms_alchemy import PhoneNumberField
+
 from wtforms.validators import DataRequired
-# from encodeFace import faceEncodings
+from encodeFace import faceEncodings
 from studentDatabase import addstudentToDatabase
 
 #app configs
@@ -28,7 +29,7 @@ class StudentForm(FlaskForm):
     semester = SelectField('Semester', choices=[(1),(2),(3),(4),(5),(6),(7),(8)])
     division = SelectField("Division", choices=[('A'),('B')])
     email = StringField("Email", validators=[ (DataRequired()), (validators.Email("Please enter your email address."))])
-    mobile = PhoneNumberField( "Phone Number",validators=[ DataRequired()], region = 'IN')
+    mobile = StringField( "Phone Number",validators=[ DataRequired()])
 
 #database connections
 
