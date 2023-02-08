@@ -45,9 +45,9 @@
             {% for date in sub.get("Classes_attended") %}
             {% if date == 1 %}
             {{ increment(counter, 'counter2') }}
-            <td id ="present"> <img src="/static/images/tick.png" alt=""  height= "20%" width="30%" ></td>
+            <td > <img src="/static/images/tick.png" alt=""  height= "24px" width="24px" ></td>
             {% else %}
-            <td id = "absent"><img src="/static/images/cross.png" alt=""  height= "30%" width="30%" ></td>
+            <td ><img  src="/static/images/cross.png" alt=""  height= "24px" width="24px" ></td>
             {% endif %}
             {% endfor %}
             {% set percent = counter.counter2/counter.counter1 * 100 %}
