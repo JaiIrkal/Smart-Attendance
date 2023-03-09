@@ -5,27 +5,67 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Login</title>
-    <link rel="stylesheet" href="/static/css/teacher_login.css">
+    <!--<link rel="stylesheet" href="/static/css/teacher_login.css">-->
+    <link rel="stylesheet" href="../static/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <form action="action_page.php" method="post">
-        <div class="imgcontainer">
-          <img src="/static/images/teacher_avatar.jpeg" alt="Avatar" class="avatar">
-        </div>
+    <!--<form action="action_page.php" method="post">
+      <div class="imgcontainer">
+        <img src="/static/images/teacher_avatar.jpeg" alt="Avatar" class="avatar">
+      </div>
       
-        <div class="container">
+      <div class="container">
 
-          <label for="uname"><b>Username</b></label>
-          <input type="text" placeholder="Enter Username" name="tid" required>
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="tid" required>
             
-          <label for="psw"><b>Password</b></label>
-          <input type="password" placeholder="Enter Password" name="psw" required>
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
       
-          <button style="margin-top:25px ;" type="submit">Login</button>
+        <button style="margin-top:25px ;" type="submit">Login</button>
 
-        </div>
+      </div>
     
-      </form>
+    </form>-->
+  <div class="left-content">
+    <h1>Welcome!</h1>
+    <h2>Let's Make The Attendance System Smart</h2>
+    <h2>To Continue to our Website</h2>
+    <h2>Login for Attendance Details</h2>
+  </div>
+  
+  
+  <div class="login-select-container">
+    <h2 class="label">You are...</h2>
+    <div class="buttons_grouped">
+      <a href="/" class="button">Student</a>
+      <a href="/teacherlogin" class="button active-button active-teacher">Teacher</a>
+      <a href="/adminLogin" class="button">Admin</a>
+    </div>
+    <center>
+      <div class="login-form active">
+
+        <img src="/static/images/teacher_avatar.jpeg" alt="Avatar" class="avatar">
+
+        <form action="action_page.php" method="POST">
+          <div class="field">
+            <label for="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="tid" required>
+          </div>
+            
+          <div class="field">
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+          </div>
+      
+          <button class="login-button" type="submit">Login</button>
+        </form>
+      </div>
+    </center>
+  </div>
 </body>
 </html>
