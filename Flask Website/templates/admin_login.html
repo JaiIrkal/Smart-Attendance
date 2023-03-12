@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}"> -->
+    <link rel="stylesheet" href="/static/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,500&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="left-content">
+        <h1>Welcome!</h1>
+        <h2>Let's Make The Attendance System Smart</h2>
+        <h2>To Continue to our Website</h2>
+        <h2>Login for Attendance Details</h2>
+    </div>
+
+    
+    <div class="login-select-container">
+        <h2 class="label">You are...</h2>
+        <div class="buttons_grouped">
+            <a href="/" class="button">Student</a>
+            <a href="/teacherlogin" class="button">Teacher</a>
+            <a href="/teacherlogin" class="button active-button">Admin</a>
+        </div>
+        <center>
+            <div class="login-form active">
+                <form action="/" method="POST">
+                  
+                    <img src="/static/images/admin-avatar.webp" alt="Avatar" class="avatar">
+                        
+                          
+                    <div class="fields-container">
+                        <div class="field">
+                            <label for="uname"><b>ID</b></label>
+                            <input class="username-tf" type="text" placeholder="ID" name="usn"  value = " {{ request.form.usn }}" required>
+                        </div>
+                        <div class="field">
+                            <label for="psw"><b>Password</b></label>
+                            <input class="pass-tf" type="password" placeholder="Password" name="admin_passw"  value = "{{ request.form.admin_passw }}" required>
+                        </div>
+                        <Button type="submit" class="login-button">Login</button>
+                    </div>
+                </form>
+            </div>
+        </center>
+    </div>
+</body>
+</html>

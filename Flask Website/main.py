@@ -117,8 +117,6 @@ def teacher_login():
                 session['subject']= teacherdata.get("Subject")
                 session['name']= teacherdata.get("Name")
                 return redirect( url_for("teacher_page"))
-
-
     return render_template("teacher_login.html")
 
 @app.route('/teacher')
