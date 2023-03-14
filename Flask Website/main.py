@@ -29,7 +29,7 @@ class StudentForm(FlaskForm):
     semester = SelectField('Semester', choices=[(1),(2),(3),(4),(5),(6),(7),(8)])
     division = SelectField("Division", choices=[('A'),('B')])
     email = StringField("Email", validators=[ (DataRequired()), (validators.Email("Please enter your email address."))])
-    mobile = PhoneNumberField( "Phone Number",validators=[ DataRequired()], region = 'IN')
+    mobile = StringField( "Phone Number",validators=[ DataRequired()])
 
 #database connections
 
@@ -40,6 +40,8 @@ studentdb = mongodb_client["Student_Database"]
 
 #teacher database
 classdb = mongodb_client["Class_Database"]
+
+teacherdb = mongodb_client["Staff_Database"]
 
 
 #login collection
@@ -53,12 +55,7 @@ teacher_dict = {"Umakant Kulkarni":"CDSS",    "Rashmi_Athnikar":"SE",    "Anand_
 
 global_password = "a"
 
-def isTeacherValid(name, subject):
-    if name in teacher_dict.keys():
-        if teacher_dict[name] == subject:
-            return True
-    else:
-        return False
+
 
 @app.route('/adminLogin')
 def admin():
@@ -105,25 +102,37 @@ def student_login():
                 session['loggedin'] = True
                 session['id'] = usn
                 session['class']= user.get("Class")
-        return redirect( url_for("student_page"))
+                return redirect( url_for("student_page"))
     return render_template("student_login.html")
 
 #This route is for teacher login
 @app.route('/teacherlogin', methods = ["GET", "POST"])
 def teacher_login():
+
+    teachercol = teacherdb["Teachers"]
     if request.method == "POST":
-        session['id'] = request.form['tid']
-        session['loggedin']= True
+        uid  =request.form['tid']
+        passw = request.form['psw']
+        teacherdata = teachercol.find_one({"UserId": uid})
+        if(teacherdata is not None):
+            if(teacherdata.get("PASSW")== passw):
+                session['loggedin'] = True
+                session['id'] = uid
+                session['class'] = teacherdata.get("Classes")
+                session['subject']= teacherdata.get("Subject")
+                session['name']= teacherdata.get("Name")
+                return redirect( url_for("teacher_page"))
+
 
     return render_template("teacher_login.html")
 
-@app.route('/teacher/<name>/<subject>')
-def teacher_page(name, subject):
-    branch = 'CSE'
-    sem = 5
-    div = 'A'
-    students = studentdb[f"{branch}_{sem}_{div}"]
-    classDetails = classdb[f"{branch}_{sem}_{div}"]
+@app.route('/teacher')
+def teacher_page():
+    name = session['name']
+    subject = session['subject']
+    classname = session['class']
+    students = studentdb[f"{classname}"]
+    classDetails = classdb[f"{classname}"]
     classObject = classDetails.find_one({})
     classdates = classObject.get(f"{subject}").get("Classes_conducted")
     studDet = students.find({})

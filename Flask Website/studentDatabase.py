@@ -13,7 +13,7 @@ def addstudentToDatabase(usn, name, email, phone, branch, semester, division, en
     studentdet.insert_one({"USN": usn ,
                            "Name": name,
                            "DOB" : DOB,
-                           "Face_encodings":encode,
+                           "Face_Encodings":encode,
                            "Email": email,
                            "Mobile": phone
                            })
@@ -23,3 +23,10 @@ def addstudentToDatabase(usn, name, email, phone, branch, semester, division, en
                 f"{sub}_attendance": [],
             }
         })
+
+    studentLogin = mydb["Student_Logins"]
+
+    studentLogin.insert_one({"USN": usn,
+                             "PASSW": DOB,
+                             "Class": classname
+                             })

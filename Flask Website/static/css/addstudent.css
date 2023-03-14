@@ -1,0 +1,72 @@
+
+body{
+    background-color:rgb(52, 190, 245);
+}
+
+.heading{
+    font-size:70px;
+
+}
+
+label {
+    display: inline-block;
+    width: 300px;
+    color: #777777;
+  }
+  input {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+  select {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+  }
+
+
+input[type=text], input[type = tel] , input[type = file]  input[type=email], input[type=number], input[type=select], input[type=date],input[type=select],input[type=password], input[type=tel]
+{
+    width: 45%;
+    padding: 12px;
+    border: 1px solid rgb(168, 166, 166);
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    font-weight:bolder;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 25px;
+    border-radius: 14px;
+    margin-top: 10px;
+  }
+
+
+label[for=name],label[for=USN],label[for=branch] ,label[for=semester] ,label[for=division] ,label[for=email] ,label[for=mobile] ,label[for=dob]  {
+
+    color: aliceblue;
+    font-weight:bold;
+    font-size:x-large;
+  }
+
+  .center { 
+    background-color:rgb(21, 119, 172);
+    margin: auto;
+    width: 50%;
+    padding: 10px;
+    align-content: center;
+  }
+
+
+.choosefile {
+    display: inline-block;
+    padding: 6  px 12px;
+    font-weight: bolder;
+    font-size:medium;
+}
+

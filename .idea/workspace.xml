@@ -5,8 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="198b491e-be42-4395-8614-503129ab1bb9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Smart-Attendance.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Smart-Attendance.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Flask Website/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Flask Website/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Flask Website/templates/student.html" beforeDir="false" afterPath="$PROJECT_DIR$/Flask Website/templates/student.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/Face_Encoding.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/addStud.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/addTeacher.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/classDetails.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/creatTImeTable.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/databaseManagement.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/encodeFace.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/images/Amrit.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/images/Ankit.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/mailing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/markAttendance.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/mongodbOPS.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/sms.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/test/1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/test/22.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pyhton-files/Smart_Attendance/timeTable.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.in" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,14 +55,52 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/Users/imgre/.virtualenvs/Smart-Attendance",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PythonContentEntriesConfigurable"
   }
-}</component>
+}]]></component>
+  <component name="RunManager">
+    <configuration name="activate" type="BatchConfigurationType" factoryName="Batch" temporary="true">
+      <module name="Smart-Attendance" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="WORKING_DIRECTORY" value="D:\Code\Minor Project\Smart-Attendance\Pyhton-files\Smart_Attendance\.venv\Scripts" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SCRIPT_NAME" value="activate.bat" />
+      <option name="PARAMETERS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Smart-Attendance" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Flask Website" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Flask Website/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Batch.activate" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
