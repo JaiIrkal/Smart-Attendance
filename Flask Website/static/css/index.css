@@ -112,12 +112,12 @@ body{
 .home-left-content h1{
 
     opacity: 0;
-    animation: text-animation-h1 4s ease-in 2s 1 normal;
+    animation: text-animation-h1 3s ease-in 1s 1 normal;
     animation-fill-mode: forwards;
 }
 .home-left-content h2{
     opacity: 0;
-    animation: text-animation-h2 6s ease-in-out 5s 1 alternate;
+    animation: text-animation-h2 4s ease-in-out 3s 1 alternate;
     animation-fill-mode: forwards;
 }
 
@@ -206,7 +206,7 @@ body{
 
 .homepage{
     opacity: 0;
-    animation: login-animation 8s ease-in-out 4s 1 alternate;
+    animation: login-animation 3s ease-in-out 2s 1 alternate;
     animation-fill-mode: forwards;
 }
 
@@ -342,7 +342,7 @@ input{
     padding: 15px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 12px;
+    margin-top: 8px;
     font-size: 20px;
     background-color: #8a0397;
     color: white;
