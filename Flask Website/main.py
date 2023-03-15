@@ -1,16 +1,16 @@
-from flask import Flask, request, redirect, url_for
-from flask import render_template, session
-import pymongo
 import os
-from flask_uploads import UploadSet, IMAGES, configure_uploads
-from flask_wtf import FlaskForm
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import  FileStorage
-from wtforms import StringField, SubmitField, SelectField, DateField, FileField, validators
 
-from wtforms.validators import DataRequired
+import pymongo
 from encodeFace import faceEncodings
+from flask import Flask, redirect, render_template, request, session, url_for
+from flask_uploads import IMAGES, UploadSet, configure_uploads
+from flask_wtf import FlaskForm
 from studentDatabase import addstudentToDatabase
+from werkzeug.utils import secure_filename
+from wtforms import (DateField, FileField, SelectField, StringField,
+                     SubmitField, validators)
+from wtforms.validators import DataRequired
+from wtforms_alchemy import PhoneNumberField
 
 #app configs
 app = Flask(__name__, template_folder="templates")
@@ -55,6 +55,11 @@ teacher_dict = {"Umakant Kulkarni":"CDSS",    "Rashmi_Athnikar":"SE",    "Anand_
 
 global_password = "a"
 
+
+
+@app.route('/adminLogin')
+def admin():
+    return render_template("admin_login.html")
 
 
 @app.route('/')
