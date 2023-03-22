@@ -26,18 +26,21 @@
 
     <div class="text-display">
         <h1>Welcome, </h1>
-        <h1>{{ name }}</h1>
+        <h1>{{ Data.Name }}</h1>
     </div>
+    {% for class in Data.Classes %}
     <div class="main-container">
-        <h2 class="title">Attendance in {{ subject }} 5-A</h2>
-        <h4 align="center"> Number of Classes conducted: {{ classes|length }}</h4>
+
+        <h2 class="title">Attendance of {{ class.Name }} </h2>
+        {% for subject in class.Attendance %}
+        <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}</h4>
         <div class="table-wrapper">
         <table class = "fl-table">
             <thead>
             <tr>
                 <th id="fixed_info">    USN    </th>
                 <th>    Name     </th>
-                {% for date in classes %}
+                {% for date in subject.Classes_conducted %}
                 {{ increment(counter, 'counter1') }}
                 <th> {{ date }} </th>
                 {% endfor %}
@@ -45,13 +48,13 @@
                 <th> Percentage</th>
             </tr>
             </thead>
-            {% for stud in student %}
+            {% for stud in subject.StudentsAttendance %}
             <tbody>
             <tr>
                 {{ reset(counter, 'counter2')}}
                 <td>{{ stud.get("USN")|upper }}</td>
                 <td>{{ stud.get("Name")|upper }}</td>
-                {% for att in stud.get(subject + "_attendance") %}
+                {% for att in stud.get("Attendance") %}
                 {% if att == 1 %}
                 {{ increment(counter, 'counter2') }}
                 <td id="cell"> <img src="/static/images/tick.png" alt=""  height= "24px" width="24px" > </td>
@@ -67,7 +70,9 @@
             {% endfor %}
         </table>
             </div>
+        {% endfor %}
     </div>
+{% endfor %}
 </body>
 
 </html>

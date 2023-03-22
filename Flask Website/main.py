@@ -1,4 +1,6 @@
+import json
 import os
+import urllib.request
 
 import pymongo
 from encodeFace import faceEncodings
@@ -20,6 +22,8 @@ app.config['UPLOADED_IMAGES_DEST'] = 'uploads/images'
 images = UploadSet('images',IMAGES)
 configure_uploads(app, images)
 
+
+API_BASE_URL = "http://127.0.0.1:8000"
 
 #create a form for adding a student
 class StudentForm(FlaskForm):
@@ -124,39 +128,27 @@ def teacher_login():
                 return redirect( url_for("teacher_page"))
     return render_template("teacher_login.html")
 
-@app.route('/teacher')
+@app.route('/teacher',methods = ["GET"])
 def teacher_page():
-    name = session['name']
-    subject = session['subject']
-    classname = session['class']
-    students = studentdb[f"{classname}"]
-    classDetails = classdb[f"{classname}"]
-    classObject = classDetails.find_one({})
-    classdates = classObject.get(f"{subject}").get("Classes_conducted")
-    studDet = students.find({})
-    return render_template("teacher.html", name = name ,subject=subject , classes = classdates, student = studDet, )
+
+    ID = "teacher001"
+    url = f"{API_BASE_URL}/teacher/{ID}"
+    response = urllib.request.urlopen(url)
+    Data = json.loads(response.read())
+
+    return render_template("teacher.html", Data = Data )
+
+
 
 
 @app.route('/student', methods = ["GET"])
 def student_page():
     if(request.method=="GET"):
-        usn = session['id']
-        classname=session['class']
-        classDetails = classdb[classname]
-        classObject = classDetails.find_one({})
-        print(classObject)
-        classOfStudent = studentdb[classname]
-        studentDetails = classOfStudent.find_one({"USN": usn})
-        subjects = classObject.get("Course_Names")
-        subdetails = []
-        for sub in subjects:
-            subdict = {
-                "Name": sub,
-                "Classes_Conducted": classObject.get(sub).get("Classes_conducted"),
-                "Classes_attended": studentDetails.get(f"{sub}_attendance")
-            }
-            subdetails.append(subdict)
-        return render_template("student.html",studentDetails=studentDetails,subjects = subdetails )
+        usn = '2SD20CS017'
+        url = f"{API_BASE_URL}/student/{usn}"
+        response = urllib.request.urlopen(url)
+        studentDetails = json.loads(response.read())
+        return render_template("student.html",studentDetails=studentDetails )
 
 if __name__ == '__main__':
    app.run(debug=True)

@@ -23,16 +23,16 @@
 <body>
     <h1>HELLO!</h1>
     <h2>{{ studentDetails.Name }}</h2>
-
+    <h2>{{ studentDetails.USN }}</h2>
 <div class="main-container">
     <h2> Attendance Details</h2>
-    {% for sub in subjects %}
+    {% for sub in studentDetails.Sem_5 %}
     {{ reset(counter, 'counter1')}}
     <div class="table-wrapper">
-        <h3> Attendance in {{ sub.get("Name") }}</h3>
+        <h3> Attendance in {{ sub.get("Subject") }}</h3>
         <table class = "fl-table">
             <thead>
-            {% for date in sub.get("Classes_Conducted") %}
+            {% for date in sub.get("Classes_conducted") %}
             {{ increment(counter, 'counter1') }}
             <th> {{ date }} </th>
             {% endfor %}
@@ -42,7 +42,7 @@
             </thead>
             <tbody>
             {{ reset(counter, 'counter2')}}
-            {% for date in sub.get("Classes_attended") %}
+            {% for date in sub.get("Attendance") %}
             {% if date == 1 %}
             {{ increment(counter, 'counter2') }}
             <td > <img src="/static/images/tick.png" alt=""  height= "24px" width="24px" ></td>
