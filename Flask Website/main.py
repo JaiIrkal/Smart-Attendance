@@ -122,9 +122,6 @@ def teacher_login():
             if(teacherdata.get("PASSW")== passw):
                 session['loggedin'] = True
                 session['id'] = uid
-                session['class'] = teacherdata.get("Classes")
-                session['subject']= teacherdata.get("Subject")
-                session['name']= teacherdata.get("Name")
                 return redirect( url_for("teacher_page"))
     return render_template("teacher_login.html")
 
@@ -135,7 +132,6 @@ def teacher_page():
     url = f"{API_BASE_URL}/teacher/{ID}"
     response = urllib.request.urlopen(url)
     Data = json.loads(response.read())
-
     return render_template("teacher.html", Data = Data )
 
 

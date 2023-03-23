@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 
 {% set counter = {
-    'counter1': 0,
-    'counter2': 0,
+    'counter1': 0
     } %}
 
 {% macro increment(dct, key, inc=1)%}
@@ -36,9 +35,11 @@
     {%endfor%}
 
     {% for class in Data.Classes %}
-
     <div id="{{ class.Name }}" class="tabcontent"  {% if not loop.first %} style="display:none" {% endif %}>
         {% for subject in class.Attendance %}
+        <button>
+            Detain
+        </button>
         <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}</h4>
         <div class="table-wrapper">
         <table class = "fl-table">
@@ -47,7 +48,6 @@
                 <th id="fixed_info">    USN    </th>
                 <th>    Name     </th>
                 {% for date in subject.Classes_conducted %}
-                {{ increment(counter, 'counter1') }}
                 <th> {{ date }} </th>
                 {% endfor %}
                 <th> Number of Classes Attended </th>
@@ -56,21 +56,33 @@
             </thead>
             {% for stud in subject.StudentsAttendance %}
             <tbody>
-            <tr>
-                {{ reset(counter, 'counter2')}}
+            <tr id = {{subject.Course}}{{stud.get("USN")|upper}}>
+                {{ reset(counter, 'counter1')}}
                 <td>{{ stud.get("USN")|upper }}</td>
                 <td>{{ stud.get("Name")|upper }}</td>
                 {% for att in stud.get("Attendance") %}
                 {% if att == 1 %}
-                {{ increment(counter, 'counter2') }}
+                {{ increment(counter, 'counter1') }}
                 <td id="cell"> <img src="/static/images/tick.png" alt=""  height= "24px" width="24px" > </td>
                 {% else %}
                 <td > <img src="/static/images/cross.png" alt=""  height= "24px" width="24px" > </td>
                 {% endif %}
                 {% endfor %}
-                {% set percent = counter.counter2/counter.counter1 * 100 %}
-                <td> {{ counter.counter2 }}</td>
+                {% set percent = counter.counter1/(subject.Classes_conducted|length)  * 100 %}
+                <td> {{ counter.counter1 }}</td>
                 <td>{{ percent|round(2,'common') }}%</td>
+                {% if percent < 75 %}
+                    <script>
+                        console.log( " {{ stud.get("USN") }} ");
+                         var row = document.getElementById("{{subject.Course}}{{ stud.get("USN")|upper }}");
+                           markDetained(row);
+                           function markDetained(rowID){
+                            console.log(rowID);
+                                rowID.style.backgroundColor ="";
+                            }
+                    </script>
+                {% endif %}
+
             </tr>
             </tbody>
             {% endfor %}
@@ -96,10 +108,12 @@
     tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
   }
   document.getElementById(tab).style.display = "block";
-
 }
 
-</script>>
+
+
+
+</script>
 
 
 
