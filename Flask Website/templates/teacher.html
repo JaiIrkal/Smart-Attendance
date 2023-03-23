@@ -28,10 +28,16 @@
         <h1>Welcome, </h1>
         <h1>{{ Data.Name }}</h1>
     </div>
-    {% for class in Data.Classes %}
-    <div class="main-container">
 
-        <h2 class="title">Attendance of {{ class.Name }} </h2>
+
+
+    {% for class in Data.Classes %}
+            <button class="tablink" onclick="openTab(event,'{{ class.Name }}')">{{class.Name}}</button>
+    {%endfor%}
+
+    {% for class in Data.Classes %}
+
+    <div id="{{ class.Name }}" class="tabcontent"  {% if not loop.first %} style="display:none" {% endif %}>
         {% for subject in class.Attendance %}
         <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}</h4>
         <div class="table-wrapper">
@@ -74,5 +80,27 @@
     </div>
 {% endfor %}
 </body>
+
+<script>
+
+    function openTab(evt, tab) {
+  var i, x, tablinks;
+
+  x = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+  }
+
+  tablinks = document.getElementsByClassName("tablink");
+  for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+  }
+  document.getElementById(tab).style.display = "block";
+
+}
+
+</script>>
+
+
 
 </html>

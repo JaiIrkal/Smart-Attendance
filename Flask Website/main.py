@@ -150,6 +150,7 @@ def student_page():
         studentDetails = json.loads(response.read())
         return render_template("student.html",studentDetails=studentDetails )
 
+
 if __name__ == '__main__':
    app.run(debug=True)
 

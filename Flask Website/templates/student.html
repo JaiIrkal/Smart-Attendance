@@ -23,13 +23,13 @@
 <body>
     <h1>HELLO!</h1>
     <h2>{{ studentDetails.Name }}</h2>
-    <h2>{{ studentDetails.USN }}</h2>
+    <h2>USN: {{ studentDetails.USN }} Branch: {{ studentDetails.Branch }} Semester:{{ studentDetails.Semester }} Division: {{ studentDetails.Division }}</h2>
 <div class="main-container">
     <h2> Attendance Details</h2>
-    {% for sub in studentDetails.Sem_5 %}
+    {% for sub in studentDetails.AttendanceData %}
     {{ reset(counter, 'counter1')}}
     <div class="table-wrapper">
-        <h3> Attendance in {{ sub.get("Subject") }}</h3>
+        <h3> Attendance in {{ sub.get("Subject_Name") }}</h3>
         <table class = "fl-table">
             <thead>
             {% for date in sub.get("Classes_conducted") %}
