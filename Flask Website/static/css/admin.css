@@ -1,0 +1,63 @@
+body{
+
+    background-color: #6e5bc3;
+    font-family: 'Barlow Condensed', sans-serif;
+}
+
+.welcome-text{
+
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.tasks-container{
+
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 90px;
+}
+
+.icon{
+
+    margin-left: 140px;
+    margin-top: 10px;
+}
+
+.task{
+
+    background-color: white;
+    height: 300px;
+    width: 380px;
+    margin: 5px;
+    padding: 30px;
+    border-radius: 20px;
+    margin: 10px;
+}
+
+.content{
+
+    margin-left: 100px;
+}
+
+.task-title{
+
+    font-size: 24px;
+    color: black;
+}
+
+.task-description{
+
+    font-size: 22px;
+}
+
+.button{
+
+    background-color: #8a0397;
+    margin-left: 150px;
+    padding: 15px;
+}
+
+.button:hover{
+
+    background-color: #71057b;
+}
