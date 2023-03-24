@@ -238,3 +238,27 @@ th:last-child {
     z-index: 2
 }
 
+.tablink {
+    font-family:sans-serif;
+    font-weight:initial;
+    color: white;
+    background-color: rgb(235, 30, 102);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+.detailbtn {
+
+    font-family:sans-serif;
+    font-weight:initial;
+    color: white;
+    background-color: rgb(15, 57, 197);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+
+}
+
