@@ -37,7 +37,7 @@
     {% for class in Data.Classes %}
     <div id="{{ class.Name }}" class="tabcontent"  {% if not loop.first %} style="display:none" {% endif %}>
         {% for subject in class.Attendance %}
-        <button>
+        <button class="detailbtn">
             Detain
         </button>
         <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}</h4>
