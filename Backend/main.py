@@ -38,7 +38,7 @@ async def detailsOfStudent(USN):
     className = f'{student["Branch"]}_{student["Sem"]}_{student["Div"]}'
 
     # this line finds the record for the class of the student
-    classDetails = await classCollection.find_one({"Branch_abbr":f'{student["Branch"]}', "Semester":int(f'{student["Sem"]}'),"Division" : f'{student["Div"]}'})
+    classDetails = await classCollection.find_one({"Branch":f'{student["Branch"]}', "Semester":int(f'{student["Sem"]}'),"Division" : f'{student["Div"]}'})
     courses = classDetails["Courses_available"]
 
     AttendanceDetails = []
@@ -53,6 +53,9 @@ async def detailsOfStudent(USN):
     studentDetails = {"Name": student["Name"],
                       "USN": student["USN"],
                     "Class": className,
+                      "Branch": student["Branch"],
+                      "Semester": student["Sem"],
+                      "Division": student["Div"],
                     "AttendanceData": AttendanceDetails
                       }
     return studentDetails

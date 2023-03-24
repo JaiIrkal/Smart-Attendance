@@ -56,10 +56,10 @@
             </thead>
             {% for stud in subject.StudentsAttendance %}
             <tbody>
-            <tr id = {{subject.Course}}{{stud.get("USN")|upper}}>
+            <tr >
                 {{ reset(counter, 'counter1')}}
                 <td>{{ stud.get("USN")|upper }}</td>
-                <td>{{ stud.get("Name")|upper }}</td>
+                <td id = {{subject.Course}}{{stud.get("USN")|upper}}>{{ stud.get("Name")|upper }}</td>
                 {% for att in stud.get("Attendance") %}
                 {% if att == 1 %}
                 {{ increment(counter, 'counter1') }}
@@ -78,7 +78,7 @@
                            markDetained(row);
                            function markDetained(rowID){
                             console.log(rowID);
-                                rowID.style.backgroundColor ="";
+                                rowID.style.backgroundColor ="red";
                             }
                     </script>
                 {% endif %}

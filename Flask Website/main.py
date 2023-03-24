@@ -63,7 +63,7 @@ global_password = "a"
 
 @app.route('/adminLogin')
 def admin():
-    return render_template("admin_login.html")
+    return render_template("admin.html")
 
 
 @app.route('/')
