@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 
 {% set counter = {
-    'counter1': 0
-    } %}
+'counter1': 0
+} %}
 
 {% macro increment(dct, key, inc=1)%}
-    {% if dct.update({key: dct[key] + inc}) %} {% endif %}
+{% if dct.update({key: dct[key] + inc}) %} {% endif %}
 {% endmacro %}
 
 {% macro reset(dct, key)%}
-    {% if dct.update({key: 0})%}{% endif %}
+{% if dct.update({key: 0})%}{% endif %}
 {% endmacro%}
 <html lang="en">
 
@@ -30,86 +30,102 @@
 
 
 
-    {% for class in Data.Classes %}
-            <button class="tablink" onclick="openTab(event,'{{ class.Name }}')">{{class.Name}}</button>
-    {%endfor%}
+<!--    {% for class in Data.Classes %}-->
+<!--    <button class="classtablink" onclick="switchClassTab(event,'{{ class.Name }}')">{{class.Name}}</button>-->
+<!--    {%endfor%}-->
 
     {% for class in Data.Classes %}
-    <div id="{{ class.Name }}" class="tabcontent"  {% if not loop.first %} style="display:none" {% endif %}>
+    <div id="{{ class.Name }}" class="classtabcontent" {% if not loop.first %} style="display:none" {% endif %}>
         {% for subject in class.Attendance %}
-        <button>
-            Detain
-        </button>
-        <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}</h4>
+<!--        <button onclick="toggleDetainOption()">-->
+<!--            Detain-->
+<!--        </button>-->
+        <h4 align="center"> Number of Classes conducted for {{ subject.Course }}: {{ subject.Classes_conducted|length }}
+        </h4>
         <div class="table-wrapper">
-        <table class = "fl-table">
-            <thead>
-            <tr>
-                <th id="fixed_info">    USN    </th>
-                <th>    Name     </th>
-                {% for date in subject.Classes_conducted %}
-                <th> {{ date }} </th>
-                {% endfor %}
-                <th> Number of Classes Attended </th>
-                <th> Percentage</th>
-            </tr>
-            </thead>
-            {% for stud in subject.StudentsAttendance %}
-            <tbody>
-            <tr >
-                {{ reset(counter, 'counter1')}}
-                <td>{{ stud.get("USN")|upper }}</td>
-                <td id = {{subject.Course}}{{stud.get("USN")|upper}}>{{ stud.get("Name")|upper }}</td>
-                {% for att in stud.get("Attendance") %}
-                {% if att == 1 %}
-                {{ increment(counter, 'counter1') }}
-                <td id="cell"> <img src="/static/images/tick.png" alt=""  height= "24px" width="24px" > </td>
-                {% else %}
-                <td > <img src="/static/images/cross.png" alt=""  height= "24px" width="24px" > </td>
-                {% endif %}
-                {% endfor %}
-                {% set percent = counter.counter1/(subject.Classes_conducted|length)  * 100 %}
-                <td> {{ counter.counter1 }}</td>
-                <td>{{ percent|round(2,'common') }}%</td>
-                {% if percent < 75 %}
-                    <script>
-                        console.log( " {{ stud.get("USN") }} ");
-                         var row = document.getElementById("{{subject.Course}}{{ stud.get("USN")|upper }}");
-                           markDetained(row);
-                           function markDetained(rowID){
-                            console.log(rowID);
-                                rowID.style.backgroundColor ="red";
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th id="fixed_info"> USN </th>
+                        <th> Name </th>
+                        {% for date in subject.Classes_conducted %}
+                        <th> {{ date }} </th>
+                        {% endfor %}
+                        <th> Number of Classes Attended </th>
+                        <th> Percentage</th>
+                    </tr>
+                </thead>
+                {% for stud in subject.StudentsAttendance %}
+                <tbody>
+                    <tr>
+                        {{ reset(counter, 'counter1')}}
+                        <td>{{ stud.get("USN")|upper }}</td>
+                        <td id={{subject.Course}}{{stud.get("USN")|upper}}>{{ stud.get("Name")|upper }}</td>
+                        {% for att in stud.get("Attendance") %}
+                        {% if att == 1 %}
+                        {{ increment(counter, 'counter1') }}
+                        <td id="cell"> <img src="/static/images/tick.png" alt="" height="24px" width="24px"> </td>
+                        {% else %}
+                        <td> <img src="/static/images/cross.png" alt="" height="24px" width="24px"> </td>
+                        {% endif %}
+                        {% endfor %}
+                        {% set percent = counter.counter1/(subject.Classes_conducted|length) * 100 %}
+                        <td> {{ counter.counter1 }}</td>
+                        <td>{{ percent|round(2,'common') }}%</td>
+                        </tr>
+                        {% if percent < 75 %} <script>
+                            var row = document.getElementById("{{subject.Course}}{{ stud.get("USN")|upper }}");
+                            markDetained(row);
+                                function markDetained(rowID){
+                            rowID.style.backgroundColor ="red";
                             }
-                    </script>
-                {% endif %}
+                            </script>
+                            {% endif %}
 
-            </tr>
-            </tbody>
-            {% endfor %}
-        </table>
-            </div>
+<!--                            <td class="detaincheckbox" style="display:none">-->
+
+<!--                                <input type="checkbox" id="{{subject.Course}}{{ stud.USN|upper }}"-->
+<!--                                       value="{{stud.USN|upper}}" onclick="printUSN({{subject.Course}}{{stud.USN|upper}})">-->
+<!--                            </td>-->
+
+
+
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
         {% endfor %}
     </div>
-{% endfor %}
+    {% endfor %}
 </body>
 
 <script>
 
-    function openTab(evt, tab) {
-  var i, x, tablinks;
+    function switchClassTab(evt, tab) {
+        var i, x, tablinks;
 
-  x = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
+        x = document.getElementsByClassName("classtabcontent");
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("classtablink");
+        for (i = 0; i < x.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
+        }
+        document.getElementById(tab).style.display = "block";
+    }
 
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-red", "");
-  }
-  document.getElementById(tab).style.display = "block";
-}
+    function printUNS(id) {
+        var checkbox = document.getElementById(id);
 
+    }
+
+    function toggleDetainOption() {
+        var listofstudents = document.getElementsByClassName("detaincheckbox");
+        for (i = 0; i < listofstudents.length; i++) {
+            listofstudents[i].style.display = "";
+        }
+    }
 
 
 
