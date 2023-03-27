@@ -116,12 +116,14 @@ def teacher_login():
 
 @app.route('/teacher',methods = ["GET"])
 def teacher_page():
+    # to use the data from live database uncomment the following lines of code and pass Data to the render_template
 
     # ID = "teacher001"
     # url = f"{API_BASE_URL}/teacher/{ID}"
     # response = urllib.request.urlopen(url)
     # response = dummydata.teacherData
     # Data = json.loads(response.read())
+
     return render_template("teacher.html", Data = dummydata.teacherData )
 
 
@@ -129,11 +131,17 @@ def teacher_page():
 @app.route('/student', methods = ["GET"])
 def student_page():
     if(request.method=="GET"):
+
+        #to use the data from live database uncomment the following lines of code and pass studentDetails to the render_template
+
+
         # usn = '2SD20CS017'
         # url = f"{API_BASE_URL}/student/{usn}"
         # response = urllib.request.urlopen(url
         # response = dummydata.studentData
         # studentDetails = json.loads(response.read())
+
+
         return render_template("student.html",studentDetails=dummydata.studentData )
 
 
