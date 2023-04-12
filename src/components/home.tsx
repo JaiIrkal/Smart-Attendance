@@ -1,4 +1,4 @@
-import { ChakraProvider, Text, Tabs, TabList, Tab, TabPanels, TabPanel, Img } from "@chakra-ui/react"
+import { ChakraProvider, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
 import { Hometheme } from "../theme/HomeTheme"
 
 import './home.css'

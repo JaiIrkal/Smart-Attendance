@@ -14,6 +14,7 @@ root.render(
   <React.StrictMode>
     <ColorModeScript />
     <App />
+
   </React.StrictMode>,
 )
 

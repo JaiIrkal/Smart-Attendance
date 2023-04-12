@@ -3,10 +3,18 @@ from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, EmailStr
 import motor.motor_asyncio
+from starlette.middleware.cors import CORSMiddleware
 
 ACADEMIC_YEAR = "2022-2023"
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(
     "mongodb+srv://ankit:attendance@cluster0.iofnken.mongodb.net/test")
@@ -16,8 +24,6 @@ attendancedb = mongodb_client.Attendance_Database
 # this database contains details about the classes
 ClassDb = mongodb_client.Class_Database
 
-# this database contains details about the timetable of classes
-TimeTableDb = mongodb_client.timetable
 
 # this points to the collection of Students in the Database
 studentsCollection = attendancedb["Students"]
@@ -28,6 +34,10 @@ teacherCollection = attendancedb["Teachers"]
 # this points to the collection of classes in current academic year
 classCollection = ClassDb[ACADEMIC_YEAR]
 
+
+@app.get('/')
+def home():
+    return {"message": "API is working"}
 
 @app.get("/student/{USN}")
 async def detailsOfStudent(USN):
@@ -101,11 +111,31 @@ async def teacher(teacher_id):
     return teacherData
 
 
+@app.get('/listofclass')
+async def getlistofClasses():
+    listofclasses = []
+    classlist = await classCollection.find({}).to_list(1000)
+
+    for  element in classlist:
+        className = f"{element['Branch']}_{element['Semester']}_{element['Division']}"
+        listofclasses.append(className)
+
+    return listofclasses
 
 
+@app.get('/timetable/{ClassID}')
+async def getTimeTable(ClassID):
+
+    temp = ClassID.split("_");
+    classDetails = await classCollection.find_one({"Branch": temp[0],"Semester":int(temp[1]),"Division":temp[2]})
+    timetable = classDetails['TimeTable']
+    return timetable
+
+@app.post('/updatetimetable/{ClassID}')
+async def getTimeTable(ClassID):
+
+        return {"message": "timetable updated"}
 @app.post("/sendwarning")
-def sendWarning(item: List):
+def sendWarning():
 
-    for item in list:
-        print(item)
     return {"message": "Post Successful"}

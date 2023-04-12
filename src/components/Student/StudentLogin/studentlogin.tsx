@@ -87,7 +87,6 @@ const StudentLogin: React.FC = () => {
                         Forgot your password?
                     </Text>
                 </Flex>
-
             </form >
         </div>
 
