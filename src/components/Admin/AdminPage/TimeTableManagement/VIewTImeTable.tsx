@@ -30,9 +30,13 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
     const obj: sampletimetable = {};
     const [timetable, setClassTimeTableData] = useState(obj);
 
+    const [previousSubject, setPreviousSubject] = useState("");
+
     const [updatedSubject, setUpdatedSubject] = useState("");
 
     const [editCellId, setEditCellId] = useState("");
+
+
 
     const gettimetable = async (className: string) => {
 
@@ -81,7 +85,7 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
         return (
             <TableCell size="small" sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3 }}>
                 <Flex fontSize={'20px'} align='center' justify={'center'}>{subject}
-                    <IconButton type="button" onClick={(event) => { handleEditClick(event, keyid) }}>
+                    <IconButton type="button" onClick={(event) => { handleEditClick(event, keyid, subject) }}>
                         <EditIcon />
                     </IconButton>
                 </Flex>
@@ -98,11 +102,15 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
                         label="Select Class"
                         fullWidth
                         size="medium"
-                        onChange={event => { setUpdatedSubject(event.target.value) }}
+                        onChange={(event) => {
+                            console.log(event.target.value);
+                            setUpdatedSubject(event.target.value);
+                        }}
+                        defaultValue={subject}
+                        value={updatedSubject}
                         SelectProps={{
                             native: true,
                         }}
-                        defaultValue={subject}
                     >
                         {listofsubjects.map((sub) => (
                             <option key={sub.Subject_Name} value={sub.Subject_Name}>
@@ -116,7 +124,7 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
                         <CloseIcon />
                     </IconButton>
                 </form>
-            </TableCell>
+            </TableCell >
         )
     }
 
@@ -124,19 +132,33 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
         return temp ? temp : "No Class"
     }
 
-    const handleEditClick = (event: any, key: string) => {
+    const handleEditClick = (event: any, key: string, subjectname: string) => {
         event.preventDefault();
         setEditCellId(key)
+        setPreviousSubject(subjectname)
     }
 
     const handleCancelClick = (event: any) => {
         event.preventDefault();
         setEditCellId("");
+        setPreviousSubject("");
+        setUpdatedSubject("");
     }
 
     const handleSubmitClick = () => {
-        console.log(updatedSubject);
+        submitUpdateTimeTableRequest();
+
         setUpdatedSubject("");
+        setPreviousSubject("");
+        setEditCellId("");
+    }
+
+    async function submitUpdateTimeTableRequest() {
+        console.log("updated: " + updatedSubject);
+        await api.put('/updatetimetable/'.concat(className), {
+            keyid: editCellId,
+            subname: updatedSubject
+        }).catch(error => { console.error(error) });
 
     }
 

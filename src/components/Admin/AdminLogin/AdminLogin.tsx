@@ -81,6 +81,8 @@ const AdminLogin: React.FC = () => {
                     colorScheme='teal'
                     variant='outline'
                     spinnerPlacement='start'
+                    bgColor={"#569DAA"}
+                    borderRadius="15"
                 > Log In</Button>
                 <Flex justifyContent="center" mb={1}>
                     <Text fontSize="9pt" mr={1}>

@@ -1,12 +1,13 @@
+import { Box } from "@mui/material";
 
 
-export const AddTeacherForm: React.FC = () => {
+export const AddTeacherForm: React.FC<{ classList: string[] }> = (classList) => {
 
 
     return (
-        <div>
+        <Box>
 
-            Form to add teacher
-        </div>
+            teacher FOrm
+        </Box >
     );
 }

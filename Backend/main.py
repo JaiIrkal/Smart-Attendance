@@ -39,6 +39,22 @@ classCollection = ClassDb[ACADEMIC_YEAR]
 def home():
     return {"message": "API is working"}
 
+@app.get("/students/all")
+async def listofstudents():
+    list = []
+    students = studentsCollection.find({}).to_list(1000)
+    for student in await students:
+        studentDetails = {"Name": student["Name"],
+                          "id": student["USN"],
+                          "Branch": student["Branch"],
+                          "Semester": student["Sem"],
+                          "Division": student["Div"]
+                          }
+        list.append(studentDetails)
+
+    return list
+
+
 @app.get("/student/{USN}")
 async def detailsOfStudent(USN):
     student = await studentsCollection.find_one({"USN": USN})
@@ -131,10 +147,19 @@ async def getTimeTable(ClassID):
     timetable = classDetails['TimeTable']
     return timetable
 
-@app.post('/updatetimetable/{ClassID}')
-async def getTimeTable(ClassID):
 
-        return {"message": "timetable updated"}
+class updateTimeTableSubject(BaseModel):
+    keyid: str | None=None
+    subname: str| None=None
+
+
+@app.put('/updatetimetable/{ClassID}', response_model=updateTimeTableSubject)
+async def getTimeTable(ClassID:str, updatetimetableSubjectEntry : updateTimeTableSubject):
+    updatetimetableSubjectEntrydict = updatetimetableSubjectEntry.dict()
+    print(ClassID)
+    print(updatetimetableSubjectEntrydict)
+
+    return {"message": "timetable updated"}
 @app.post("/sendwarning")
 def sendWarning():
 

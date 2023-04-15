@@ -4,29 +4,13 @@ import { Text } from "@chakra-ui/react"
 import api from "../../../../api/axiosConfig"
 
 import { useState, useEffect } from "react"
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
+import FormControl from "@mui/material/FormControl"
 
 
-export const ManageTimeTable: React.FC = () => {
+export const ManageTimeTable: React.FC<{ classList: string[] }> = ({ classList }) => {
 
     const [className, setClassName] = useState("");
-
-    const [classList, setClassList] = useState([""]);
-
-
-    const getlistofClass = async () => {
-
-        try {
-            const response = await api.get('/listofclass');
-            setClassList(response.data);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    useEffect(() => {
-        getlistofClass();
-    }, [])
 
     const handleChange = (event: SelectChangeEvent) => {
         setClassName(event.target.value);
@@ -34,28 +18,27 @@ export const ManageTimeTable: React.FC = () => {
 
     return (
         <div>
-            <Text>
-                Select the class:
-            </Text>
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+                <InputLabel id="demo-simple-select-helper-label">Class</InputLabel>
+                <Select
+                    label="Select a Class"
+                    defaultValue={className}
+                    onChange={
+                        handleChange
+                    }
+                    required
+                    placeholder="Select Class"
 
-            <Select
-                label="Select a Class"
-                defaultValue={className}
-                onChange={
-                    handleChange
-                }
-            >
-                <MenuItem key={""} value=""> None</MenuItem>
-                {
-                    classList.map((name) => (
-                        <MenuItem key={name} value={name}>{name}</MenuItem>
-                    ))
-                }
-
-            </Select>
-
-
-
+                    sx={{ width: "150px", height: "40px" }}
+                >
+                    <MenuItem key={""} value="">None</MenuItem>
+                    {
+                        classList.map((name) => (
+                            <MenuItem key={name} value={name}>{name}</MenuItem>
+                        ))
+                    }
+                </Select>
+            </FormControl>
             {className !== "" ? <ViewTimeTable className={className} /> : <div> Select a class</div>}
         </div>
     )
