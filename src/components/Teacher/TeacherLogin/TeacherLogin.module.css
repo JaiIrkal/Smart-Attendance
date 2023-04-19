@@ -23,6 +23,7 @@ button {
     cursor: pointer;
     width: 100%;
     font-size: 25px;
+    border-radius: 25px;
 
 }
 
@@ -36,9 +37,6 @@ button:hover {
     text-align: center;
     margin: 24px 0 12px 0;
 }
-
-
-
 
 .container {
     padding: 16px;

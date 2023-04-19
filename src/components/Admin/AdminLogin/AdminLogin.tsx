@@ -8,6 +8,7 @@ const AdminLogin: React.FC = () => {
     const [loginForm, setLoginForm] = useState({
         email: "",
         password: "",
+        role: "admin"
     });
 
     //firebase logic

@@ -10,6 +10,7 @@ import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Flex } from "@chakra-ui/react";
 import { StudentsList } from "./StudentDetails/StudentsList/StudentsList";
+import AddStudent from "./StudentDetails/AddStudent/AddStudent";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -106,7 +107,7 @@ const AdminPage: React.FC = () => {
                     <ManageTimeTable classList={classList} />
                 </TabPanel>
                 <TabPanel index={1} value={value}><AddTeacherForm classList={classList} /></TabPanel>
-                <TabPanel index={2} value={value}> Student FOrm </TabPanel>
+                <TabPanel index={2} value={value}> <AddStudent /> </TabPanel>
                 <TabPanel index={3} value={value}><StudentsList /></TabPanel>
             </Box>
 

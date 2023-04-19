@@ -1,5 +1,5 @@
-import { Box } from '@mui/material';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { Box, Button } from '@mui/material';
+import { DataGrid, GridApi, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import api from '../../../../../api/axiosConfig'
 
@@ -32,6 +32,17 @@ const columns: GridColDef[] = [
         field: 'Division',
         headerName: 'Division',
         width: 100
+    }, {
+        field: 'EditForm',
+        headerName: 'Edit',
+        width: 100,
+        renderCell: (params) => {
+            const onClick = (e: any) => {
+                e.stopPropagation(); // don't select this row after clicking
+                console.log(params['id']);
+            };
+            return <Button onClick={onClick}>Edit</Button>;
+        }
     }
 ];
 
@@ -54,13 +65,15 @@ export const StudentsList: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ height: 400, width: 700 }}>
+        <Box sx={{ height: 400, width: 1000 }}>
             <DataGrid
                 rows={listofstudents}
                 columns={columns}
                 checkboxSelection
                 disableRowSelectionOnClick
+
             />
+
         </Box>
     )
 }

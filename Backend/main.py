@@ -39,6 +39,10 @@ classCollection = ClassDb[ACADEMIC_YEAR]
 def home():
     return {"message": "API is working"}
 
+@app.post('/login')
+def login():
+
+
 @app.get("/students/all")
 async def listofstudents():
     list = []

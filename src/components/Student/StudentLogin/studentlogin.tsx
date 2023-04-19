@@ -2,12 +2,13 @@
 import { Button, Flex, Input, Text, Img } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import './studentlogin.css'
+import styles from './studentlogin.module.css'
 
 const StudentLogin: React.FC = () => {
     const [loginForm, setLoginForm] = useState({
-        email: "",
+        usn: "",
         password: "",
+        role: "student"
     });
 
     //firebase logic
@@ -22,7 +23,7 @@ const StudentLogin: React.FC = () => {
 
     const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(loginForm.email, loginForm.password);
+        console.log(loginForm);
     }
 
 
@@ -33,7 +34,7 @@ const StudentLogin: React.FC = () => {
             <Img src='/images/img_avatar2.png' className='avatar' />
             <form onSubmit={onSubmit}>
                 <Input required
-                    name='USN'
+                    name='usn'
                     placeholder='Enter your USN'
                     type='text'
                     mb={2}
@@ -81,6 +82,7 @@ const StudentLogin: React.FC = () => {
                     colorScheme='teal'
                     variant='outline'
                     spinnerPlacement='start'
+                    className={styles.loginbutton}
                 > Log In</Button>
                 <Flex justifyContent="center" mb={1}>
                     <Text fontSize="9pt" mr={1}>

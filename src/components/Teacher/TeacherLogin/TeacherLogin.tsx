@@ -2,18 +2,17 @@
 import { Button, Flex, Input, Text, Img } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import './TeacherLogin.css'
+import styles from './TeacherLogin.module.css'
 
 const TeacherLogin: React.FC = () => {
     const [loginForm, setLoginForm] = useState({
         email: "",
         password: "",
+        role: "teacher"
     });
 
-    //firebase logic
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        //update form state
 
         setLoginForm((prev) => ({
             ...prev, [event.target.name]: event.target.value,
@@ -77,10 +76,9 @@ const TeacherLogin: React.FC = () => {
                 <Button width="100%" height="36px"
                     mt={2} mb={2}
                     type="submit" isLoading={Boolean("")}
-                    loadingText='Loading'
-                    colorScheme='teal'
                     variant='outline'
                     spinnerPlacement='start'
+                    className={styles['login-button']}
                 > Log In</Button>
                 <Flex justifyContent="center" mb={1}>
                     <Text fontSize="9pt" mr={1}>
