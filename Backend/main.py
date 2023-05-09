@@ -269,14 +269,14 @@ async def detailsOfStudent(USN):
 async def teacher(teacher_id):
     classesData = []
     teacher = await teacherCollection.find_one({"ID": teacher_id})
-    branch = teacher["Branch"]
-    for classTaught in teacher["Classes"]:
-        Semester = classTaught["Semester"]
-        Division = classTaught["Division"]
-        classData = await classCollection.find_one({"Branch": branch, "Semester": Semester, "Division": Division})
-        listofSubject = []
-        for subject in classTaught["Course"]:
 
+    for classTaught in teacher["Classes"]:
+
+        classData = await classCollection.find_one({"Branch": teacher["Branch"],
+                                                    "Semester": int(classTaught["Semester"]),
+                                                    "Division": classTaught["Division"]})
+        listofSubject = []
+        for subject in classTaught["Subjects"]:
             subjectData = classData[f"{subject}"]
             listofStudent = []
             for student in classData["Students"]:
