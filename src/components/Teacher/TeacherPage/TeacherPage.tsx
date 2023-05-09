@@ -13,17 +13,20 @@ import { TeacherDetails } from "./TeacherDetails/TeacherDetails"
 type StudentType = {
     USN: string
     Name: string
+    Detain: boolean
     Attendance: Array<number>
 }
 
 type AttendanceType = {
-    Course: string
+    Subject: string
     Classes_conducted: Array<string>
     StudentsAttendance: Array<StudentType>
 }
 
 type ClassType = {
-    Name: string
+    Branch: string
+    Semester: number
+    Division: string
     Attendance: Array<AttendanceType>
 }
 
@@ -166,7 +169,7 @@ const TeacherView: React.FC = () => {
                 >
 
 
-                    {teacherData?.Classes.map((item, j) => (<Tab label={item.Name}  {...verticalTabProps(j)} />))}
+                    {teacherData?.Classes.map((item, j) => (<Tab label={item.Branch.concat(item.Semester.toString()).concat(item.Division)}  {...verticalTabProps(j)} />))}
 
                 </Tabs>
 
@@ -177,14 +180,14 @@ const TeacherView: React.FC = () => {
                         index={j}
                     >
                         <Flex flexFlow={'column'}>
-                            <Typography align="center">{item.Name}</Typography>
+                            <Typography align="center">{item.Branch} {item.Semester}{item.Division}</Typography>
                             <Box width='100%'>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }} width="100%">
                                     <Tabs
                                         value={horizontalTabValue} onChange={handleHorizontalTabChange} aria-label="basic tabs" >
                                         {item.Attendance.map((subject, k) =>
                                         (
-                                            <Tab label={subject.Course} {
+                                            <Tab label={subject.Subject} {
                                                 ...horizontalTabProps(k)} />
                                         )
                                         )
@@ -196,7 +199,8 @@ const TeacherView: React.FC = () => {
                                     item.Attendance.map((subject, k) =>
                                     (
                                         <HorizontalTabPanel value={horizontalTabValue} index={k}>
-                                            <ClassAttendanceTable className={item.Name} subjectCode={subject.Course} data={item.Attendance[k]} />
+                                            <ClassAttendanceTable className={item.Branch.concat(item.Semester.toString()).concat(item.Division)}
+                                                subjectCode={subject.Subject} data={item.Attendance[k]} />
                                         </HorizontalTabPanel>
                                     )
                                     )

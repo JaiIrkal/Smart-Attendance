@@ -237,13 +237,13 @@ async def listofstudents():
     return list
 
 
-def getClassConducted(subjectCode, semDetails) -> dict[str] :
+def getClassConducted(subjectCode, semDetails) -> dict[str]:
     if semDetails:
         for sub in semDetails["Subjects"]:
             if subjectCode == sub["Code"]:
                 return {"ClassDates": sub["ClassDates"],
                         "Name": sub["Name"]}
-    return {"ClassDates": None,"Name":None}
+    return {"ClassDates": None, "Name": None}
 
 
 @app.get("/student/{USN}", response_model=StudentModel.Student)
@@ -265,40 +265,72 @@ async def detailsOfStudent(USN):
     return studententity(student)
 
 
+def getsubjectData(subjectCode: str, classData: list):
+    for sub in classData:
+        if sub["Code"] == subjectCode:
+            return sub
+    return None
+
+
+def getSubjectAttendance(subject:str, Data: list):
+    Data = Data[0]
+    Data = Data["Subjects"]
+    for sub in Data:
+        if subject==sub['Code']:
+            return {"Attendance":sub["Attendance"],
+                    "Detain": sub["Detain"]
+                    }
+
+    return None
+
+
 @app.get("/teacher/{teacher_id}")
 async def teacher(teacher_id):
     classesData = []
     teacher = await teacherCollection.find_one({"ID": teacher_id})
-
     for classTaught in teacher["Classes"]:
-
         classData = await classCollection.find_one({"Branch": teacher["Branch"],
                                                     "Semester": int(classTaught["Semester"]),
-                                                    "Division": classTaught["Division"]})
+                                                    "Division": classTaught["Division"],
+                                                    "Batch": classTaught["Batch"]
+                                                    })
         listofSubject = []
         for subject in classTaught["Subjects"]:
-            subjectData = classData[f"{subject}"]
+            subjectData = getsubjectData(subject, classData["Subjects"])
             listofStudent = []
             for student in classData["Students"]:
-                studentData = await studentsCollection.find_one({"USN": student})
-
+                studentData = await studentsCollection.find_one({"USN": student,
+                                                                 },
+                                                                {"USN": 1,
+                                                                 "Name": 1,
+                                                                 "Data": {"$elemMatch":
+                                                                              {"Semester":
+                                                                                   int(classTaught["Semester"])
+                                                                               }}
+                                                                 }
+                                       )
+                subjectAttendanceData= getSubjectAttendance(subject, studentData["Data"])
                 studentAttendanceData = {
-                    "USN": student,
+                    "USN": studentData["USN"],
                     "Name": studentData["Name"],
-                    "Attendance": studentData[f"Sem_{Semester}"][f"{subject}_attendance"]
+                    "Detain": subjectAttendanceData["Detain"],
+                    "Attendance": subjectAttendanceData["Attendance"]
                 }
+                # print(studentAttendanceData)
                 listofStudent.append(studentAttendanceData)
-
+    #
             subjectAttendanceData = {
-                "Course": subjectData["Course_abbrv"],
-                "Classes_conducted": subjectData["Classes_conducted"],
+                "Subject": subjectData["Code"],
+                "Classes_conducted": subjectData["ClassDates"],
                 "StudentsAttendance": listofStudent
 
             }
             listofSubject.append(subjectAttendanceData)
-
+    #
         classData = {
-            "Name": f"{branch}_{Semester}_{Division}",
+            "Branch": teacher["Branch"],
+            "Semester": classTaught["Semester"],
+            "Division": classTaught["Division"],
             "Attendance": listofSubject
         }
         classesData.append(classData)
