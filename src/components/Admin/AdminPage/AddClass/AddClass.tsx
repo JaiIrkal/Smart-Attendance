@@ -2,10 +2,10 @@ import { Flex, Button, FormControl, FormLabel, Input, FormErrorMessage, Select }
 
 import { Formik, Field, Form, useFormik } from "formik";
 
-import api from '../../../../../api/axiosConfig'
+import api from '../../../../api/axiosConfig'
 
 
-export const AddTeacherForm: React.FC<{ classList: string[] }> = (classList) => {
+export const AddClass: React.FC = () => {
 
     const DeptList = ['CSE', 'ISE', 'MECH', 'CHEM','CIVIL','ECE','EEE']
     const SemList = ['1', '2', '3', '4','5','6','7','8']
@@ -106,4 +106,4 @@ export const AddTeacherForm: React.FC<{ classList: string[] }> = (classList) => 
     )
 }
 
-export default AddTeacherForm;
+export default AddClass;

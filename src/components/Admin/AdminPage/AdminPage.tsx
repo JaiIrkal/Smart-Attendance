@@ -11,6 +11,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Flex } from "@chakra-ui/react";
 import { StudentsList } from "./StudentDetails/StudentsList/StudentsList";
 import AddStudent from "./StudentDetails/AddStudent/AddStudent";
+import AddClass from "./AddClass/AddClass";
+
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -100,6 +102,8 @@ const AdminPage: React.FC = () => {
                         iconPosition="start"></Tab>
                     <Tab label="Add Student" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
+                     <Tab label=" Add Class" {...a11yProps(2)}
+                        icon={<PersonAddIcon />} iconPosition="start"></Tab>
                     <Tab label="List All Students" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
                 </Tabs>
@@ -107,8 +111,10 @@ const AdminPage: React.FC = () => {
                     <ManageTimeTable classList={classList} />
                 </TabPanel>
                 <TabPanel index={1} value={value}><AddTeacherForm classList={classList} /></TabPanel>
-                <TabPanel index={2} value={value}> <AddStudent /> </TabPanel>
-                <TabPanel index={3} value={value}><StudentsList /></TabPanel>
+                <TabPanel index={2} value={value}><AddStudent /> </TabPanel>
+                <TabPanel index={3} value={value}><AddClass /> </TabPanel>
+                <TabPanel index={4} value={value}><StudentsList /></TabPanel>
+
             </Box>
 
 
