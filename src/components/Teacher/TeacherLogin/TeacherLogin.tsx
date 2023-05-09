@@ -1,27 +1,77 @@
 
 import { Button, Flex, Input, Text, Img } from '@chakra-ui/react';
-import React, { useState } from 'react';
-
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import AuthContext from '../../../context/AuthProvider';
+import api from "../../../api/axiosConfig"
 import styles from './TeacherLogin.module.css'
+
+const LOGIN_URL = '/login'
 
 const TeacherLogin: React.FC = () => {
     const [loginForm, setLoginForm] = useState({
-        email: "",
+        userid: "",
         password: "",
         role: "teacher"
     });
 
+    const { setAuth } = useContext(AuthContext)
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from?.pathname || "/teacher"
+    const userRef = useRef<HTMLElement>();
+    const errRef = useRef<HTMLElement>();
+
+    const [errMsg, setErrMsg] = useState('');
+
+
+    useEffect(() => {
+        if (userRef.current) { userRef.current.focus(); }
+    }, [])
+
+
+    useEffect(() => {
+        setErrMsg('')
+    }, [loginForm])
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
         setLoginForm((prev) => ({
             ...prev, [event.target.name]: event.target.value,
         }));
     }
 
-    const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(loginForm.email, loginForm.password);
+        console.log(loginForm);
+        await api.post(LOGIN_URL, loginForm, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true
+        }).then(
+            (response) => {
+
+                setAuth({ userid: loginForm.userid, role: loginForm.role, accesstoken: response.data?.access_token })
+                setLoginForm({
+                    userid: "",
+                    password: "",
+                    role: "teacher"
+                })
+                navigate(from, { replace: true });
+
+            }
+        ).catch(
+            (error) => {
+                // console.log(error)
+                if (!error.response) {
+                    setErrMsg('No Server Response');
+                } else if (error.response?.status === 401) {
+                    setErrMsg('Invalid UserId or Password')
+                } else {
+                    setErrMsg('Login Failed')
+                }
+            }
+        ).then(() => { errRef?.current?.focus() });
     }
 
 
@@ -32,7 +82,7 @@ const TeacherLogin: React.FC = () => {
             <Img src='/images/teacher_avatar.jpeg' className='avatar' />
             <form onSubmit={onSubmit}>
                 <Input required
-                    name='LoginID'
+                    name='userid'
                     placeholder='Enter your Login ID'
                     type='text'
                     mb={2}
@@ -79,6 +129,7 @@ const TeacherLogin: React.FC = () => {
                     variant='outline'
                     spinnerPlacement='start'
                     className={styles['login-button']}
+                    bg={"gray"}
                 > Log In</Button>
                 <Flex justifyContent="center" mb={1}>
                     <Text fontSize="9pt" mr={1}>

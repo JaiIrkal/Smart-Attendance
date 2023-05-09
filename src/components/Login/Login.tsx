@@ -1,25 +1,28 @@
-import { Text, Tabs, TabList, Tab, TabPanels, TabPanel } from "@chakra-ui/react"
+import { Text, Tabs, TabList, Tab, TabPanels, TabPanel, Flex } from "@chakra-ui/react"
 import AdminLogin from "../Admin/AdminLogin/AdminLogin"
 import StudentLogin from "../Student/StudentLogin/studentlogin"
 import TeacherLogin from "../Teacher/TeacherLogin/TeacherLogin"
-import './Login.css'
+
+import styles from "./Login.module.css"
+
+
+
 
 export const Login = () => {
-
     return (
-        <>
-            <div className="left-content home-left-content">
-                <Text fontSize={"5xl"} fontFamily={'Barlow Condensed'} fontStyle='oblique'>Welcome!</Text>
-                <Text fontSize={"4xl"} fontFamily={'Barlow Condensed'}>Let's Make The Attendance System Smart</Text>
-                <Text fontSize={"4xl"} fontFamily={'Barlow Condensed'}>To Continue to our Website</Text>
-                <Text fontSize={"4xl"} fontFamily={'Barlow Condensed'}>Login for Attendance Details</Text>
+        <Flex className={styles.body}>
+            <div className={styles.leftcontent}>
+                <Text className={styles.h1}>Welcome!</Text>
+                <Text className={styles.h1}>Let's Make The Attendance System Smart</Text>
+                <Text className={styles.h1}>To Continue to our Website</Text>
+                <Text className={styles.h1}>Login for Attendance Details</Text>
             </div>
-            <div className="login-select-container homepage">
-                <Tabs variant='enclosed'>
+            <div >
+                <Tabs variant='enclosed' className={styles["login-select-container"]}>
                     <TabList>
-                        <Tab className="button">Student</Tab>
-                        <Tab className="button">Teacher</Tab>
-                        <Tab className="button">Admin</Tab>
+                        <Tab className={styles["button"]}>Student</Tab>
+                        <Tab className={styles["button"]}>Teacher</Tab>
+                        <Tab className={styles["button"]}>Admin</Tab>
                     </TabList>
                     <TabPanels>
                         <TabPanel>
@@ -29,6 +32,6 @@ export const Login = () => {
                     </TabPanels>
                 </Tabs>
             </div>
-        </>
+        </Flex>
     )
 }

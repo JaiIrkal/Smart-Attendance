@@ -77,7 +77,7 @@ const AdminPage: React.FC = () => {
 
 
     return (
-        <>
+        <Flex flexDir={'column'} width='100%'>
             <Navbar />
             <Box
                 mt={"15px"}
@@ -112,7 +112,7 @@ const AdminPage: React.FC = () => {
             </Box>
 
 
-        </>
+        </Flex>
 
     );
 

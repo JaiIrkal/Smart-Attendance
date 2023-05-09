@@ -3,7 +3,7 @@ import { DataGrid, GridApi, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import api from '../../../../../api/axiosConfig'
 
-
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns: GridColDef[] = [
     {
@@ -33,6 +33,10 @@ const columns: GridColDef[] = [
         headerName: 'Division',
         width: 100
     }, {
+        field: 'Batch',
+        headerName: "Batch",
+        width: 100
+    }, {
         field: 'EditForm',
         headerName: 'Edit',
         width: 100,
@@ -41,7 +45,7 @@ const columns: GridColDef[] = [
                 e.stopPropagation(); // don't select this row after clicking
                 console.log(params['id']);
             };
-            return <Button onClick={onClick}>Edit</Button>;
+            return <Button onClick={onClick} startIcon={<EditIcon />}>Edit</Button>;
         }
     }
 ];

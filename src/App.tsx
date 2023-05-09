@@ -1,23 +1,46 @@
-import {
-  ChakraProvider
-} from "@chakra-ui/react"
-import { Hometheme } from "./theme/HomeTheme"
-import { createTheme, ThemeProvider } from "@mui/material"
-import { Home } from './components/Home'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import { Routes, Route } from "react-router-dom"
 import AdminPage from "./components/Admin/AdminPage/AdminPage"
 
+import { Login } from "./components/Login/Login"
+import TeacherPage from './components/Teacher/TeacherPage/TeacherPage'
+import StudentPage from './components/Student/StudentPage/StudentPage'
+import RequireAuth from './components/RequireAuth/RequireAuth'
+import PersistLogin from './components/PersistLogin/PersistLogin'
+import Unauthorized from './components/FallBackPages/Unauthorized'
+import { Flex } from '@chakra-ui/react'
+import Layout from './components/Layout'
+import { useEffect } from "react"
+import { StudentProvider } from "./context/StudentProvider"
+
+
+
+
 export const App = () => (
-  <BrowserRouter>
-    <ChakraProvider theme={Hometheme} >
-      <ThemeProvider theme={createTheme()}>
-        <main>
-          <Routes>
-            <Route path='/' element={<Home />}></Route>
+
+
+
+  <Flex bg={""} >
+    <Routes >
+      <Route path='/' element={<Layout />}>
+        <Route path='/' element={<Login />} />
+        <Route path='/unauthorized' element={<Unauthorized />} />
+
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRole="admin" />}>
             <Route path='admin' element={<AdminPage />}></Route>
-          </Routes>
-        </main>
-      </ThemeProvider>
-    </ChakraProvider >
-  </BrowserRouter>
+          </Route>
+          <Route element={<RequireAuth allowedRole="student" />}>
+
+            <Route path='student' element={<StudentProvider><StudentPage /></StudentProvider>}></Route>
+
+          </Route>
+          <Route element={<RequireAuth allowedRole="teacher" />}>
+            <Route path='teacher' element={<TeacherPage />}></Route>
+          </Route>
+        </Route>
+      </Route>
+    </Routes>
+  </Flex>
+
 )

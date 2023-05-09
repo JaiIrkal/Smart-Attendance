@@ -7,7 +7,7 @@ export const Hometheme = extendTheme({
     styles: {
         global: () => ({
             body: {
-                background: ''
+                background: 'gray'
             },
 
         })

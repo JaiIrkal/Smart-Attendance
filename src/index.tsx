@@ -1,9 +1,19 @@
 import { ColorModeScript } from "@chakra-ui/react"
 import * as React from "react"
+import {
+  ChakraProvider
+} from "@chakra-ui/react"
+import theme from "@chakra-ui/theme"
+import { Hometheme } from "./theme/HomeTheme"
+import { createTheme, ThemeProvider } from "@mui/material"
+import { AuthProvider } from "./context/AuthProvider"
+import RequireAuth from "./components/RequireAuth/RequireAuth"
 import * as ReactDOM from "react-dom/client"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import CookiesProvider from "react-cookie/cjs/CookiesProvider"
 
 
 const container = document.getElementById("root")
@@ -13,7 +23,19 @@ const root = ReactDOM.createRoot(container)
 root.render(
   <React.StrictMode>
     <ColorModeScript />
-    <App />
+    <BrowserRouter>
+      <ChakraProvider >
+        <ThemeProvider theme={createTheme()}>
+          <AuthProvider>
+            <CookiesProvider>
+              <Routes>
+                <Route path="/*" element={<App />} />
+              </Routes>
+            </CookiesProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </ChakraProvider >
+    </BrowserRouter>
   </React.StrictMode>,
 )
 
