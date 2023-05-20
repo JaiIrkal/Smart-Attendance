@@ -1,5 +1,5 @@
 
-import { IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material"
+import { IconButton, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, Box } from "@mui/material"
 
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
@@ -7,8 +7,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import api from "../../../../api/axiosConfig"
 
-// import { timetable } from "../../../../data";
-import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import styles from "./TimeTable.module.css"
@@ -62,9 +60,9 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
 
         return (
             <TableCell size="small" sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3 }}>
-                <Flex fontSize={'20px'} align='center' justify={'center'}>
+                <Box >
                     Break
-                </Flex >
+                </Box >
             </TableCell>
         )
     }
@@ -73,7 +71,7 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
 
         return (
             <TableCell variant="head" align="center" padding="none">
-                <Typography fontSize={"30px"} bgcolor="gray" width={"100%"}>
+                <Typography fontSize={"20px"} width={"100%"}>
                     {day}
                 </Typography>
             </TableCell>
@@ -83,12 +81,12 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
     const ReadOnlyCell = ({ keyid, subject }: { keyid: string, subject: string }) => {
 
         return (
-            <TableCell size="small" sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3 }}>
-                <Flex fontSize={'20px'} align='center' justify={'center'}>{subject}
-                    <IconButton type="button" onClick={(event) => { handleEditClick(event, keyid, subject) }}>
-                        <EditIcon />
+            <TableCell sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3, alignContent: 'center', justifyContent: 'center' }}>
+                <Box sx={{ flex: 'row', maxHeight: '20px', minWidth: '100px', alignContent: 'center', justifyContent: 'center' }}>{subject}
+                    <IconButton type="button" sx={{ alignContent: 'center', justifyContent: 'center' }} onClick={(event) => { handleEditClick(event, keyid, subject) }}>
+                        <EditIcon fontSize="small" />
                     </IconButton>
-                </Flex>
+                </Box>
             </TableCell>
         )
     }

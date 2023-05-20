@@ -11,5 +11,6 @@ def studententity(student) -> dict:
         "Email": student["Email"],
         "Mobile": student['Mobile'],
         "DOB": student["DOB"],
-        "Data": student["Data"]
+        "Data": student["Data"],
+        "TimeTable": student["TimeTable"]
     }

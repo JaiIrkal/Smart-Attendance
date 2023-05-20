@@ -1,11 +1,11 @@
-import { Flex } from "@chakra-ui/react"
+import { Box } from "@mui/material"
 import { Outlet } from "react-router-dom"
 
 const Layout = () => {
     return (
-        <Flex flex={"auto"}  >
+        <Box flex={"auto"}  >
             <Outlet />
-        </Flex>
+        </Box>
     )
 }
 

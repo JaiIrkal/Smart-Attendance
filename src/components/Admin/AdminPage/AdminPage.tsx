@@ -1,17 +1,16 @@
 
-import { Box, Tabs, Tab, Typography, Icon } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Box, Tabs, Tab } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import api from "../../../api/axiosConfig";
 import Navbar from "../../NavBar/NavBar";
-import { AddTeacherForm } from "./TeacherDetails/AddTeacherForm/AddTeacherForm";
+import AddTeacherForm from "./TeacherDetails/AddTeacherForm/AddTeacherForm";
 import { ManageTimeTable } from "./TimeTableManagement/ManageTimeTable";
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import { Flex } from "@chakra-ui/react";
 import { StudentsList } from "./StudentDetails/StudentsList/StudentsList";
 import AddStudent from "./StudentDetails/AddStudent/AddStudent";
 import AddClass from "./AddClass/AddClass";
+import AdminContext from "../../../context/AdminContext";
 
 
 interface TabPanelProps {
@@ -43,7 +42,7 @@ function TabPanel(props: TabPanelProps) {
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Flex>{children}</Flex>
+                    <Box>{children}</Box>
                 </Box>
             )}
         </div>
@@ -58,28 +57,28 @@ const AdminPage: React.FC = () => {
         setValue(newValue);
     };
 
-    const [classList, setClassList] = useState([""]);
+    const { branchList, setBranchList } = useContext(AdminContext)
 
 
 
-    const getlistofClass = async () => {
+    const getBranchList = async () => {
         try {
-            const response = await api.get('/listofclass');
-            setClassList(response.data);
+            const response = await api.get('/branchlist');
+            setBranchList(response.data);
         } catch (error) {
             console.log(error)
         }
     }
 
     useEffect(() => {
-        getlistofClass();
+        getBranchList();
     }, [])
 
 
 
 
     return (
-        <Flex flexDir={'column'} width='100%'>
+        <Box flexDirection={'column'}>
             <Navbar />
             <Box
                 mt={"15px"}
@@ -102,15 +101,15 @@ const AdminPage: React.FC = () => {
                         iconPosition="start"></Tab>
                     <Tab label="Add Student" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                     <Tab label=" Add Class" {...a11yProps(2)}
+                    <Tab label=" Add Class" {...a11yProps(3)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label="List All Students" {...a11yProps(2)}
+                    <Tab label="List All Students" {...a11yProps(4)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
                 </Tabs>
                 <TabPanel index={0} value={value}>
-                    <ManageTimeTable classList={classList} />
+                    <ManageTimeTable />
                 </TabPanel>
-                <TabPanel index={1} value={value}><AddTeacherForm classList={classList} /></TabPanel>
+                <TabPanel index={1} value={value}><AddTeacherForm /></TabPanel>
                 <TabPanel index={2} value={value}><AddStudent /> </TabPanel>
                 <TabPanel index={3} value={value}><AddClass /> </TabPanel>
                 <TabPanel index={4} value={value}><StudentsList /></TabPanel>
@@ -118,7 +117,7 @@ const AdminPage: React.FC = () => {
             </Box>
 
 
-        </Flex>
+        </Box>
 
     );
 

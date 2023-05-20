@@ -1,14 +1,11 @@
 import dayjs from "dayjs";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import {
-    Button, Card, CardBody, CardFooter, Heading, List,
-    ListItem, Stack, Image, Text, Flex, TableContainer, Table, TableCaption, Tr, Td, Th, Tbody
-} from "@chakra-ui/react";
+
 import { SemesterData } from "../../../../context/StudentProvider";
 
 import { Pie, PieChart, Cell } from "recharts"
-import { TableHead } from "@mui/material";
+import { Box, Card, CardContent, Stack, Table, TableContainer, TableHead, TableBody, TableRow, Typography as Text, TableCell } from "@mui/material";
 
 
 
@@ -28,7 +25,7 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
 
 
     return (
-        <Flex width={'100%'} flexDir={'column'} minHeight='400px'>
+        <Box >
             {semData.Subjects.length !== 0 ?
                 semData.Subjects.map((subject) => {
 
@@ -46,11 +43,15 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
                     ]
                     return (
                         <Card
-                            direction={{ base: 'column', sm: 'row' }}
-                            overflow='hidden'
-                            variant='outline'
+
+                            sx={{
+                                border: "2px solid black",
+                                margin: ["10px", "10px", "10px", "10px"],
+                                boxShadow: "0px 0px 3px 7px blue"
+
+                            }}
                         >
-                            <PieChart width={730} height={250}>
+                            <PieChart width={200} height={180} >
                                 <Pie data={data} dataKey="value"
                                     nameKey="name"
                                     cx="50%"
@@ -63,35 +64,33 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
                             </PieChart>
 
                             <Stack>
-                                <CardBody>
+                                <CardContent>
                                     <Text>Attendance Data for  {subject.Name}- {subject.Code}</Text>
-                                    <TableContainer scrollBehavior={'auto'}>
-                                        <Table variant={'simple'} border="2px solid" size={'sm'} minWidth='600px' maxWidth='800px'>
+                                    <TableContainer >
+                                        <Table >
                                             <TableHead>
-                                                <Tr border="2px solid">
-                                                    {subject?.ClassesConducted?.map((date) => (<Th border="2px solid"> {date}</Th>))}
-                                                </Tr>
+                                                <TableRow >
+                                                    {subject?.ClassesConducted?.map((date) => (<TableCell> {date}</TableCell>))}
+                                                </TableRow>
                                             </TableHead>
-                                            <Tbody>
-                                                <Tr>
-                                                    {subject?.Attendance?.map((attendance) => (<Td border="2px solid">{attendance}</Td>))}
-                                                </Tr>
-                                            </Tbody>
+                                            <TableBody>
+                                                <TableRow>
+                                                    {subject?.Attendance?.map((attendance) => (<TableCell>{attendance}</TableCell>))}
+                                                </TableRow>
+                                            </TableBody>
                                         </Table>
                                     </TableContainer>
-                                </CardBody>
+                                </CardContent>
 
 
                             </Stack>
                         </Card>
                     )
                 })
-                : <Text align={'center'} justifySelf={'center'} fontSize='4xl'>No Data Available</Text>
+                : <Text >No Data Available</Text>
             }
 
-
-
-        </Flex>
+        </ Box>
 
 
     )

@@ -1,0 +1,7 @@
+.Navbar-Right-Content {
+    display: flex;
+    position: absolute;
+    right: 12px;
+    align-self: center;
+    align-items: center;
+}

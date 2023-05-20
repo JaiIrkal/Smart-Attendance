@@ -14,3 +14,4 @@ class Student(BaseModel):
     Email: str
     Mobile: str
     Data: list
+    TimeTable: dict

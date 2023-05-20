@@ -1,5 +1,5 @@
 
-import { Button, Flex, Input, Text, Img } from '@chakra-ui/react';
+import { Button, Box, Input, Typography as Text, } from '@mui/material';
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import AuthContext from '../../../context/AuthProvider';
 import styles from './studentlogin.module.css'
@@ -78,68 +78,37 @@ const StudentLogin = () => {
     }
 
     return (
-        <>
-            <div className='main-container'>
-                <Img src='/images/img_avatar2.png' className='avatar' />
+        <Box>
+            <Box className={styles["main-container"]}>
+                <img src='/images/img_avatar2.png' className={styles["avatar"]} alt='student-avatar' />
                 <form onSubmit={onSubmit}>
                     <Input required
                         name='userid'
                         placeholder='Enter your USN'
                         type='text'
-                        mb={2}
-                        mt={2}
                         onChange={onChange}
-                        fontSize='10pt'
-                        _placeholder={{ color: "gray.500" }}
-                        _hover={{
-                            bg: "white",
-                            border: "1px solid",
-                            borderColor: "blue.500"
-                        }}
-                        _focus={{
-                            outline: "none",
-                            bg: "white",
-                            border: "1px solid",
-                            borderColor: "blue.500"
-                        }}
+                        value={loginForm.userid}
+                        className={styles["input"]}
                     />
                     <Input
                         required
                         name='password'
                         placeholder='Enter Password'
                         type='password'
-                        mb={2}
-                        onChange={onChange} fontSize='10pt'
-                        _placeholder={{ color: "gray.500" }}
-                        _hover={{
-                            bg: "white",
-                            border: "1px solid",
-                            borderColor: "blue.500"
-                        }}
-                        _focus={{
-                            outline: "none",
-                            bg: "white",
-                            border: "1px solid",
-                            borderColor: "blue.500"
-                        }}
+                        onChange={onChange}
+                        value={loginForm.password}
+                        className={styles["input"]}
                     />
                     <Text textAlign={"center"} color="red" fontSize={"10pt"}> {errMsg}</Text>
-
-
-                    <Button width="100%" height="36px"
-                        mt={2} mb={2}
+                    <Button
                         type="submit"
-                        loadingText='Loading'
-                        colorScheme='teal'
-                        variant='outline'
-                        spinnerPlacement='start'
-                        className={styles.loginbutton}
+                        className={styles["loginbutton"]}
                     > Log In</Button>
-                    <Flex justifyContent="center" mb={1}>
-                    </Flex>
+                    <Box justifyContent="center" mb={1}>
+                    </Box>
                 </form >
-            </div>
-        </>
+            </Box>
+        </Box>
     );
 }
 export default StudentLogin;

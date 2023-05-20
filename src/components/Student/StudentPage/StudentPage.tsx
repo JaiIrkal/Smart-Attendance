@@ -1,15 +1,15 @@
-import { Flex } from "@chakra-ui/react";
-import React, { useState, useEffect, useContext } from "react";
+
+import React, { useEffect, useContext } from "react";
 import Navbar from "../../NavBar/NavBar";
 import { StudentDetails } from "./StudentDetails/StudentDetails";
-import api from "../../../api/axiosConfig"
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import AuthContext from "../../../context/AuthProvider";
 import { StudentAttendanceTable } from "./StudentAttendanceTable/StudentAttendanceTable";
-import { Typography, Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab } from "@mui/material";
 import StudentContext from "../../../context/StudentProvider";
-import { stringify } from "querystring";
-import { TimeTable } from "./TimeTable/TimeTable";
+import StudentTimeTable from "./StudentTimeTable/StudentTimeTable";
+
+import styles from "./StudentPage.module.css"
 
 
 
@@ -80,45 +80,54 @@ const StudentPage: React.FC = () => {
         }
     }, [])
     return (
-        <Flex flexFlow={"column"}
-            width="100%"
-            bg={""}
-            bgSize="cover"
-            bgPos={"center"}
-            flex="auto"
-            padding={['18px', '1px', '18px', '1px']}
-            border="3px solid"
-            margin='8px'
-        >
+        <Box className={styles["main-container"]}>
             <Navbar />
-            <Flex flex={"auto"} my='10px'>
+            <Box flex={"auto"} my='10px'>
                 <StudentDetails />
-            </Flex>
+            </Box>
             <Box flex={"auto"} my='10px' width='100%'>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={value} onChange={handleChange} variant='scrollable' visibleScrollbar aria-label="basic tabs example">
-                        <Tab label="TimeTable" {...a11yProps(0)} />
+                    <Tabs value={value}
+                        onChange={handleChange}
+                        sx={{
+                            marginLeft: 1,
+                            height: 3,
+                        }}
+
+                        variant='scrollable'
+                        scrollButtons="auto"
+                        aria-label="basic tabs example">
+                        <Tab label="TimeTable" {...a11yProps(0)} wrapped
+                            sx={{
+                                wordWrap: 'normal',
+                                display: 'inline',
+                                width: '100px'
+                            }}
+
+                        />
                         {
-                            studentData?.Data.map((sem) => (<Tab label={"Semester ".concat(sem.Semester.toString())} {...a11yProps(1)}></Tab>))
+                            studentData?.Data.map((sem) => (<Tab sx={{
+                                wordWrap: 'normal',
+                                display: 'inline',
+                                width: '140px'
+                            }} label={"Semester ".concat(sem.Semester.toString())} {...a11yProps(1)}></Tab>))
                         }
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <TimeTable />
+                    <StudentTimeTable timetable={studentData?.TimeTable} />
                 </TabPanel>
                 {
                     studentData?.Data.map((sem, i) => {
-
-
                         return (
                             <TabPanel value={value} index={i + 1}>
                                 <StudentAttendanceTable semData={sem} />
                             </TabPanel>
                         )
                     })}
-
             </Box>
-        </Flex>
+        </Box>
+
     )
 
 }

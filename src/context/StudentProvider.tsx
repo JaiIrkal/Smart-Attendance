@@ -25,6 +25,7 @@ export type StudentData = {
     Email: string
     Mobile: string
     Data: Array<SemesterData>
+    TimeTable: any
 }
 
 type StudentDataContextType = {

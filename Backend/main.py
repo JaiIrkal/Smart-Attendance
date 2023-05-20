@@ -15,7 +15,12 @@ from Models import StudentModel
 
 from Schemas.Student import studententity
 
+from Route import AdminRoutes
+
+
 app = FastAPI()
+
+app.include_router(AdminRoutes.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,8 +49,6 @@ mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(
 # this database conatains the attendance data
 attendancedb = mongodb_client.Attendance_Database
 
-# this database contains details about the classes
-
 
 # this points to the collection of Students in the Database
 studentsCollection = attendancedb["Students"]
@@ -57,6 +60,8 @@ teacherCollection = attendancedb["Teachers"]
 classCollection = attendancedb["Class_Collection"]
 
 adminCollection = attendancedb["Admins"]
+
+branchCollection = attendancedb["Branch"]
 
 
 @app.get('/')
@@ -165,7 +170,6 @@ async def authenticate_student(usn: str, password: str):
 
 async def authenticate_admin(userid: str, password: str):
     user = await adminCollection.find_one({"UserID": userid}, {'UserID', 'Password'})
-    print(user)
     if not user:
         return False
     if not verify_password(password, user.get("Password")):
@@ -256,11 +260,13 @@ async def detailsOfStudent(USN):
                                                        "Semester": sem["Semester"],
                                                        "Division": sem["Division"]},
                                                       {"Subjects", "TimeTable"})
+        if classDetails :
+            student["TimeTable"] = classDetails["TimeTable"]
 
-        for j, subject in enumerate(sem["Subjects"]):
-            subjectData = getClassConducted(subject["Code"], classDetails)
-            subject["Name"] = subjectData["Name"]
-            subject["ClassesConducted"] = subjectData["ClassDates"]
+            for j, subject in enumerate(sem["Subjects"]):
+                subjectData = getClassConducted(subject["Code"], classDetails)
+                subject["Name"] = subjectData["Name"]
+                subject["ClassesConducted"] = subjectData["ClassDates"]
 
     return studententity(student)
 
@@ -272,12 +278,12 @@ def getsubjectData(subjectCode: str, classData: list):
     return None
 
 
-def getSubjectAttendance(subject:str, Data: list):
+def getSubjectAttendance(subject: str, Data: list):
     Data = Data[0]
     Data = Data["Subjects"]
     for sub in Data:
-        if subject==sub['Code']:
-            return {"Attendance":sub["Attendance"],
+        if subject == sub['Code']:
+            return {"Attendance": sub["Attendance"],
                     "Detain": sub["Detain"]
                     }
 
@@ -308,8 +314,8 @@ async def teacher(teacher_id):
                                                                                    int(classTaught["Semester"])
                                                                                }}
                                                                  }
-                                       )
-                subjectAttendanceData= getSubjectAttendance(subject, studentData["Data"])
+                                                                )
+                subjectAttendanceData = getSubjectAttendance(subject, studentData["Data"])
                 studentAttendanceData = {
                     "USN": studentData["USN"],
                     "Name": studentData["Name"],
@@ -318,7 +324,7 @@ async def teacher(teacher_id):
                 }
                 # print(studentAttendanceData)
                 listofStudent.append(studentAttendanceData)
-    #
+            #
             subjectAttendanceData = {
                 "Subject": subjectData["Code"],
                 "Classes_conducted": subjectData["ClassDates"],
@@ -326,7 +332,7 @@ async def teacher(teacher_id):
 
             }
             listofSubject.append(subjectAttendanceData)
-    #
+        #
         classData = {
             "Branch": teacher["Branch"],
             "Semester": classTaught["Semester"],
@@ -345,7 +351,7 @@ async def teacher(teacher_id):
 @app.get('/listofclass')
 async def getlistofClasses():
     listofclasses = []
-    classlist = await classCollection.find({}).to_list(1000)
+    classlist = await classCollection.find({}).to_list(0)
 
     for element in classlist:
         className = f"{element['Branch']}_{element['Semester']}_{element['Division']}"
@@ -386,13 +392,18 @@ class DetainListModel(BaseModel):
     subjectName: str
     listofStudents: List
 
-
 @app.post('/detainStudents')
 async def detainstudents(req: DetainListModel):
     request = req.dict()
     print(request)
 
     return {"message": "Student detained Successfully"}
+
+
+
+
+
+
 
 # pwd = get_hashed_password("ankit1234")
 # print(pwd)

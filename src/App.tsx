@@ -8,19 +8,15 @@ import StudentPage from './components/Student/StudentPage/StudentPage'
 import RequireAuth from './components/RequireAuth/RequireAuth'
 import PersistLogin from './components/PersistLogin/PersistLogin'
 import Unauthorized from './components/FallBackPages/Unauthorized'
-import { Flex } from '@chakra-ui/react'
+import Box from '@mui/material/Box'
 import Layout from './components/Layout'
-import { useEffect } from "react"
 import { StudentProvider } from "./context/StudentProvider"
-
-
+import { AdminProvider } from "./context/AdminContext"
 
 
 export const App = () => (
 
-
-
-  <Flex bg={""} >
+  <Box>
     <Routes >
       <Route path='/' element={<Layout />}>
         <Route path='/' element={<Login />} />
@@ -28,7 +24,7 @@ export const App = () => (
 
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRole="admin" />}>
-            <Route path='admin' element={<AdminPage />}></Route>
+            <Route path='admin' element={<AdminProvider><AdminPage /></AdminProvider>}></Route>
           </Route>
           <Route element={<RequireAuth allowedRole="student" />}>
 
@@ -41,6 +37,6 @@ export const App = () => (
         </Route>
       </Route>
     </Routes>
-  </Flex>
+  </Box>
 
 )

@@ -1,16 +1,23 @@
-import React, { useContext } from "react"
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { VscAccount } from "react-icons/vsc"
-import { Flex, Icon, Menu, MenuButton, MenuDivider, MenuItem, MenuList } from "@chakra-ui/react";
-import KeyIcon from '@mui/icons-material/Key';
-import LogoutIcon from '@mui/icons-material/Logout';
-import { blue } from "@mui/material/colors";
-import AuthContext from "../../../context/AuthProvider";
+import React from "react"
+import { Box, Button, Menu, MenuItem } from "@mui/material";
 import useLogout from "../../../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
+import AccountCircle from '@mui/icons-material/AccountCircle';
+
+import styles from "./RightContent.module.css"
 
 const RightContent: React.FC = () => {
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+
+
+    const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
     const navigate = useNavigate();
 
     const logout = useLogout();
@@ -21,48 +28,41 @@ const RightContent: React.FC = () => {
     }
 
     return (
-        <Flex width={"fit-content"}>
-            <Menu  >
-                <MenuButton
-                    cursor={"pointer"}
-                    padding="0px 6px"
-                    borderRadius={4}
-                    _hover={{ outline: "1px solid", outlineColor: "gray.200" }}
-                >
-                    <Flex align='center' fontSize={'2xl'} fontWeight='bold'>
-                        <Icon as={VscAccount}
-                            color="gray.500"
-                            mb={1}
-                            fontSize={24} />
-                        Account
-                        <ChevronDownIcon />
-                    </Flex>
-                </MenuButton>
-                <MenuList outline='solid' outlineOffset={'5'} borderRadius={15} padding={'10px'}>
-                    <MenuItem
-                        fontSize={"10pt"}
-                        fontWeight={700}
+        <Box className={styles["Navbar-Right-Content"]}>
 
-                        _hover={{ bg: "blue.500", color: "#009FBD" }}>
-                        <Flex align='center' bg={blue}>
-                            <Icon as={KeyIcon} fontSize={'1xl'} mr={'4px'}></Icon>
-                            Change Password
-                        </Flex>
-                    </MenuItem>
-                    <MenuDivider mt={'5px'} mb={'5px'} />
-                    <MenuItem
-                        fontSize={"10pt"}
-                        fontWeight={700}
+            <Button
+                size="large"
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
 
-                        _hover={{ bg: "blue.500", color: "#009FBD" }}>
-                        <Flex align='center' bg={blue} onClick={() => { handleLogout() }}>
-                            <Icon as={LogoutIcon} fontSize={'1xl'} mr={'4px'}></Icon>
-                            Log Out
-                        </Flex>
-                    </MenuItem>
-                </MenuList>
+            >
+                <AccountCircle />
+            </Button>
+            <Menu
+                sx={{ mt: '18px' }}
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={() => {
+                    handleClose();
+                    handleLogout();
+                }}>Log Out</MenuItem>
             </Menu>
-        </Flex>
+        </Box>
 
     )
 }

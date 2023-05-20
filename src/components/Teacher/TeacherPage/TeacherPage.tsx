@@ -1,7 +1,5 @@
 import { Box, Tab, Tabs, Typography } from "@mui/material";
 
-import { Flex } from "@chakra-ui/react";
-
 import { useState, useContext, useEffect } from "react";
 import AuthContext from "../../../context/AuthProvider";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
@@ -143,21 +141,14 @@ const TeacherView: React.FC = () => {
 
 
     return (
-        <Flex flexFlow={"column"}
-            bg={""}
-            bgSize="cover"
-            bgPos={"center"}
-            flex="auto"
-            padding={['18px', '1px', '18px', '1px']}
-            border="3px solid"
-            margin='8px'>
+        <Box display={'block'}>
 
             <Navbar />
 
             <TeacherDetails />
 
             <Box
-                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: '100%' }}
+                sx={{ BoxGrow: 1, bgcolor: 'background.paper', display: 'Box', height: '100%' }}
             >
                 <Tabs
                     orientation="vertical"
@@ -167,19 +158,14 @@ const TeacherView: React.FC = () => {
                     aria-label="Vertical tabs example"
                     sx={{ borderRight: 1, borderColor: 'divider' }}
                 >
-
-
                     {teacherData?.Classes.map((item, j) => (<Tab label={item.Branch.concat(item.Semester.toString()).concat(item.Division)}  {...verticalTabProps(j)} />))}
-
                 </Tabs>
-
-
                 {teacherData?.Classes.map((item, j) => (
                     <VerticalTabPanel
                         value={verticalTabvalue}
                         index={j}
                     >
-                        <Flex flexFlow={'column'}>
+                        <Box flexDirection={'column'}>
                             <Typography align="center">{item.Branch} {item.Semester}{item.Division}</Typography>
                             <Box width='100%'>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }} width="100%">
@@ -207,12 +193,12 @@ const TeacherView: React.FC = () => {
                                 }
 
                             </Box>
-                        </Flex>
+                        </Box>
                     </VerticalTabPanel >))}
 
             </Box >
 
-        </Flex >
+        </Box >
     )
 }
 

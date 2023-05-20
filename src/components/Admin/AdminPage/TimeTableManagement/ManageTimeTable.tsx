@@ -1,16 +1,15 @@
 import { ViewTimeTable } from "./VIewTImeTable"
-import { Text } from "@chakra-ui/react"
 
-import api from "../../../../api/axiosConfig"
-
-import { useState, useEffect } from "react"
+import { useContext, useState } from "react"
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import FormControl from "@mui/material/FormControl"
+import AdminContext from "../../../../context/AdminContext"
 
 
-export const ManageTimeTable: React.FC<{ classList: string[] }> = ({ classList }) => {
+export const ManageTimeTable = () => {
 
     const [className, setClassName] = useState("");
+    const { branchList } = useContext(AdminContext);
 
     const handleChange = (event: SelectChangeEvent) => {
         setClassName(event.target.value);
@@ -33,13 +32,14 @@ export const ManageTimeTable: React.FC<{ classList: string[] }> = ({ classList }
                 >
                     <MenuItem key={""} value="">None</MenuItem>
                     {
-                        classList.map((name) => (
+                        branchList.map((name) => (
                             <MenuItem key={name} value={name}>{name}</MenuItem>
                         ))
                     }
                 </Select>
             </FormControl>
-            {className !== "" ? <ViewTimeTable className={className} /> : <div> Select a class</div>}
+            <ViewTimeTable className={'CSE_5_A'} />
+            {className !== "" ? <ViewTimeTable className={'CSE_5_A'} /> : <div> Select a class</div>}
         </div>
     )
 }

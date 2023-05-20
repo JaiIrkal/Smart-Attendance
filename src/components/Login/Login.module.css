@@ -1,5 +1,5 @@
-body {
-    background-color: #556798;
+.main-container {
+    background-color: #F99B7D;
     font-family: 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
@@ -21,15 +21,11 @@ body {
 }
 
 .leftcontent h1 {
-
     margin-left: 50px;
     opacity: 1;
-    /* animation: text-animation-h1 4s ease-in 2s 1 normal;
-    animation-fill-mode: forwards; */
 }
 
 .leftcontent h2 {
-
     opacity: 1;
 }
 
@@ -85,7 +81,6 @@ body {
 
 
 .buttons_grouped {
-
     margin-left: auto;
     margin-right: auto;
     width: 50%;
@@ -93,11 +88,7 @@ body {
     text-align: center;
 }
 
-
-
-
 .login-select-container {
-
     background-color: rgb(255, 255, 255);
     text-align: center;
     padding: 20px;
@@ -119,8 +110,6 @@ body {
     font-family: 'Barlow Condensed', sans-serif;
     box-shadow: 20px 20px #71057b;
     opacity: 1;
-    /* margin-left: 100px;
-    margin-right: 100px; */
 }
 
 .homepage {
@@ -199,27 +188,14 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* .main-container{
-  
-    background-color: white;
-    width: 50%;
-    height: 400px;
-    padding: 20px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 100px;
-    border-radius: 20px;
-    min-width: 250px;
-    max-width: 500px;
-} */
 
-label {
+.label {
 
     font-size: 22px;
     margin-right: 8px;
 }
 
-input {
+.input {
 
     height: 20px;
     padding: 15px;
