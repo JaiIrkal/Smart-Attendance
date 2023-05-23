@@ -18,4 +18,4 @@ classCollection = attendancedb["Class_Collection"]
 
 adminCollection = attendancedb["Admins"]
 
-branchCollection = attendancedb["Branch"]
+branchCollection = attendancedb["Data"]

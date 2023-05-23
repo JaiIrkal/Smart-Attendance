@@ -15,12 +15,14 @@ from Models import StudentModel
 
 from Schemas.Student import studententity
 
-from Route import AdminRoutes
-
+from Route import AdminRoutes, TeacherRoutes, StudentRoutes
 
 app = FastAPI()
 
 app.include_router(AdminRoutes.router)
+app.include_router(TeacherRoutes.router)
+
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -154,7 +156,7 @@ async def authenticate_teacher(uid: str, password: str):
 
 
 async def authenticate_student(usn: str, password: str):
-    user = await studentsCollection.find_one({"USN": usn.upper()}, {'USN', "Password"})
+    user = await studentsCollection.find_one({"_id":{"usn": usn.upper()}}, {'_id.usn', "Password"})
 
     if not user:
         return False
@@ -162,7 +164,7 @@ async def authenticate_student(usn: str, password: str):
         return False
 
     student = {
-        "userid": user["USN"],
+        "userid": user["_id"]["usn"],
         "role": "student"
     }
     return student
@@ -229,8 +231,8 @@ async def listofstudents():
     list = []
     students = studentsCollection.find({}).to_list(1000)
     for student in await students:
-        studentDetails = {"Name": student["Name"],
-                          "id": student["USN"],
+        studentDetails = {"id": student["_id"]["usn"],
+                          "Name": student["firstname"],
                           "Branch": student["Branch"],
                           "Semester": student["Semester"],
                           "Division": student["Division"],
@@ -243,29 +245,27 @@ async def listofstudents():
 
 def getClassConducted(subjectCode, semDetails) -> dict[str]:
     if semDetails:
-        for sub in semDetails["Subjects"]:
-            if subjectCode == sub["Code"]:
-                return {"ClassDates": sub["ClassDates"],
-                        "Name": sub["Name"]}
-    return {"ClassDates": None, "Name": None}
+        for sub in semDetails["subjects"]:
+            if subjectCode == sub["code"]:
+                return {"ClassDates": sub["ClassDates"]}
+    return {"ClassDates": None}
 
 
-@app.get("/student/{USN}", response_model=StudentModel.Student)
+@app.get("/student/{USN}")
 async def detailsOfStudent(USN):
-    student = await studentsCollection.find_one({"USN": USN.upper()})
+    student = await studentsCollection.find_one({"_id":{"usn": USN.upper()}})
     classList = []
     for i, sem in enumerate(student["Data"]):
-        classDetails = await classCollection.find_one({"Batch": student["Batch"],
-                                                       "Branch": student["Branch"],
-                                                       "Semester": sem["Semester"],
-                                                       "Division": sem["Division"]},
-                                                      {"Subjects", "TimeTable"})
+        classDetails = await classCollection.find_one({"_id":{
+                                                       "branch": student["Branch"],
+                                                       "semester": sem["Semester"],
+                                                       "division": sem["Division"]}},
+                                                      {"subjects", "timetable"})
+        print(classDetails)
         if classDetails :
-            student["TimeTable"] = classDetails["TimeTable"]
-
+            student["TimeTable"] = classDetails["timetable"]
             for j, subject in enumerate(sem["Subjects"]):
                 subjectData = getClassConducted(subject["Code"], classDetails)
-                subject["Name"] = subjectData["Name"]
                 subject["ClassesConducted"] = subjectData["ClassDates"]
 
     return studententity(student)
@@ -363,23 +363,13 @@ async def getlistofClasses():
 @app.get('/timetable/{ClassID}')
 async def getTimeTable(ClassID):
     temp = ClassID.split("_")
-    classDetails = await classCollection.find_one({"Branch": temp[0], "Semester": int(temp[1]), "Division": temp[2]})
-    timetable = classDetails['TimeTable']
+    print(temp)
+    classDetails = await classCollection.find_one({"branch": temp[0], "semester": int(temp[1]), "division": temp[2]})
+    timetable = classDetails['timetable']
     return timetable
 
 
-class updateTimeTableSubject(BaseModel):
-    keyid: str | None = None
-    subname: str | None = None
 
-
-@app.put('/updatetimetable/{ClassID}')
-async def getTimeTable(ClassID: str, updatetimetableSubjectEntry: updateTimeTableSubject):
-    updatetimetableSubjectEntrydict = updatetimetableSubjectEntry.dict()
-    print(ClassID)
-    print(updatetimetableSubjectEntrydict)
-
-    return {"message": "timetable updated"}
 
 
 @app.post("/sendwarning")

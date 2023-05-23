@@ -1,7 +1,11 @@
-import { Button, Box, TextField, Stack, MenuItem, Divider, InputLabel, Typography } from "@mui/material";
+import { Button, Box, TextField, Stack, MenuItem, Divider, InputLabel, Typography, MenuList } from "@mui/material";
 import { useFormik, FieldArray, FormikProvider } from "formik";
 import * as yup from "yup"
-import { useState } from "react"
+import { useState, useContext, useEffect } from "react"
+import { semList, TypeSemData } from "../../../../context/AdminContext";
+import AdminContext from "../../../../context/AdminContext";
+import api from "../../../../api/axiosConfig";
+
 
 
 const validationSchema = yup.object({
@@ -11,15 +15,10 @@ const validationSchema = yup.object({
 
 
 export const AddClass: React.FC = () => {
-
-    const [divList, setDivList] = useState(['A'])
-
-
-    const DeptList = ['CSE', 'ISE', 'MECH', 'CHEM', 'CIVIL', 'ECE', 'EEE']
-    const SemList = ['1', '2', '3', '4', '5', '6', '7', '8']
-
-
-
+    const [divList, setDivList] = useState<string[] | undefined>([]);
+    const { branchList } = useContext(AdminContext);
+    const [semData, setSemData] = useState<TypeSemData | null>(null);
+    const [message, setMessage] = useState('')
 
 
     const formik = useFormik({
@@ -27,19 +26,37 @@ export const AddClass: React.FC = () => {
             branch: '',
             semester: '',
             division: '',
-            subjects: [{
-                code: '',
-                shortform: '',
-                fullname: ''
-            }]
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values));
             console.log(JSON.stringify(values));
+            api.post(`/admin/createclass`, values).then((response) => {
+                setMessage(response.data);
+            })
         },
         validateOnChange: false
     })
+    useEffect(() => {
+        const getSemesterData = async () => {
+            await api.get(`/admin/semdata/${formik.values.branch}/${formik.values.semester}`)
+                .then((response) => {
+                    console.log(response.data);
+                    setSemData(response.data);
+                }).catch((error) => {
+                    console.error(error);
+                })
+        }
+        if (formik.values.branch !== '' && formik.values.semester !== '') {
+            getSemesterData()
+        }
+        return () => {
+            console.log(semData)
+        }
+    }, [formik.values.branch, formik.values.semester])
+
+    useEffect(() => {
+        setDivList(semData?.divlist)
+    }, [semData])
 
 
     return (
@@ -49,10 +66,10 @@ export const AddClass: React.FC = () => {
                     <Stack direction={'row'} gap='15px'>
                         <TextField
                             sx={{
-                                width: '25%'
+                                width: '25%',
+                                minWidth: '100px'
                             }}
                             select
-                            id='branch'
                             name='branch'
                             label="Branch"
                             value={formik.values.branch}
@@ -60,18 +77,16 @@ export const AddClass: React.FC = () => {
                             error={formik.touched.branch && Boolean(formik.errors.branch)}
                             helperText={formik.touched.branch && formik.errors.branch}
                         >
-                            {
-                                DeptList.map((dept, j) => {
-                                    return (
-                                        <MenuItem value={dept} key={j}>{dept}</MenuItem>
-                                    )
-                                })
-                            }
+
+                            {branchList.map((branch, index) => (<MenuItem key={index} value={branch}>{branch}</MenuItem>))}
+
                         </TextField>
                         <TextField
-                            sx={{ width: '25%' }}
+                            sx={{
+                                width: '25%',
+                                minWidth: '120px'
+                            }}
                             select
-                            id='semester'
                             name='semester'
                             label='Semester'
                             value={formik.values.semester}
@@ -79,14 +94,16 @@ export const AddClass: React.FC = () => {
                             error={formik.touched.semester && Boolean(formik.errors.semester)}
                             helperText={formik.touched.semester && formik.errors.semester}
                         >
-                            {SemList.map((sem) => {
-                                return (<MenuItem value={sem}>{sem}</MenuItem>)
-                            })}
+                            {
+                                semList(8)
+                            }
                         </TextField>
                         <TextField
-                            sx={{ width: '25%' }}
+                            sx={{
+                                width: '25%',
+                                minWidth: '110px'
+                            }}
                             select
-                            id='division'
                             name='division'
                             label='Division'
                             value={formik.values.division}
@@ -94,75 +111,28 @@ export const AddClass: React.FC = () => {
                             error={formik.touched.division && Boolean(formik.errors.division)}
                             helperText={formik.touched.division && formik.errors.division}
                         >
-                            {divList.map((div) => {
-                                return (
-                                    <MenuItem value={div}>{div}</MenuItem>
-                                )
-                            })}
-                            <MenuItem value='' onClick={() => {
-                                setDivList([...divList, String.fromCharCode(divList[divList.length - 1].charCodeAt(0) + 1)])
-                            }}><em>Add Another Division</em></MenuItem>
+
+
+                            {divList && divList.map((div) => (<MenuItem value={div}
+                                onClick={(event) => {
+                                    formik.setFieldValue('divison', event.currentTarget.value);
+                                }}
+                            >{div}</MenuItem>))}
+
+
+                            {divList && <MenuItem value=''
+                                onClick={() => {
+                                    if (divList.length === 0) {
+                                        setDivList(['A'])
+                                    } else {
+                                        setDivList([...divList, String.fromCharCode(divList[divList.length - 1].charCodeAt(0) + 1)])
+                                    }
+                                }}>
+                                <em>Add Another Division</em>
+                            </MenuItem>}
                         </TextField>
                     </Stack>
 
-                    <Divider orientation="horizontal" flexItem />
-                    Subjects
-                    <Stack direction={'column'} gap='15px'>
-                        <FieldArray
-                            name="subjects"
-                            validateOnChange={false}
-                            render={(arrayHelpers) => (
-                                <Stack direction={'column'} gap='10px'>
-                                    {formik.values.subjects.map((subject, index) => {
-                                        return (<Stack direction={'row'} gap='10px' key={`subject${index}`} alignContent='center'>
-                                            <Typography sx={{
-                                                alignSelf: 'center'
-                                            }}
-
-                                            >Subject {index + 1}</Typography>
-                                            <TextField
-                                                name={`subjects[${index}].code`}
-                                                label="Subject Code"
-                                                value={formik.values.subjects[index].code}
-                                                onChange={formik.handleChange}
-                                            />
-                                            <TextField
-                                                name={`subjects[${index}].shortform`}
-                                                label="Subject Abbr."
-                                                value={formik.values.subjects[index].shortform}
-                                                onChange={formik.handleChange}
-                                            />
-                                            <TextField
-                                                name={`subjects[${index}].fullname`}
-                                                label="Subject Abbr."
-                                                value={formik.values.subjects[index].fullname}
-                                                onChange={formik.handleChange}
-                                            />
-                                            <Button
-                                                variant="outlined"
-                                                color="warning"
-                                                onClick={() => {
-                                                    arrayHelpers.remove(index);
-                                                }}>remove</Button>
-                                        </Stack>
-                                        )
-                                    })}
-                                    <Button
-                                        variant='contained'
-                                        sx={{ width: '25%' }}
-                                        onClick={() => {
-                                            arrayHelpers.push({
-                                                code: '',
-                                                shortform: '',
-                                                fullname: ''
-                                            });
-                                        }}
-                                    >Add Subject</Button>
-                                </Stack>
-                            )
-                            }
-                        />
-                    </Stack>
                     <Stack
                         sx={{
                             justifyContent: 'center'
@@ -182,7 +152,9 @@ export const AddClass: React.FC = () => {
                 </Stack>
             </form>
 
-        </FormikProvider>
+            <Typography fontSize='6xl'>{message}</Typography>
+
+        </FormikProvider >
     )
 }
 

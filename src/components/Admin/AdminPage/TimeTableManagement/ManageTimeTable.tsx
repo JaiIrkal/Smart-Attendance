@@ -1,45 +1,118 @@
 import { ViewTimeTable } from "./VIewTImeTable"
-
-import { useContext, useState } from "react"
-import { InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
-import FormControl from "@mui/material/FormControl"
+import { useContext, useEffect, useState } from "react"
+import { Box, InputLabel, MenuItem, Stack, TextField, } from "@mui/material"
 import AdminContext from "../../../../context/AdminContext"
+import { FormikProvider, useFormik } from "formik"
+import api from '../../../../api/axiosConfig'
+
+
+
 
 
 export const ManageTimeTable = () => {
+    const { branchList, semList } = useContext(AdminContext);
 
-    const [className, setClassName] = useState("");
-    const { branchList } = useContext(AdminContext);
+    const [divisionSelectDisable, setDivisionSelectDisable] = useState(true);
+    const [divList, setDivList] = useState<string[]>([])
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setClassName(event.target.value);
-    }
+    const formik = useFormik({
+        initialValues: {
+            branch: '',
+            semester: '',
+            division: ''
+        },
+        onSubmit(values, formikHelpers) {
+
+            console.log(values);
+
+        },
+    })
+
+    useEffect(() => {
+        const getDivList = async () => {
+            await api.get(`/divlist/${formik.values.branch}/${formik.values.semester}`)
+                .then((response) => {
+                    console.log(response.data);
+                    setDivList(response.data);
+                }).catch((error) => {
+                    console.error(error)
+                }).finally(() => {
+                    setDivisionSelectDisable(false);
+                })
+        }
+        if (formik.values.branch !== '' && formik.values.semester !== '') { getDivList(); }
+    }, [formik.values.branch, formik.values.semester])
 
     return (
-        <div>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="demo-simple-select-helper-label">Class</InputLabel>
-                <Select
-                    label="Select a Class"
-                    defaultValue={className}
-                    onChange={
-                        handleChange
-                    }
-                    required
-                    placeholder="Select Class"
+        <Box width='900px'>
+            <FormikProvider value={formik}>
+                <form>
+                    <Stack direction={'row'} gap='15px' mb={'15px'}>
 
-                    sx={{ width: "150px", height: "40px" }}
-                >
-                    <MenuItem key={""} value="">None</MenuItem>
-                    {
-                        branchList.map((name) => (
-                            <MenuItem key={name} value={name}>{name}</MenuItem>
-                        ))
-                    }
-                </Select>
-            </FormControl>
-            <ViewTimeTable className={'CSE_5_A'} />
-            {className !== "" ? <ViewTimeTable className={'CSE_5_A'} /> : <div> Select a class</div>}
-        </div>
+                        <TextField
+                            sx={{
+                                width: '0.33'
+                            }}
+                            select
+                            name="branch"
+                            label='Branch'
+                            value={formik.values.branch}
+                            onChange={formik.handleChange}
+                        >
+                            {branchList.map((branch, index) => (
+                                <MenuItem
+                                    value={branch}
+                                    key={index}>
+                                    {branch}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+
+                        <TextField
+                            sx={{
+                                width: '0.33'
+                            }}
+                            select
+                            name='semester'
+                            label='Semester'
+                            value={formik.values.semester}
+                            onChange={formik.handleChange}
+                        >
+                            {
+                                semList.map((sem, index) => (
+                                    <MenuItem key={index} value={sem}>{sem}</MenuItem>
+                                ))
+                            }
+                        </TextField>
+                        <TextField
+                            sx={{
+                                width: '0.33'
+                            }}
+                            select
+                            disabled={divisionSelectDisable}
+                            name="division"
+                            label='Division'
+                            value={formik.values.division}
+                            onChange={formik.handleChange}
+                        >
+                            {divList?.map((div, index) => (
+                                <MenuItem value={div} key={index}>
+                                    {div}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </Stack >
+                </form>
+            </FormikProvider>
+            {(formik.values.branch !== '' && formik.values.semester !== '' && formik.values.division !== '') ?
+                <ViewTimeTable className={'CSE_5_A'}
+                    branch={formik.values.branch}
+                    semester={formik.values.semester}
+                    division={formik.values.division} />
+                :
+                <>
+                </>
+            }
+        </Box>
     )
 }

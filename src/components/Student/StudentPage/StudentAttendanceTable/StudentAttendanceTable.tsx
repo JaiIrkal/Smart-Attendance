@@ -50,39 +50,38 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
                                 boxShadow: "0px 0px 3px 7px blue"
 
                             }}
-                        >
-                            <PieChart width={200} height={180} >
-                                <Pie data={data} dataKey="value"
-                                    nameKey="name"
-                                    cx="50%"
-                                    cy="50%" innerRadius={60}
-                                    outerRadius={80} fill="#82ca9d" label>
-                                    {data.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                            </PieChart>
+                        ><Stack direction={'row'}>
+                                <PieChart width={200} height={180} >
+                                    <Pie data={data} dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%" innerRadius={60}
+                                        outerRadius={80} fill="#82ca9d" label>
+                                        {data.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                </PieChart>
 
-                            <Stack>
-                                <CardContent>
-                                    <Text>Attendance Data for  {subject.Name}- {subject.Code}</Text>
-                                    <TableContainer >
-                                        <Table >
-                                            <TableHead>
-                                                <TableRow >
-                                                    {subject?.ClassesConducted?.map((date) => (<TableCell> {date}</TableCell>))}
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow>
-                                                    {subject?.Attendance?.map((attendance) => (<TableCell>{attendance}</TableCell>))}
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-                                </CardContent>
-
-
+                                <Stack>
+                                    <CardContent>
+                                        <Text>Attendance Data for  {subject.Name}- {subject.Code}</Text>
+                                        <TableContainer >
+                                            <Table >
+                                                <TableHead>
+                                                    <TableRow >
+                                                        {subject?.ClassesConducted?.map((date) => (<TableCell> {date}</TableCell>))}
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    <TableRow>
+                                                        {subject?.Attendance?.map((attendance) => (<TableCell>{attendance}</TableCell>))}
+                                                    </TableRow>
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+                                    </CardContent>
+                                </Stack>
                             </Stack>
                         </Card>
                     )

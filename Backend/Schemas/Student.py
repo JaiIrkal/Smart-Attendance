@@ -1,9 +1,8 @@
 def studententity(student) -> dict:
 
-
     return {
         "Name": str(student["Name"]),
-        "USN": str(student["USN"]),
+        "USN": str(student["_id"]["usn"]),
         "Batch": int(student["Batch"]),
         "Branch": str(student["Branch"]),
         "Semester": student["Semester"],
@@ -12,5 +11,8 @@ def studententity(student) -> dict:
         "Mobile": student['Mobile'],
         "DOB": student["DOB"],
         "Data": student["Data"],
+        "photo": student["photo"],
+        "parentsemail": student["parentemail"],
+        "parentsmobile":student["parentmobile"],
         "TimeTable": student["TimeTable"]
     }

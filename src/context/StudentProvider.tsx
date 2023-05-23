@@ -25,6 +25,9 @@ export type StudentData = {
     Email: string
     Mobile: string
     Data: Array<SemesterData>
+    photo: string
+    parentsemail: string
+    parentsmobile: string
     TimeTable: any
 }
 

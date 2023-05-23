@@ -32,11 +32,10 @@ const AddTeacherForm = () => {
             id: "",
             firstname: "",
             middlename: "",
-            dob: dayjs(null),
+            dob: null,
             lastname: "",
             designation: "",
             department: "",
-            subjects: Array<String>
         },
         validationSchema: validationSchema,
         onSubmit: (values, formikHelpers) => {

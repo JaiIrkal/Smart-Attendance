@@ -11,6 +11,7 @@ import { StudentsList } from "./StudentDetails/StudentsList/StudentsList";
 import AddStudent from "./StudentDetails/AddStudent/AddStudent";
 import AddClass from "./AddClass/AddClass";
 import AdminContext from "../../../context/AdminContext";
+import AddBranch from "./AddBranch/AddBranch";
 
 
 interface TabPanelProps {
@@ -41,8 +42,13 @@ function TabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Box>{children}</Box>
+                <Box sx={{
+                    p: 3,
+                }}>
+                    <Box
+
+
+                    >{children}</Box>
                 </Box>
             )}
         </div>
@@ -60,17 +66,16 @@ const AdminPage: React.FC = () => {
     const { branchList, setBranchList } = useContext(AdminContext)
 
 
-
-    const getBranchList = async () => {
-        try {
-            const response = await api.get('/branchlist');
-            setBranchList(response.data);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
+        const getBranchList = async () => {
+            try {
+                const response = await api.get('/admin/branchlist');
+                setBranchList(response.data);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
         getBranchList();
     }, [])
 
@@ -82,7 +87,7 @@ const AdminPage: React.FC = () => {
             <Navbar />
             <Box
                 mt={"15px"}
-                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 624, }}>
+                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'fit-content', }}>
                 <Tabs
                     orientation="vertical"
                     onChange={handleChange}
@@ -101,9 +106,11 @@ const AdminPage: React.FC = () => {
                         iconPosition="start"></Tab>
                     <Tab label="Add Student" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label=" Add Class" {...a11yProps(3)}
+                    <Tab label=" Add Branch" {...a11yProps(3)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label="List All Students" {...a11yProps(4)}
+                    <Tab label=" Add Class" {...a11yProps(4)}
+                        icon={<PersonAddIcon />} iconPosition="start"></Tab>
+                    <Tab label="List All Students" {...a11yProps(5)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
                 </Tabs>
                 <TabPanel index={0} value={value}>
@@ -111,8 +118,9 @@ const AdminPage: React.FC = () => {
                 </TabPanel>
                 <TabPanel index={1} value={value}><AddTeacherForm /></TabPanel>
                 <TabPanel index={2} value={value}><AddStudent /> </TabPanel>
-                <TabPanel index={3} value={value}><AddClass /> </TabPanel>
-                <TabPanel index={4} value={value}><StudentsList /></TabPanel>
+                <TabPanel index={3} value={value}><AddBranch /></TabPanel>
+                <TabPanel index={4} value={value}><AddClass /> </TabPanel>
+                <TabPanel index={5} value={value}><StudentsList /></TabPanel>
 
             </Box>
 

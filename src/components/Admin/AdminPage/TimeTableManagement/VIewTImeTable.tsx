@@ -14,7 +14,7 @@ import { listofsubjects } from "../../../../data";
 
 
 
-export const ViewTimeTable = ({ className }: { className: string }) => {
+export const ViewTimeTable = ({ branch, semester, division, className }: { branch: string, semester: string, division: string, className: string }) => {
 
     type sampletimetable = {
         "Day_1"?: { "P_1"?: string; "P_2"?: string; "P_3"?: string; "P_4"?: string; "P_5"?: string; "P_6"?: string; "P_7"?: string; },
@@ -30,6 +30,9 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
 
     const [previousSubject, setPreviousSubject] = useState("");
 
+    const [timetableUpdated, setTimeTableUpdated] = useState(false);
+
+
     const [updatedSubject, setUpdatedSubject] = useState("");
 
     const [editCellId, setEditCellId] = useState("");
@@ -44,15 +47,19 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
             const response = await api.get(url);
             setClassTimeTableData(response.data);
 
+
         } catch (error) {
             console.error(error)
         }
     }
 
     useEffect(() => {
-        console.log(className);
         gettimetable(className);
-    }, [className])
+
+        return (() => {
+            setTimeTableUpdated(false);
+        })
+    }, [className, timetableUpdated])
 
 
 
@@ -153,10 +160,15 @@ export const ViewTimeTable = ({ className }: { className: string }) => {
 
     async function submitUpdateTimeTableRequest() {
         console.log("updated: " + updatedSubject);
-        await api.put('/updatetimetable/'.concat(className), {
+        await api.put('/updatetimetable', {
+            branch: branch,
+            semester: semester,
+            division: division,
             keyid: editCellId,
             subname: updatedSubject
-        }).catch(error => { console.error(error) });
+        }).catch(error => { console.error(error) }).then(() => {
+            setTimeTableUpdated(true);
+        });
 
     }
 
