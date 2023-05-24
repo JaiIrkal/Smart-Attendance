@@ -24,3 +24,15 @@ class AddStudentModel(BaseModel):
     academicyear: Annotated[str, Form()]
     parentsmobile: Annotated[str, Form()]
     parentsemail: Annotated[str, Form()]
+
+
+class AddTeacherModel(BaseModel):
+    id : Annotated[str, Form()]
+    firstname: Annotated[str, Form()]
+    middlename: Annotated[str, Form()]
+    lastname: Annotated[str, Form()]
+    dob: datetime = None
+    designation: Annotated[str, Form()]
+    department: Annotated[str, Form()]
+    mobile: Annotated[str, Form()]
+    email: Annotated[str, Form()]

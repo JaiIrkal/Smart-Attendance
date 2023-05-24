@@ -1,13 +1,17 @@
-import { Box, FormLabel, InputLabel, MenuItem, Stack, TextField, Button } from "@mui/material";
+import { Box, MenuItem, Stack, TextField, Button } from "@mui/material";
 import * as yup from "yup"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { useFormik } from "formik";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs, { Dayjs } from 'dayjs';
-import { useContext } from "react";
+import { ErrorMessage, useFormik } from "formik";
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useContext, useMemo, useState } from "react";
 import AdminContext from "../../../../../context/AdminContext";
-
+import { MuiTelInput } from "mui-tel-input";
+import { DateValidationError } from "@mui/x-date-pickers/models/validation";
+import { Label } from "recharts";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker/DatePicker";
+import { error } from "console";
+import api from '../../../../../api/axiosConfig'
 
 
 const SemList = ['1', '2', '3', '4', '5', '6', '7', '8']
@@ -36,14 +40,24 @@ const AddTeacherForm = () => {
             lastname: "",
             designation: "",
             department: "",
+            email: '',
+            mobile: '',
         },
         validationSchema: validationSchema,
-        onSubmit: (values, formikHelpers) => {
+        onSubmit: async (values) => {
             console.log(values);
-        },
+            await api.post('/admin/addteacher', values).then((response) => {
+                if (response.status === 201) {
+                    console.log("Success")
+                }
+            })
+        }
+
+        ,
         validateOnChange: true,
 
     });
+
 
     return (
         <Box sx={{ width: 1000, height: 1000 }}>
@@ -115,10 +129,36 @@ const AddTeacherForm = () => {
                             }}
                             format="DD-MMM-YYYY"
                             value={formik.values.dob}
-                            onChange={(value) => formik.setFieldValue('dob', value)}
+                            onChange={(value: any) => formik.setFieldValue('dob', value)}
                             label='Date of Birth'
+                            slotProps={{
+                                textField: {
+                                    required: true,
+                                    helperText: formik.errors.dob,
+                                },
+                            }}
+
                         />
+
+
                     </LocalizationProvider>
+
+                    <MuiTelInput
+                        required
+                        name="mobile"
+                        label="Mobile No."
+                        defaultCountry="IN"
+                        value={formik.values.mobile}
+                        onChange={(value) => { formik.setFieldValue('mobile', value); }}
+                    />
+                    <TextField
+                        required
+                        type='email'
+                        name='email'
+                        label="Email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                    />
                     <TextField
                         sx={{ width: '25%' }}
                         select

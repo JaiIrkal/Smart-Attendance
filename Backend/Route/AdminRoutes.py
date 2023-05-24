@@ -6,7 +6,7 @@ import face_recognition
 from dateutil import tz
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
-from Models.AdminModels import AddStudentModel
+from Models.AdminModels import AddStudentModel, AddTeacherModel
 from Models.StudentModel import StudentBasicDetailModel
 from Schemas.Admin import SemData, CreateClassModel
 from deps import classCollection, studentsCollection, branchCollection
@@ -93,6 +93,14 @@ async def createclass(form: CreateClassModel):
 
     return "Class Created"
 
+@router.post('/addteacher', status_code=201)
+async def addteacher(form: AddTeacherModel):
+
+    print(form)
+    print(form.dob.astimezone(ind).date())
+
+    return {"value"}
+
 
 @router.post('/addstudent', status_code=201)
 async def addStudent(form: AddStudentModel):
@@ -102,9 +110,8 @@ async def addStudent(form: AddStudentModel):
         decoded = ur.urlopen(form.photo)
         img = face_recognition.load_image_file(decoded)
         face_encoding = face_recognition.face_encodings(img, num_jitters=2, model='large')[0].tolist()
-
         subjectsData = []
-
+    
         for subjectIterator in form.subjects:
             subjectsData.append({
                 "subject_code": subjectIterator,
@@ -170,8 +177,8 @@ async def getTimeTable(updatetimetableSubjectEntry: updateTimeTableSubject):
 
 @router.get('/studentdata/{usn}', response_model=StudentBasicDetailModel)
 async def getstudentbasicdetails(usn: str):
-    student = await studentsCollection.find_one({"_id": {"usn": usn.upper()}})
-    student["usn"] = student["_id"]["usn"]
+    student = await studentsCollection.find_one({"_id": usn.upper()})
+    student["usn"] = student["_id"]
     dob = student['dob']
     dob = datetime.strptime(dob, '%Y-%m-%d').astimezone(tz=ind)
     student['dob'] = dob

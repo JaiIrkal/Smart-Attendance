@@ -34,15 +34,6 @@ type sampletimetable = {
 
 export const AddClass: React.FC = () => {
     const [divList, setDivList] = useState<string[] | undefined>([]);
-    const [timetable, setTimeTable] = useState<sampletimetable>({
-        Day_1: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_2: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_3: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_4: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_5: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_6: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' }
-    });
-
     const [subjectList, setSubjectList] = useState<string[]>([''])
     const [subjectIndex, setSubjectIndex] = useState<Map<string, string>>();
     const { branchList } = useContext(AdminContext);
@@ -56,7 +47,14 @@ export const AddClass: React.FC = () => {
             semester: '',
             division: '',
             subjects: [''],
-            timetable: {},
+            timetable: {
+                Day_1: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+                Day_2: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+                Day_3: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+                Day_4: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+                Day_5: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+                Day_6: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' }
+            },
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -108,14 +106,6 @@ export const AddClass: React.FC = () => {
     useEffect(() => {
         formik.setFieldValue('subjects', subjectList);
     }, [subjectList])
-
-    useEffect(
-        () => {
-            console.log(timetable?.Day_1.P_1)
-        }
-        , [timetable])
-
-
 
 
     return (
@@ -244,11 +234,10 @@ export const AddClass: React.FC = () => {
                                                 width: '180px'
                                             }}
                                             select
+                                            name="timetable.Day_1.P_1"
                                             label="Select Subject"
-                                            value={timetable?.Day_1.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_1: e.target.value } })
-                                            }}
+                                            value={formik.values.timetable.Day_1.P_1}
+                                            onChange={formik.handleChange}
                                         >
                                             {
                                                 subjectList.map((value, index) => {
@@ -262,11 +251,10 @@ export const AddClass: React.FC = () => {
                                     <TableCell>
                                         <TextField
                                             select
+                                            name="timetable.Day_1.P_2"
                                             label="Select Subject"
-                                            value={timetable?.Day_1.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_2: e.target.value } })
-                                            }}
+                                            value={formik.values.timetable.Day_1.P_2}
+                                            onChange={formik.handleChange}
                                         >
                                             {
                                                 subjectList.map((value, index) => {
@@ -279,671 +267,602 @@ export const AddClass: React.FC = () => {
                                     </TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_1.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_1.P_3"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_1.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_1.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_1.P_4"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_1.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_1.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_1.P_5"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_1.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_1.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name='timetable.Day_1.P_6'
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_1.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_1.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name='timetable.Day_1.P_7'
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_1.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Tuesday</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_1, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name='timetable.Day_1.P_1'
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_1}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_2.P_2"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_2}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_2.P_3"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_2.P_4"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_2.P_5"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        name="timetable.Day_2.P_6"
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_2.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_2.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Wednesday</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_1: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_1}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_2}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_3.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_3.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Thursday</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_1: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_1}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_2}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_4.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_4.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Friday</TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_1: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_1}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>  <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_2}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_5.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_5.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Saturday</TableCell>
                                     <TableCell> <TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_1}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_1: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_1}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_2}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_2: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_2}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_3}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_3: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_3}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_4}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_4: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_4}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_5}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_5: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_5}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell>Break</TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_6}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_6: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_6}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                     <TableCell><TextField
-                                            select
-                                            label="Select Subject"
-                                            value={timetable?.Day_6.P_7}
-                                            onChange={(e) => {
-                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_7: e.target.value } })
-                                            }}
-                                        >
-                                            {
-                                                subjectList.map((value, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
-                                                    )
-                                                })
-                                            }
-                                        </TextField></TableCell>
+                                        select
+                                        label="Select Subject"
+                                        value={formik.values.timetable.Day_6.P_7}
+                                        onChange={formik.handleChange}
+                                    >
+                                        {
+                                            subjectList.map((value, index) => {
+                                                return (
+                                                    <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </TextField></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

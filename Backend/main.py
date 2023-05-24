@@ -22,8 +22,6 @@ app = FastAPI()
 app.include_router(AdminRoutes.router)
 app.include_router(TeacherRoutes.router)
 
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins="*",
@@ -50,7 +48,6 @@ mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(
 
 # this database conatains the attendance data
 attendancedb = mongodb_client.Attendance_Database
-
 
 # this points to the collection of Students in the Database
 studentsCollection = attendancedb["Students"]
@@ -156,7 +153,7 @@ async def authenticate_teacher(uid: str, password: str):
 
 
 async def authenticate_student(usn: str, password: str):
-    user = await studentsCollection.find_one({"_id":{"usn": usn.upper()}}, {'_id.usn', "Password"})
+    user = await studentsCollection.find_one({"_id": {"usn": usn.upper()}}, {'_id.usn', "Password"})
 
     if not user:
         return False
@@ -231,45 +228,35 @@ async def listofstudents():
     list = []
     students = studentsCollection.find({}).to_list(1000)
     for student in await students:
-        studentDetails = {"id": student["_id"]["usn"],
-                          "Name": student["firstname"],
-                          "Branch": student["Branch"],
-                          "Semester": student["Semester"],
-                          "Division": student["Division"],
-                          "Batch": student["Batch"]
+        studentDetails = {"id": student["_id"],
+                          "Name": student["firstname"] + ' ' + student['middlename'] + ' ' +student['lastname'],
+                          "Branch": student["branch"],
+                          "Semester": student["semester"],
+                          "Division": student["division"],
+                          "Batch": student["batch"]
                           }
         list.append(studentDetails)
-
     return list
-
-
-
 
 
 @app.get("/student/{USN}")
 async def detailsOfStudent(USN):
-    student = await studentsCollection.find_one({"_id":{"usn": USN.upper()}})
+    student = await studentsCollection.find_one({"_id": {"usn": USN.upper()}})
     classList = []
     for i, sem in enumerate(student["Data"]):
-        classDetails = await classCollection.find_one({"_id":{
-                                                       "branch": student["Branch"],
-                                                       "semester": sem["Semester"],
-                                                       "division": sem["Division"]}},
-                                                      {"subjects", "timetable"})
+        classDetails = await classCollection.find_one({"_id": {
+            "branch": student["Branch"],
+            "semester": sem["Semester"],
+            "division": sem["Division"]}},
+            {"subjects", "timetable"})
         print(classDetails)
-        if classDetails :
+        if classDetails:
             student["TimeTable"] = classDetails["timetable"]
             for j, subject in enumerate(sem["Subjects"]):
                 subjectData = getClassConducted(subject["Code"], classDetails)
                 subject["ClassesConducted"] = subjectData["ClassDates"]
 
     return studententity(student)
-
-
-
-
-
-
 
 
 @app.get('/listofclass')
@@ -285,9 +272,9 @@ async def getlistofClasses():
 
 
 @app.get('/timetable/{branch}/{semester}/{division}')
-async def getTimeTable(branch:str, semester:int, division: str):
+async def getTimeTable(branch: str, semester: int, division: str):
     classDetails = await classCollection.find_one({
-        "_id":{
+        "_id": {
             "branch": branch,
             "semester": semester,
             "division": division,
@@ -295,9 +282,6 @@ async def getTimeTable(branch:str, semester:int, division: str):
     })
     timetable = classDetails['timetable']
     return timetable
-
-
-
 
 
 @app.post("/sendwarning")
@@ -310,18 +294,13 @@ class DetainListModel(BaseModel):
     subjectName: str
     listofStudents: List
 
+
 @app.post('/detainStudents')
 async def detainstudents(req: DetainListModel):
     request = req.dict()
     print(request)
 
     return {"message": "Student detained Successfully"}
-
-
-
-
-
-
 
 # pwd = get_hashed_password("ankit1234")
 # print(pwd)
