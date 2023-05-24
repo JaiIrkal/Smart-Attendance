@@ -1,21 +1,50 @@
-import { Button, Box, TextField, Stack, MenuItem, Divider, InputLabel, Typography, MenuList } from "@mui/material";
-import { useFormik, FieldArray, FormikProvider } from "formik";
+import { Button, TextField, Stack, MenuItem, Divider, Typography, List, ListItem, Paper, Table, TableHead, TableCell, TableRow, TableBody } from "@mui/material";
+import { useFormik, FormikProvider } from "formik";
 import * as yup from "yup"
 import { useState, useContext, useEffect } from "react"
 import { semList, TypeSemData } from "../../../../context/AdminContext";
 import AdminContext from "../../../../context/AdminContext";
 import api from "../../../../api/axiosConfig";
 
-
+import styles from './AddClass.module.css'
 
 const validationSchema = yup.object({
 
 })
 
+type DaySchedule = {
+    P_1: string | null
+    P_2: string | null
+    P_3: string | null
+    P_4: string | null
+    P_5: string | null
+    P_6: string | null
+    P_7: string | null
+}
+
+type sampletimetable = {
+    Day_1: DaySchedule
+    Day_2: DaySchedule
+    Day_3: DaySchedule
+    Day_4: DaySchedule
+    Day_5: DaySchedule
+    Day_6: DaySchedule
+}
 
 
 export const AddClass: React.FC = () => {
     const [divList, setDivList] = useState<string[] | undefined>([]);
+    const [timetable, setTimeTable] = useState<sampletimetable>({
+        Day_1: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+        Day_2: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+        Day_3: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+        Day_4: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+        Day_5: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
+        Day_6: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' }
+    });
+
+    const [subjectList, setSubjectList] = useState<string[]>([''])
+    const [subjectIndex, setSubjectIndex] = useState<Map<string, string>>();
     const { branchList } = useContext(AdminContext);
     const [semData, setSemData] = useState<TypeSemData | null>(null);
     const [message, setMessage] = useState('')
@@ -26,13 +55,16 @@ export const AddClass: React.FC = () => {
             branch: '',
             semester: '',
             division: '',
+            subjects: [''],
+            timetable: {},
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
+
             console.log(JSON.stringify(values));
-            api.post(`/admin/createclass`, values).then((response) => {
-                setMessage(response.data);
-            })
+            // api.post(`/admin/createclass`, values).then((response) => {
+            //     setMessage(response.data);
+            // })
         },
         validateOnChange: false
     })
@@ -40,7 +72,6 @@ export const AddClass: React.FC = () => {
         const getSemesterData = async () => {
             await api.get(`/admin/semdata/${formik.values.branch}/${formik.values.semester}`)
                 .then((response) => {
-                    console.log(response.data);
                     setSemData(response.data);
                 }).catch((error) => {
                     console.error(error);
@@ -50,13 +81,41 @@ export const AddClass: React.FC = () => {
             getSemesterData()
         }
         return () => {
-            console.log(semData)
+
         }
     }, [formik.values.branch, formik.values.semester])
 
     useEffect(() => {
+        let subjects: string[] = [];
+        const getsubjects = () => {
+            if (semData !== null) {
+                semData.coresubjects.forEach((value) => {
+                    subjects.push(value.code);
+                    setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
+
+                });
+                semData.branchelectives.forEach((value) => {
+                    subjects.push(value.code);
+                    setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
+                });
+            }
+        }
         setDivList(semData?.divlist)
+        getsubjects()
+        setSubjectList(subjects);
     }, [semData])
+
+    useEffect(() => {
+        formik.setFieldValue('subjects', subjectList);
+    }, [subjectList])
+
+    useEffect(
+        () => {
+            console.log(timetable?.Day_1.P_1)
+        }
+        , [timetable])
+
+
 
 
     return (
@@ -132,6 +191,164 @@ export const AddClass: React.FC = () => {
                             </MenuItem>}
                         </TextField>
                     </Stack>
+                    <Divider orientation="horizontal" textAlign="left"><Typography>Subjects</Typography></Divider>
+                    <Stack direction={'row'}>
+                        <List>
+                            <Typography> Core Subjects</Typography>
+                            {
+                                semData?.coresubjects.map((subject, index) => (
+                                    <ListItem key={index}>{subject.code}-{subject.name}-{subject.short}</ListItem>
+                                ))
+                            }
+                        </List>
+                        <List>
+                            <Typography>Branch Electives</Typography>
+                            {
+                                semData?.branchelectives.map((subject, index) => (
+                                    <ListItem key={index}>{subject.code}- {subject.name}-{subject.short}</ListItem>
+                                ))
+                            }
+                        </List>
+                        <List>
+                            <Typography>Open Electives</Typography>
+                            {
+                                semData?.openelectives.map((subject, index) => (
+                                    <ListItem key={index}>{subject.code}- {subject.name}</ListItem>
+                                ))
+                            }
+                        </List>
+                    </Stack>
+
+                    <Paper>
+                        <Table stickyHeader padding="normal" sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3 }}>
+                            <TableHead>
+                                <TableRow sx={{ border: 1, borderColor: "#27E1C1" }}>
+                                    <TableCell className={styles.tablehead}>Day</TableCell>
+                                    <TableCell className={styles.tablehead}>8:00 - 9:00</TableCell>
+                                    <TableCell className={styles.tablehead}>9:00 - 10:00</TableCell>
+                                    <TableCell className={styles.tablehead}>10:00 - 10:30</TableCell>
+                                    <TableCell className={styles.tablehead}>10:30 - 11:30</TableCell>
+                                    <TableCell className={styles.tablehead}>11:30 - 12:30</TableCell>
+                                    <TableCell className={styles.tablehead}>12:30 - 1:30</TableCell>
+                                    <TableCell className={styles.tablehead}>1:30 - 2:30</TableCell>
+                                    <TableCell className={styles.tablehead}>2:30 - 3:30</TableCell>
+                                    <TableCell className={styles.tablehead}>3:30 - 4:30</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>Monday</TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            sx={{
+                                                width: '180px'
+                                            }}
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_1: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}-{subjectIndex?.get(value)}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField>
+                                    </TableCell>
+                                    <TableCell>
+                                        <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField>
+                                    </TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Tuesday</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Wednesday</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Thursday</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Friday</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell>Saturday</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell>Break</TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Paper>
+
 
                     <Stack
                         sx={{
@@ -149,6 +366,8 @@ export const AddClass: React.FC = () => {
                             Submit
                         </Button>
                     </Stack>
+
+
                 </Stack>
             </form>
 

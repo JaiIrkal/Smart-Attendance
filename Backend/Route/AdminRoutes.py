@@ -1,17 +1,15 @@
+
 from datetime import datetime
+import urllib.request as ur
+import face_recognition
+
 from dateutil import tz
-from fastapi import APIRouter, Form, File, UploadFile
-from fastapi.openapi.models import Response
-from typing import Annotated
+from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
-
-from Models.StudentModel import AddStudentModel, StudentBasicDetailModel
+from Models.AdminModels import AddStudentModel
+from Models.StudentModel import StudentBasicDetailModel
 from Schemas.Admin import SemData, CreateClassModel
-
-from deps import branchCollection, classCollection, studentsCollection, branchCollection
-from PIL import Image
-import io
-import base64
+from deps import classCollection, studentsCollection, branchCollection
 
 ind = tz.gettz('Asia/Kolkata')
 
@@ -19,26 +17,43 @@ router = APIRouter(prefix='/admin',
                    tags=['admin'])
 
 
-@router.get('/branchlist')
-async def branchlist():
+@router.get('/branchlist', description='Get the list of branches')
+async def getbranchList():
     branchlist = []
     branchCursor = branchCollection.find({})
     async for b in branchCursor:
         branchlist.append(b['id'])
     return branchlist
 
-@router.get('/semdata/{branch}/{semester}', response_model=SemData)
+
+@router.get('/divlist/{branch}/{semester}', response_model=list[str],
+            description='Get the list of divisions of particular semester in given Branch')
+async def getdivlist(branch: str, semester: int):
+    divlist = []
+    divCursor = await branchCollection.find_one({
+        "id": branch,
+        'semesterwisesubjects': {"$elemMatch": {
+            "semester": semester
+        }}
+    }, {
+        'semesterwisesubjects.$': 1
+    })
+    return divCursor['semesterwisesubjects'][0]["divlist"]
+
+
+@router.get('/semdata/{branch}/{semester}', response_model=SemData,
+            description='Get the data of the semester for a branch')
 async def getsemdata(branch, semester):
     print(branch)
     print(semester)
 
     branchCursor = await branchCollection.find_one({'id': branch,
                                                     'semesterwisesubjects': {"$elemMatch": {
-                                                        "semester" : int(semester)
+                                                        "semester": int(semester)
                                                     }}
-                                                   },{
-        'semesterwisesubjects.$': 1
-    })
+                                                    }, {
+                                                       'semesterwisesubjects.$': 1
+                                                   })
 
     if not branchCursor:
         return None
@@ -47,46 +62,84 @@ async def getsemdata(branch, semester):
 
 
 @router.post('/createclass', tags=['Create Class', "admin"], summary='Create a Classroom')
-async def createclass(request: CreateClassModel):
-    classId = await classCollection.insert_one({
-        "_id":{"branch": request.branch,
-         'semester': request.semester,
-         'division': request.division}
-    })
+async def createclass(form: CreateClassModel):
 
-    branchCollection.find_one_and_update({
-        "id": request.branch
-    },{
-        "$push":{
-            "semesterwisesubjects.$[i].divlist": request.division
-        }
-    }, array_filters=[{
-        "i.semester": request.semester
-    }])
+    print(form.subjects)
+
+    print(form.timetable)
+
+    # classId = await classCollection.insert_one({
+    #     "_id": {
+    #             "branch": form.branch,
+    #             'academicyear' : form.batch,
+    #             'semester': form.semester,
+    #             'division': form.division,
+    #
+    #     },
+    #     'subjects': form.subjects,
+    #     'timetable': form.timetable
+    # })
+    #
+    # branchCollection.find_one_and_update({
+    #     "id": form.branch
+    # }, {
+    #     "$push": {
+    #         "semesterwisesubjects.$[i].divlist": form.division
+    #     }
+    # }, array_filters=[{
+    #     "i.semester": form.semester
+    # }])
+
+
     return "Class Created"
 
 
-
-@router.post('/addstudent')
+@router.post('/addstudent', status_code=201)
 async def addStudent(form: AddStudentModel):
-    encoded = form.photo
-    enc = encoded.split(',')
-    decodeddata = base64.b64decode(enc[1])
-    decodestring = io.BytesIO(decodeddata)
-    img = Image.open(decodestring)
+    try:
+        data = []
+        encoded = form.photo
+        decoded = ur.urlopen(form.photo)
+        img = face_recognition.load_image_file(decoded)
+        face_encoding = face_recognition.face_encodings(img, num_jitters=2, model='large')[0].tolist()
 
-    # result = await classCollection.insert_one({
-    #     "usn": form.usn,
-    #     "firstname": form.firstname,
-    #     "middlename": form.middlename,
-    #     'lastname': form.lastname,
-    #     'branch': form.branch,
-    #     'dob': form.dob.astimezone(ind).date()
-    # })
+        subjectsData = []
 
+        for subjectIterator in form.subjects:
+            subjectsData.append({
+                "subject_code": subjectIterator,
+                "isdetained": False,
+                "attendance": []
+            })
+        semesterdata = [{
+            "semester": int(form.semester),
+            "division": form.division,
+            'subjects': subjectsData
+        }]
 
+        result = await studentsCollection.insert_one({
+            '_id': form.usn,
+            "firstname": form.firstname,
+            "middlename": form.middlename,
+            'lastname': form.lastname,
+            'dob': form.dob.astimezone(ind).date(),
+            'email': form.email,
+            'mobile': form.mobile,
+            'parentsemail': form.parentsemail,
+            'parentsmobile': form.parentsmobile,
+            'academicyear': form.academicyear,
+            'branch': form.branch,
+            'semester': form.semester,
+            'division': form.division,
+            'photo': form.photo,
+            'face_encodings': face_encoding,
+            'data': data,
+        })
+    except:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
 
-    return {"message": "upload"}
+    return {"message": "Student Created"}
+
 
 
 class updateTimeTableSubject(BaseModel):
@@ -119,7 +172,11 @@ async def getTimeTable(updatetimetableSubjectEntry: updateTimeTableSubject):
 async def getstudentbasicdetails(usn: str):
     student = await studentsCollection.find_one({"_id": {"usn": usn.upper()}})
     student["usn"] = student["_id"]["usn"]
+    dob = student['dob']
+    dob = datetime.strptime(dob, '%Y-%m-%d').astimezone(tz=ind)
+    student['dob'] = dob
     return student
+
 
 @router.get('/test')
 async def test() -> str:
@@ -130,5 +187,3 @@ async def test() -> str:
     })
     print(result)
     return "success"
-
-

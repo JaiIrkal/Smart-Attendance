@@ -14,7 +14,8 @@ import { listofsubjects } from "../../../../data";
 
 
 
-export const ViewTimeTable = ({ branch, semester, division, className }: { branch: string, semester: string, division: string, className: string }) => {
+export const ViewTimeTable = ({ branch, semester, division }:
+    { branch: string, semester: string, division: string }) => {
 
     type sampletimetable = {
         "Day_1"?: { "P_1"?: string; "P_2"?: string; "P_3"?: string; "P_4"?: string; "P_5"?: string; "P_6"?: string; "P_7"?: string; },
@@ -39,14 +40,13 @@ export const ViewTimeTable = ({ branch, semester, division, className }: { branc
 
 
 
-    const gettimetable = async (className: string) => {
+    const gettimetable = async (branch: string, semester: string, division: string) => {
 
         try {
 
-            const url = "/timetable/".concat(className)
+            const url = `/timetable/${branch}/${semester}/${division}`
             const response = await api.get(url);
             setClassTimeTableData(response.data);
-
 
         } catch (error) {
             console.error(error)
@@ -54,12 +54,12 @@ export const ViewTimeTable = ({ branch, semester, division, className }: { branc
     }
 
     useEffect(() => {
-        gettimetable(className);
+        gettimetable(branch, semester, division);
 
         return (() => {
             setTimeTableUpdated(false);
         })
-    }, [className, timetableUpdated])
+    }, [branch, division, semester, timetableUpdated])
 
 
 

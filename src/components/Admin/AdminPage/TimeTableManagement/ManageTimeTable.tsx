@@ -11,7 +11,7 @@ import api from '../../../../api/axiosConfig'
 
 export const ManageTimeTable = () => {
     const { branchList, semList } = useContext(AdminContext);
-
+    const [divListLoading, setDivListLoading] = useState(false);
     const [divisionSelectDisable, setDivisionSelectDisable] = useState(true);
     const [divList, setDivList] = useState<string[]>([])
 
@@ -30,7 +30,8 @@ export const ManageTimeTable = () => {
 
     useEffect(() => {
         const getDivList = async () => {
-            await api.get(`/divlist/${formik.values.branch}/${formik.values.semester}`)
+            setDivListLoading(true);
+            await api.get(`/admin/divlist/${formik.values.branch}/${formik.values.semester}`)
                 .then((response) => {
                     console.log(response.data);
                     setDivList(response.data);
@@ -38,6 +39,7 @@ export const ManageTimeTable = () => {
                     console.error(error)
                 }).finally(() => {
                     setDivisionSelectDisable(false);
+                    setDivListLoading(false);
                 })
         }
         if (formik.values.branch !== '' && formik.values.semester !== '') { getDivList(); }
@@ -95,17 +97,20 @@ export const ManageTimeTable = () => {
                             value={formik.values.division}
                             onChange={formik.handleChange}
                         >
-                            {divList?.map((div, index) => (
-                                <MenuItem value={div} key={index}>
-                                    {div}
-                                </MenuItem>
-                            ))}
+                            {divListLoading ?
+                                <MenuItem><em>Loading</em></MenuItem>
+                                :
+                                divList?.map((div, index) => (
+                                    <MenuItem value={div} key={index}>
+                                        {div}
+                                    </MenuItem>
+                                ))}
                         </TextField>
                     </Stack >
                 </form>
             </FormikProvider>
             {(formik.values.branch !== '' && formik.values.semester !== '' && formik.values.division !== '') ?
-                <ViewTimeTable className={'CSE_5_A'}
+                <ViewTimeTable
                     branch={formik.values.branch}
                     semester={formik.values.semester}
                     division={formik.values.division} />

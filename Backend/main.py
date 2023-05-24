@@ -243,12 +243,7 @@ async def listofstudents():
     return list
 
 
-def getClassConducted(subjectCode, semDetails) -> dict[str]:
-    if semDetails:
-        for sub in semDetails["subjects"]:
-            if subjectCode == sub["code"]:
-                return {"ClassDates": sub["ClassDates"]}
-    return {"ClassDates": None}
+
 
 
 @app.get("/student/{USN}")
@@ -271,81 +266,10 @@ async def detailsOfStudent(USN):
     return studententity(student)
 
 
-def getsubjectData(subjectCode: str, classData: list):
-    for sub in classData:
-        if sub["Code"] == subjectCode:
-            return sub
-    return None
 
 
-def getSubjectAttendance(subject: str, Data: list):
-    Data = Data[0]
-    Data = Data["Subjects"]
-    for sub in Data:
-        if subject == sub['Code']:
-            return {"Attendance": sub["Attendance"],
-                    "Detain": sub["Detain"]
-                    }
-
-    return None
 
 
-@app.get("/teacher/{teacher_id}")
-async def teacher(teacher_id):
-    classesData = []
-    teacher = await teacherCollection.find_one({"ID": teacher_id})
-    for classTaught in teacher["Classes"]:
-        classData = await classCollection.find_one({"Branch": teacher["Branch"],
-                                                    "Semester": int(classTaught["Semester"]),
-                                                    "Division": classTaught["Division"],
-                                                    "Batch": classTaught["Batch"]
-                                                    })
-        listofSubject = []
-        for subject in classTaught["Subjects"]:
-            subjectData = getsubjectData(subject, classData["Subjects"])
-            listofStudent = []
-            for student in classData["Students"]:
-                studentData = await studentsCollection.find_one({"USN": student,
-                                                                 },
-                                                                {"USN": 1,
-                                                                 "Name": 1,
-                                                                 "Data": {"$elemMatch":
-                                                                              {"Semester":
-                                                                                   int(classTaught["Semester"])
-                                                                               }}
-                                                                 }
-                                                                )
-                subjectAttendanceData = getSubjectAttendance(subject, studentData["Data"])
-                studentAttendanceData = {
-                    "USN": studentData["USN"],
-                    "Name": studentData["Name"],
-                    "Detain": subjectAttendanceData["Detain"],
-                    "Attendance": subjectAttendanceData["Attendance"]
-                }
-                # print(studentAttendanceData)
-                listofStudent.append(studentAttendanceData)
-            #
-            subjectAttendanceData = {
-                "Subject": subjectData["Code"],
-                "Classes_conducted": subjectData["ClassDates"],
-                "StudentsAttendance": listofStudent
-
-            }
-            listofSubject.append(subjectAttendanceData)
-        #
-        classData = {
-            "Branch": teacher["Branch"],
-            "Semester": classTaught["Semester"],
-            "Division": classTaught["Division"],
-            "Attendance": listofSubject
-        }
-        classesData.append(classData)
-
-    teacherData = {
-        "Name": teacher["Name"],
-        "Classes": classesData,
-    }
-    return teacherData
 
 
 @app.get('/listofclass')
@@ -360,11 +284,15 @@ async def getlistofClasses():
     return listofclasses
 
 
-@app.get('/timetable/{ClassID}')
-async def getTimeTable(ClassID):
-    temp = ClassID.split("_")
-    print(temp)
-    classDetails = await classCollection.find_one({"branch": temp[0], "semester": int(temp[1]), "division": temp[2]})
+@app.get('/timetable/{branch}/{semester}/{division}')
+async def getTimeTable(branch:str, semester:int, division: str):
+    classDetails = await classCollection.find_one({
+        "_id":{
+            "branch": branch,
+            "semester": semester,
+            "division": division,
+        }
+    })
     timetable = classDetails['timetable']
     return timetable
 

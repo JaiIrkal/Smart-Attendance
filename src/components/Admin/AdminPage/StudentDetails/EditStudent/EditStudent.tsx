@@ -1,12 +1,14 @@
 import { Box, Stack, TextField, Button, Divider, Typography } from "@mui/material"
 import { FormikProvider, useFormik, } from "formik";
 import * as yup from "yup"
+import dayjs from "dayjs";
 import api, { axiosPrivate } from "../../../../../api/axiosConfig"
 import { useEffect, useState } from "react";
 import { StudentData } from "../../../../../context/StudentProvider";
 import { MuiTelInput } from "mui-tel-input";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LoadingPage } from "../../../../FallBackPages/LoadingPage/LoadingPage";
 
 
 type TypeBasicStudent = {
@@ -43,7 +45,7 @@ const EditStudent = ({ usn }: { usn: string }) => {
             parentsemail: '',
         },
         onSubmit(values, formikHelpers) {
-            console.log(values);
+            alert(JSON.stringify(values))
         },
         validationSchema: validationSchema
     })
@@ -88,7 +90,7 @@ const EditStudent = ({ usn }: { usn: string }) => {
         <>
             {
                 (studentData == null) ?
-                    <div>Loading....</div>
+                    <LoadingPage />
                     :
                     <FormikProvider value={formik}>
                         <form onSubmit={formik.handleSubmit} >
@@ -118,7 +120,12 @@ const EditStudent = ({ usn }: { usn: string }) => {
                                 />
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DatePicker
-                                        value={''}
+                                        value={dayjs(formik.values.dob)}
+                                        format="DD-MMM-YYYY"
+                                        views={['year', 'month', 'day']}
+                                        onChange={(value: any) => {
+                                            formik.setFieldValue('dob', value);
+                                        }}
                                     />
                                 </LocalizationProvider>
                                 <MuiTelInput
@@ -143,12 +150,19 @@ const EditStudent = ({ usn }: { usn: string }) => {
                                     name='parentsemail'
                                     value={formik.values.parentsemail}
                                     onChange={formik.handleChange}
-
                                 />
+                                <Stack direction='row' gap='15px' justifyContent={'center'}>
+                                    <Button variant="outlined" onClick={() => {
 
-                                <Button
-                                    variant="contained"
-                                    type='submit'> Submit</Button>
+                                        formik.setValues(studentData);
+
+                                    }}>Reset</Button>
+                                    <Button
+                                        variant="contained"
+                                        type='submit'> Submit</Button>
+
+
+                                </Stack>
                             </Stack>
                         </form>
                     </FormikProvider >

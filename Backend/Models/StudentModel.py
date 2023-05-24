@@ -18,20 +18,7 @@ class Student(BaseModel):
     TimeTable: dict
 
 
-class AddStudentModel(BaseModel):
-    usn: Annotated[str, Form()]
-    firstname: Annotated[str, Form()]
-    middlename: Annotated[str, Form()]
-    lastname: Annotated[str, Form()]
-    branch: Annotated[str, Form()]
-    dob: datetime = None
-    semester: Annotated[str, Form()]
-    division: Annotated[str, Form()]
-    photo: Annotated[str, Form()]
-    mobile: Annotated[str, Form()]
-    email: Annotated[str, Form()]
-    parentmobile: Annotated[str, Form()]
-    parentemail: Annotated[str, Form()]
+
 
 
 class StudentBasicDetailModel(BaseModel):
@@ -39,7 +26,7 @@ class StudentBasicDetailModel(BaseModel):
     firstname: str
     middlename: str
     lastname:str
-    dob: str
+    dob: datetime
     mobile: str
     email: str
     parentsmobile : str

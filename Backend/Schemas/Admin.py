@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from typing import Annotated
+from fastapi import Form
 
 class SemData(BaseModel):
     semester: int
@@ -14,8 +16,12 @@ class SemData(BaseModel):
     coresubjects: list
 
 class CreateClassModel(BaseModel):
-    branch: str
-    semester: int
-    division: str
+    branch: Annotated[str, Form()]
+    academicyear: Annotated[int, Form()]
+    semester: Annotated[str, Form()]
+    division: Annotated[str, Form()]
+    subjects: Annotated[list[str], Form()]
+    timetable:Annotated[dict, Form()]
+
 
 
