@@ -278,72 +278,672 @@ export const AddClass: React.FC = () => {
                                         </TextField>
                                     </TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_1.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_1: { ...timetable?.Day_1, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Tuesday</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_1, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_2.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_2: { ...timetable?.Day_2, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Wednesday</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_1: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_3.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_3: { ...timetable?.Day_3, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Thursday</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_1: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_4.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_4: { ...timetable?.Day_4, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Friday</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_1: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell>  <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_5.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_5: { ...timetable?.Day_5, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell>Saturday</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell> <TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_1}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_1: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_2}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_2: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_3}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_3: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_4}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_4: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_5}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_5: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                     <TableCell>Break</TableCell>
-                                    <TableCell></TableCell>
-                                    <TableCell></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_6}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_6: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
+                                    <TableCell><TextField
+                                            select
+                                            label="Select Subject"
+                                            value={timetable?.Day_6.P_7}
+                                            onChange={(e) => {
+                                                setTimeTable({ ...timetable, Day_6: { ...timetable?.Day_6, P_7: e.target.value } })
+                                            }}
+                                        >
+                                            {
+                                                subjectList.map((value, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={value}>{value}</MenuItem>
+                                                    )
+                                                })
+                                            }
+                                        </TextField></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
