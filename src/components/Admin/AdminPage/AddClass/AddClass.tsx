@@ -492,6 +492,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>  <TextField
                                                                 select
                                                                 label="Select Subject"
+                                                                name="timetable.Day_3.P_1"
                                                                 value={formik.values.timetable.Day_3.P_1}
                                                                 onChange={formik.handleChange}
                                                             >
@@ -499,6 +500,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_2"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_2}
                                                                 onChange={formik.handleChange}
@@ -508,6 +510,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_3"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_3}
                                                                 onChange={formik.handleChange}
@@ -516,6 +519,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_4"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_4}
                                                                 onChange={formik.handleChange}
@@ -524,6 +528,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_5"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_5}
                                                                 onChange={formik.handleChange}
@@ -533,6 +538,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_6"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_6}
                                                                 onChange={formik.handleChange}
@@ -541,6 +547,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_3.P_7"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_3.P_7}
                                                                 onChange={formik.handleChange}
@@ -552,6 +559,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Thursday</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_4.P_1"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_4.P_1}
                                                                 onChange={formik.handleChange}
@@ -560,6 +568,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_4.P_2"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_4.P_2}
                                                                 onChange={formik.handleChange}
@@ -569,6 +578,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_4.P_3"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_4.P_3}
                                                                 onChange={formik.handleChange}
@@ -578,6 +588,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>  <TextField
                                                                 select
                                                                 label="Select Subject"
+                                                                name="timetable.Day_4.P_4"
                                                                 value={formik.values.timetable.Day_4.P_4}
                                                                 onChange={formik.handleChange}
                                                             >
@@ -586,6 +597,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>  <TextField
                                                                 select
                                                                 label="Select Subject"
+                                                                name="timetable.Day_4.P_5"
                                                                 value={formik.values.timetable.Day_4.P_5}
                                                                 onChange={formik.handleChange}
                                                             >
@@ -594,6 +606,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_4.P_6"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_4.P_6}
                                                                 onChange={formik.handleChange}
@@ -602,6 +615,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_4.P_7"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_4.P_7}
                                                                 onChange={formik.handleChange}
@@ -613,6 +627,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Friday</TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_1"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_1}
                                                                 onChange={formik.handleChange}
@@ -621,6 +636,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell>  <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_2"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_2}
                                                                 onChange={formik.handleChange}
@@ -630,6 +646,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_3"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_3}
                                                                 onChange={formik.handleChange}
@@ -638,6 +655,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_4"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_4}
                                                                 onChange={formik.handleChange}
@@ -646,6 +664,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_5"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_5}
                                                                 onChange={formik.handleChange}
@@ -655,6 +674,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_6"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_6}
                                                                 onChange={formik.handleChange}
@@ -663,6 +683,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_5.P_7"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_5.P_7}
                                                                 onChange={formik.handleChange}
@@ -674,6 +695,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Saturday</TableCell>
                                                             <TableCell> <TextField
                                                                 select
+                                                                name="timetable.Day_6.P_1"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_1}
                                                                 onChange={formik.handleChange}
@@ -682,6 +704,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_2"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_2}
                                                                 onChange={formik.handleChange}
@@ -691,6 +714,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_3"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_3}
                                                                 onChange={formik.handleChange}
@@ -699,6 +723,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_4"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_4}
                                                                 onChange={formik.handleChange}
@@ -707,6 +732,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_5"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_5}
                                                                 onChange={formik.handleChange}
@@ -716,6 +742,7 @@ export const AddClass: React.FC = () => {
                                                             <TableCell>Break</TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_6"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_6}
                                                                 onChange={formik.handleChange}
@@ -724,6 +751,7 @@ export const AddClass: React.FC = () => {
                                                             </TextField></TableCell>
                                                             <TableCell><TextField
                                                                 select
+                                                                name="timetable.Day_6.P_7"
                                                                 label="Select Subject"
                                                                 value={formik.values.timetable.Day_6.P_7}
                                                                 onChange={formik.handleChange}
