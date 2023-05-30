@@ -11,7 +11,7 @@ from pymongo.errors import DuplicateKeyError
 from Models.AdminModels import AddStudentModel, AddTeacherModel
 from Models.StudentModel import StudentBasicDetailModel
 from Schemas.Admin import SemData, CreateClassModel
-from deps import classCollection, studentsCollection, branchCollection
+from deps import classCollection, studentsCollection, branchCollection,get_hashed_password
 
 ind = tz.gettz('Asia/Kolkata')
 
@@ -124,7 +124,7 @@ async def addStudent(form: AddStudentModel):
             'subjects': subjectsData
         }]
         result = await studentsCollection.insert_one({
-            '_id': form.usn,
+            '_id': form.usn.upper(),
             "firstname": form.firstname,
             "middlename": form.middlename,
             'lastname': form.lastname,
@@ -140,11 +140,17 @@ async def addStudent(form: AddStudentModel):
             'photo': form.photo,
             'face_encodings': face_encoding,
             'data': semesterdata,
+            'Password': get_hashed_password('1234')
         })
         await classCollection.find_one_and_update({"_id":{
             "branch": form.branch,
-            "": ""
-        }})
+            "semester": int(form.semester),
+            'division': form.semester
+        }},{
+            '$push': {
+                'students': form.usn
+            }
+        })
     except DuplicateKeyError:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail='USN already exists in database')
     except :

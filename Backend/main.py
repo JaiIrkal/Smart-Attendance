@@ -1,21 +1,16 @@
 from datetime import datetime
 from typing import Annotated, List, Dict, Any, Set
-from bson.json_util import dumps, loads
-import motor.motor_asyncio
+
 from fastapi import FastAPI, Cookie, Header
 from fastapi import status, HTTPException, Depends, Request, Response
-from fastapi.responses import JSONResponse
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt, JWTError
-from passlib.context import CryptContext
 from pydantic import BaseModel
 from pydantic.datetime_parse import timedelta
 from starlette.middleware.cors import CORSMiddleware
-from Models import StudentModel
-
-from Schemas.Student import studententity
 
 from Route import AdminRoutes, TeacherRoutes, StudentRoutes
+from deps import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, REFRESH_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES, \
+    oauth_2_scheme, verify_password, teacherCollection, studentsCollection, adminCollection, classCollection
 
 app = FastAPI()
 
@@ -31,37 +26,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SECRET_KEY = "b4d889fab58423d225c3f77edf0d51f678f04db624dec04ff4f3f19651b26b1e"
-
-REFRESH_SECRET_KEY = "b4d889fab58423d225c3f77edf0d51f678f04db624dec04ff4f3f19651b26b1e"
-
-ALGORITHM = 'HS256'
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REFRESH_TOKEN_EXPIRE_MINUTES = 7 * 24 * 60
 
 ACADEMIC_YEAR = "2022-2023"
-
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-mongodb_client = motor.motor_asyncio.AsyncIOMotorClient(
-    "mongodb+srv://ankit:attendance@cluster0.iofnken.mongodb.net/test")
-
-# this database conatains the attendance data
-attendancedb = mongodb_client.Attendance_Database
-
-# this points to the collection of Students in the Database
-studentsCollection = attendancedb["Students"]
-
-# this points to the collection of Teachers in the database
-teacherCollection = attendancedb["Teachers"]
-
-# this points to the collection of classes in current academic year
-classCollection = attendancedb["Class_Collection"]
-
-adminCollection = attendancedb["Admins"]
-
-branchCollection = attendancedb["Branch"]
 
 
 @app.get('/')
@@ -73,13 +39,6 @@ class Token(BaseModel):
     access_token: str
     token_type: str
 
-
-def get_hashed_password(password: str) -> str:
-    return password_context.hash(password)
-
-
-def verify_password(password: str, hashed_pass: str) -> bool:
-    return password_context.verify(password, hashed_pass)
 
 
 def create_access_token(data: dict, expires_delta: timedelta = None):

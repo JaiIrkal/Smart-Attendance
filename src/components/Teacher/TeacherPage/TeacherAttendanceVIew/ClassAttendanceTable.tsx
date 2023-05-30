@@ -70,8 +70,8 @@ export const ClassAttendanceTable = ({ data, subjectCode, className }: { data: a
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.StudentsAttendance.map((value: any) => {
-                            const attendanceCount = value.Attendance.reduce((partialSum: number, a: number) => partialSum + a)
+                        {data.StudentsAttendance.length !== 0 && data.StudentsAttendance.map((value: any) => {
+                            const attendanceCount = value.Attendance.reduce((partialSum: number, a: number) => partialSum + a, 0)
                             const attendancePercent = attendanceCount / value.Attendance.length * 100;
                             return (
                                 <TableRow>
