@@ -56,16 +56,16 @@ export const Login = () => {
     };
 
     return (
-        <Box className={styles["main-container"]}>
-            <div className={styles.leftcontent}>
+        <Box className={styles["main-container"]} flexDirection='row'>
+            <Box className={styles.leftcontent}>
                 <Text className={styles.h1}>Welcome!</Text>
                 <Text className={styles.h1}>Let's Make The Attendance System Smart</Text>
                 <Text className={styles.h1}>To Continue to our Website</Text>
                 <Text className={styles.h1}>Login for Attendance Details</Text>
-            </div>
+            </Box>
             <Box className={styles["login-select-container"]}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }} alignContent='center' justifyContent={'center'}>
-                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{
+                    <Tabs value={value} onChange={handleChange} aria-label="user type change tab" sx={{
                         alignContent: 'center', justifyItems: 'center', justifyContent: 'center'
                     }} >
                         <Tab label="Student" {...a11yProps(0)} sx={{
@@ -83,8 +83,6 @@ export const Login = () => {
                 <TabPanel value={value} index={0}><StudentLogin /></TabPanel>
                 <TabPanel value={value} index={1}><TeacherLogin /></TabPanel>
                 <TabPanel value={value} index={2}><AdminLogin /></TabPanel>
-
-
             </Box>
         </Box >
 

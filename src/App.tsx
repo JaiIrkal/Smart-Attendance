@@ -1,7 +1,6 @@
 
 import { Routes, Route } from "react-router-dom"
 import AdminPage from "./components/Admin/AdminPage/AdminPage"
-
 import { Login } from "./components/Login/Login"
 import TeacherPage from './components/Teacher/TeacherPage/TeacherPage'
 import StudentPage from './components/Student/StudentPage/StudentPage'
@@ -12,24 +11,22 @@ import Box from '@mui/material/Box'
 import Layout from './components/Layout'
 import { StudentProvider } from "./context/StudentProvider"
 import { AdminProvider } from "./context/AdminContext"
+import api from './api/axiosConfig'
+import { useEffect } from 'react'
 
+export const App = () => {
 
-export const App = () => (
-
-  <Box>
+  return (
     <Routes >
       <Route path='/' element={<Layout />}>
         <Route path='/' element={<Login />} />
         <Route path='/unauthorized' element={<Unauthorized />} />
-
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRole="admin" />}>
             <Route path='admin' element={<AdminProvider><AdminPage /></AdminProvider>}></Route>
           </Route>
           <Route element={<RequireAuth allowedRole="student" />}>
-
             <Route path='student' element={<StudentProvider><StudentPage /></StudentProvider>}></Route>
-
           </Route>
           <Route element={<RequireAuth allowedRole="teacher" />}>
             <Route path='teacher' element={<TeacherPage />}></Route>
@@ -37,6 +34,6 @@ export const App = () => (
         </Route>
       </Route>
     </Routes>
-  </Box>
+  )
 
-)
+}

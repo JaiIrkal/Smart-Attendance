@@ -36,32 +36,32 @@ export const StudentsList: React.FC = () => {
     }, []);
 
     return (
-        <Box sx={{ height: 400, width: 1000 }}>
+        <Box sx={{}}>
             <DataGrid
                 rows={listofstudents}
                 columns={[
                     {
                         field: 'id',
                         headerName: 'USN',
-                        width: 150
+                        width: 150,
+                        filterable: true,
+                        sortable: true,
+
                     },
                     {
                         field: 'Name',
                         headerName: 'Student name',
                         width: 200,
-                        // editable: true,
                     },
                     {
                         field: 'Branch',
                         headerName: 'Branch',
                         width: 100,
-                        // editable: true
                     },
                     {
                         field: 'Semester',
                         headerName: 'Semester',
                         width: 100,
-                        editable: true
                     }, {
                         field: 'Division',
                         headerName: 'Division',
@@ -92,7 +92,6 @@ export const StudentsList: React.FC = () => {
             >
                 <DialogTitle> Edit Student Form</DialogTitle>
                 <DialogContent>
-
                     <EditStudent usn='2SD20CS017' />
                 </DialogContent>
 

@@ -1,9 +1,25 @@
 .tablehead {
-    background: #19A7CE;
+    width: 120px;
     text-align: center;
     font-size: large;
     font-weight: 600;
     border-style: solid;
     border-width: 1px;
     border-color: black;
+}
+
+td div {
+    width: 100px;
+}
+
+td {
+    width: 100px;
+}
+
+th {
+    max-width: 100px;
+}
+
+tbody tr td :first-child {
+    max-width: 80px;
 }

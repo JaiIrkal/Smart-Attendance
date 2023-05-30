@@ -21,6 +21,7 @@ app = FastAPI()
 
 app.include_router(AdminRoutes.router)
 app.include_router(TeacherRoutes.router)
+app.include_router(StudentRoutes.router)
 
 app.add_middleware(
     CORSMiddleware,
@@ -153,7 +154,7 @@ async def authenticate_teacher(uid: str, password: str):
 
 
 async def authenticate_student(usn: str, password: str):
-    user = await studentsCollection.find_one({"_id": {"usn": usn.upper()}}, {'_id.usn', "Password"})
+    user = await studentsCollection.find_one({"_id": usn.upper()}, {'_id', "Password"})
 
     if not user:
         return False
@@ -161,7 +162,7 @@ async def authenticate_student(usn: str, password: str):
         return False
 
     student = {
-        "userid": user["_id"]["usn"],
+        "userid": user["_id"],
         "role": "student"
     }
     return student
@@ -233,37 +234,19 @@ async def listofstudents():
                           "Branch": student["branch"],
                           "Semester": student["semester"],
                           "Division": student["division"],
-                          "Batch": student["batch"]
+                          "Batch": student["academicyear"]
                           }
         list.append(studentDetails)
     return list
 
 
-@app.get("/student/{USN}")
-async def detailsOfStudent(USN):
-    student = await studentsCollection.find_one({"_id": {"usn": USN.upper()}})
-    classList = []
-    for i, sem in enumerate(student["Data"]):
-        classDetails = await classCollection.find_one({"_id": {
-            "branch": student["Branch"],
-            "semester": sem["Semester"],
-            "division": sem["Division"]}},
-            {"subjects", "timetable"})
-        print(classDetails)
-        if classDetails:
-            student["TimeTable"] = classDetails["timetable"]
-            for j, subject in enumerate(sem["Subjects"]):
-                subjectData = getClassConducted(subject["Code"], classDetails)
-                subject["ClassesConducted"] = subjectData["ClassDates"]
 
-    return studententity(student)
 
 
 @app.get('/listofclass')
 async def getlistofClasses():
     listofclasses = []
     classlist = await classCollection.find({}).to_list(0)
-
     for element in classlist:
         className = f"{element['Branch']}_{element['Semester']}_{element['Division']}"
         listofclasses.append(className)

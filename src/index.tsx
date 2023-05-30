@@ -1,6 +1,5 @@
 
 import * as React from "react"
-import { createTheme, ThemeProvider } from "@mui/material"
 import { AuthProvider } from "./context/AuthProvider"
 import * as ReactDOM from "react-dom/client"
 import { App } from "./App"
@@ -8,6 +7,7 @@ import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import CookiesProvider from "react-cookie/cjs/CookiesProvider"
+
 
 
 const container = document.getElementById("root")
@@ -25,7 +25,7 @@ root.render(
         </CookiesProvider>
       </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
 
 // If you want your app to work offline and load faster, you can change

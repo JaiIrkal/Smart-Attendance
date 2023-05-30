@@ -1,5 +1,5 @@
 
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Stack, MenuItem } from "@mui/material";
 import React, { useContext, useEffect, useState } from "react";
 import api from "../../../api/axiosConfig";
 import Navbar from "../../NavBar/NavBar";
@@ -11,7 +11,7 @@ import { StudentsList } from "./StudentDetails/StudentsList/StudentsList";
 import AddStudent from "./StudentDetails/AddStudent/AddStudent";
 import AddClass from "./AddClass/AddClass";
 import AdminContext from "../../../context/AdminContext";
-import AddBranch from "./AddBranch/AddBranch";
+
 
 
 interface TabPanelProps {
@@ -66,6 +66,7 @@ const AdminPage: React.FC = () => {
     const { branchList, setBranchList } = useContext(AdminContext)
 
 
+
     useEffect(() => {
         const getBranchList = async () => {
             try {
@@ -83,17 +84,32 @@ const AdminPage: React.FC = () => {
 
 
     return (
-        <Box flexDirection={'column'}>
+        <Box sx={{
+        }}>
             <Navbar />
             <Box
                 mt={"15px"}
-                sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 'fit-content', }}>
+                sx={{
+                    flexGrow: 1,
+                    bgcolor: 'background.paper',
+                    display: 'flex',
+                    height: 'fit-content',
+                    minWidth: '900px',
+                    minHeight: '600px'
+                }}>
                 <Tabs
                     orientation="vertical"
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
-                    sx={{ borderRight: 1, borderColor: 'divider' }}
+                    sx={{
+                        borderRight: 1,
+                        borderColor: 'divider',
+                        width: 0.14,
+                        minWidth: '140px',
+                        bgcolor: '#F9FBE7'
+                    }}
                     value={value}
+
                 >
                     <Tab label="Manage TimeTable"
                         {...a11yProps(0)}
@@ -106,22 +122,27 @@ const AdminPage: React.FC = () => {
                         iconPosition="start"></Tab>
                     <Tab label="Add Student" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label=" Add Branch" {...a11yProps(3)}
+
+                    <Tab label=" Add Class" {...a11yProps(3)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label=" Add Class" {...a11yProps(4)}
-                        icon={<PersonAddIcon />} iconPosition="start"></Tab>
-                    <Tab label="List All Students" {...a11yProps(5)}
+                    <Tab label="List All Students" {...a11yProps(4)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
                 </Tabs>
-                <TabPanel index={0} value={value}>
-                    <ManageTimeTable />
-                </TabPanel>
-                <TabPanel index={1} value={value}><AddTeacherForm /></TabPanel>
-                <TabPanel index={2} value={value}><AddStudent /> </TabPanel>
-                <TabPanel index={3} value={value}><AddBranch /></TabPanel>
-                <TabPanel index={4} value={value}><AddClass /> </TabPanel>
-                <TabPanel index={5} value={value}><StudentsList /></TabPanel>
+                <Box sx={{
+                    width: 1,
+                    height: 1,
+                    justifyContent: 'center',
+                    justifyItems: 'center',
+                    border: '1px solid black'
 
+                }}>
+                    <TabPanel index={0} value={value} ><ManageTimeTable /></TabPanel>
+                    <TabPanel index={1} value={value}><AddTeacherForm /></TabPanel>
+                    <TabPanel index={2} value={value}><AddStudent /> </TabPanel>
+
+                    <TabPanel index={3} value={value}><AddClass /> </TabPanel>
+                    <TabPanel index={4} value={value}><StudentsList /></TabPanel>
+                </Box>
             </Box>
 
 
@@ -130,6 +151,5 @@ const AdminPage: React.FC = () => {
     );
 
 }
-
 
 export default AdminPage;

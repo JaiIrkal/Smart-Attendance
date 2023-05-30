@@ -1,21 +1,14 @@
-import { Box, MenuItem, Stack, TextField, Button } from "@mui/material";
+import { Box, MenuItem, Stack, TextField, Button, Typography, Divider } from "@mui/material";
 import * as yup from "yup"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { ErrorMessage, useFormik } from "formik";
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { useContext, useMemo, useState } from "react";
+import { useFormik } from "formik";
+import { useContext } from "react";
 import AdminContext from "../../../../../context/AdminContext";
 import { MuiTelInput } from "mui-tel-input";
-import { DateValidationError } from "@mui/x-date-pickers/models/validation";
-import { Label } from "recharts";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker/DatePicker";
-import { error } from "console";
 import api from '../../../../../api/axiosConfig'
 
-
-const SemList = ['1', '2', '3', '4', '5', '6', '7', '8']
-const DivList = ['A', 'B']
 
 const validationSchema = yup.object({
     id: yup.string().min(6, 'Id is too short - should be 6 chars minimum').required('Id is required'),
@@ -60,7 +53,15 @@ const AddTeacherForm = () => {
 
 
     return (
-        <Box sx={{ width: 1000, height: 1000 }}>
+        <Box display={'grid'} sx={{}}>
+            <Typography
+                fontStyle={'normal'}
+                fontSize={'xx-large'}
+                justifySelf='center'
+                justifyContent={'center'}
+                justifyItems='center'
+
+            >Add a Teacher</Typography>
             <form onSubmit={formik.handleSubmit} onReset={formik.handleReset}>
                 <Stack gap='15px'>
                     <TextField
@@ -121,7 +122,6 @@ const AddTeacherForm = () => {
                             error={formik.touched.firstname && Boolean(formik.errors.firstname)}
                             helperText={formik.touched.firstname && formik.errors.firstname}
                         /></Stack>
-
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en'>
                         <DatePicker
                             sx={{
@@ -131,34 +131,38 @@ const AddTeacherForm = () => {
                             value={formik.values.dob}
                             onChange={(value: any) => formik.setFieldValue('dob', value)}
                             label='Date of Birth'
+                            views={['year', 'month', 'day']}
+
+                            disableFuture
                             slotProps={{
                                 textField: {
                                     required: true,
                                     helperText: formik.errors.dob,
                                 },
                             }}
-
                         />
-
-
                     </LocalizationProvider>
+                    <Divider orientation="horizontal" textAlign="left">Contact Info.</Divider>
+                    <Stack direction={'row'} gap='15px'>
 
-                    <MuiTelInput
-                        required
-                        name="mobile"
-                        label="Mobile No."
-                        defaultCountry="IN"
-                        value={formik.values.mobile}
-                        onChange={(value) => { formik.setFieldValue('mobile', value); }}
-                    />
-                    <TextField
-                        required
-                        type='email'
-                        name='email'
-                        label="Email"
-                        value={formik.values.email}
-                        onChange={formik.handleChange}
-                    />
+                        <MuiTelInput
+                            required
+                            name="mobile"
+                            label="Mobile No."
+                            defaultCountry="IN"
+                            value={formik.values.mobile}
+                            onChange={(value) => { formik.setFieldValue('mobile', value); }}
+                        />
+                        <TextField
+                            required
+                            type='email'
+                            name='email'
+                            label="Email"
+                            value={formik.values.email}
+                            onChange={formik.handleChange}
+                        />
+                    </Stack>
+                    <Divider orientation="horizontal" textAlign="left"></Divider>
                     <TextField
                         sx={{ width: '25%' }}
                         select

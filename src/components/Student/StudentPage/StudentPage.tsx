@@ -115,7 +115,7 @@ const StudentPage: React.FC = () => {
                     </Tabs>
                 </Box>
                 <TabPanel value={value} index={0}>
-                    <StudentTimeTable timetable={studentData?.TimeTable} />
+                    <StudentTimeTable schedule={studentData?.TimeTable} />
                 </TabPanel>
                 {
                     studentData?.Data.map((sem, i) => {

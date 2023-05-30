@@ -2,17 +2,17 @@ def studententity(student) -> dict:
 
     return {
         "Name": str(student["firstname"]),
-        "USN": str(student["_id"]["usn"]),
-        "Batch": int(student["Batch"]),
-        "Branch": str(student["Branch"]),
-        "Semester": student["Semester"],
-        "Division": student["Division"],
+        "USN": str(student["_id"]),
+        "Batch": int(student["academicyear"]),
+        "Branch": str(student["branch"]),
+        "Semester": student["semester"],
+        "Division": student["division"],
         "Email": student["email"],
         "Mobile": student['mobile'],
         "DOB": student["dob"],
-        "Data": student["Data"],
+        "Data": student["data"],
         "photo": student["photo"],
         "parentsemail": student["parentsemail"],
-        "parentsmobile":student["parentsmobile"],
+        "parentsmobile": student["parentsmobile"],
         "TimeTable": student["TimeTable"]
     }

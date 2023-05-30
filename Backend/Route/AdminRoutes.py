@@ -111,8 +111,10 @@ async def addStudent(form: AddStudentModel):
         img = face_recognition.load_image_file(decoded)
         face_encoding = face_recognition.face_encodings(img, num_jitters=2, model='large')[0].tolist()
         subjectsData = []
-    
-        for subjectIterator in form.subjects:
+
+        subjects = form.coresubjects + form.branchelectives + form.openelectives
+
+        for subjectIterator in subjects:
             subjectsData.append({
                 "subject_code": subjectIterator,
                 "isdetained": False,
@@ -123,6 +125,8 @@ async def addStudent(form: AddStudentModel):
             "division": form.division,
             'subjects': subjectsData
         }]
+
+        print(form)
 
         result = await studentsCollection.insert_one({
             '_id': form.usn,

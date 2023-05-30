@@ -5,17 +5,21 @@ from pydantic import BaseModel
 
 
 class Student(BaseModel):
-    USN: str
-    Name: str
-    Batch: str
-    Branch: str
-    Semester: int
-    Division: str
-    DOB: str
-    Email: str
-    Mobile: str
-    Data: list
-    TimeTable: dict
+    usn: str
+    firstname: str
+    middlename: str
+    lastname:str
+    batch: str
+    branch: str
+    semester: int
+    division: str
+    dob: str
+    email: str
+    mobile: str
+    parentsmobile:str
+    parentsemail: str
+    data: list
+    timetable: dict
 
 
 

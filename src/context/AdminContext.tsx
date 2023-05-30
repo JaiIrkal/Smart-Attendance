@@ -1,7 +1,7 @@
 
 import MenuItem from "@mui/material/MenuItem/MenuItem";
 import { createContext, useState } from "react"
-import api from '../api/axiosConfig'
+
 
 export const semList = (num: any) => {
     let semOptions = [];

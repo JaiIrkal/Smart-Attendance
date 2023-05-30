@@ -20,8 +20,10 @@ class AddStudentModel(BaseModel):
     photo: Annotated[str, Form()]
     mobile: Annotated[str, Form()]
     email: Annotated[str, Form()]
-    subjects: Annotated[list[str], Form()]
-    academicyear: Annotated[str, Form()]
+    coresubjects: Annotated[list[str], Form()]
+    branchelectives: Annotated[list[str], Form()]
+    openelectives: Annotated[list[str], Form()]
+    # academicyear: Annotated[str, Form()]
     parentsmobile: Annotated[str, Form()]
     parentsemail: Annotated[str, Form()]
 
