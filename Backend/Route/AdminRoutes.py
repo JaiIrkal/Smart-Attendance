@@ -6,6 +6,8 @@ import face_recognition
 from dateutil import tz
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
+from pymongo.errors import DuplicateKeyError
+
 from Models.AdminModels import AddStudentModel, AddTeacherModel
 from Models.StudentModel import StudentBasicDetailModel
 from Schemas.Admin import SemData, CreateClassModel
@@ -104,14 +106,12 @@ async def addteacher(form: AddTeacherModel):
 
 @router.post('/addstudent', status_code=201)
 async def addStudent(form: AddStudentModel):
-    # try:
+    try:
         decoded = ur.urlopen(form.photo)
         img = face_recognition.load_image_file(decoded)
         face_encoding = face_recognition.face_encodings(img, num_jitters=2, model='large')[0].tolist()
         subjectsData = []
-
         subjects = form.coresubjects + form.branchelectives + form.openelectives
-
         for subjectIterator in subjects:
             subjectsData.append({
                 "subject_code": subjectIterator,
@@ -133,17 +133,24 @@ async def addStudent(form: AddStudentModel):
             'mobile': form.mobile,
             'parentsemail': form.parentsemail,
             'parentsmobile': form.parentsmobile,
-            'academicyear': form.academicyear,
+            'academicyear': int(form.academicyear),
             'branch': form.branch,
-            'semester': form.semester,
+            'semester': int(form.semester),
             'division': form.division,
             'photo': form.photo,
             'face_encodings': face_encoding,
             'data': semesterdata,
         })
-    # except :
-    #     raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
-        return {"message": "Student Created"}
+        await classCollection.find_one_and_update({"_id":{
+            "branch": form.branch,
+            "": ""
+        }})
+    except DuplicateKeyError:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail='USN already exists in database')
+    except :
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
+
+    return {"message": "Student Created"}
 
 
 
