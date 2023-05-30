@@ -2,7 +2,7 @@
 import { MenuItem, TextField, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
 import { useField } from 'formik'
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import AdminContext, { semList } from '../../../../context/AdminContext';
 
 import { axiosPrivate as api } from '../../../../api/axiosConfig'
@@ -11,7 +11,8 @@ export default function AssignTeachers() {
     const [branchField, branchMeta, branchHelpers] = useField('branch');
     const [semesterField, semesterMeta, semesterHelpers] = useField('semester');
 
-    const { branchList, semData, setSemData } = useContext(AdminContext);
+    const [divList, setDivList] = useState<string[] | undefined>([]);
+    const { branchList, semData, setSemData, subjectIndex, setSubjectIndex, subjectList, setSubjectList } = useContext(AdminContext);
 
     useEffect(() => {
         const getSemesterData = async () => {
@@ -59,8 +60,6 @@ export default function AssignTeachers() {
                 name='branch'
                 value={branchField.value}
                 onChange={(event) => {
-
-
                     branchHelpers.setValue(event.target.value);
                 }}
                 error={branchMeta.touched && Boolean(branchMeta.error)}

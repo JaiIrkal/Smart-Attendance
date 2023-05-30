@@ -23,7 +23,7 @@ class AddStudentModel(BaseModel):
     coresubjects: Annotated[list[str], Form()]
     branchelectives: Annotated[list[str], Form()]
     openelectives: Annotated[list[str], Form()]
-    # academicyear: Annotated[str, Form()]
+    academicyear: Annotated[str, Form()]
     parentsmobile: Annotated[str, Form()]
     parentsemail: Annotated[str, Form()]
 

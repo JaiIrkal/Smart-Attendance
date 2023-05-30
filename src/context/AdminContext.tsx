@@ -39,6 +39,10 @@ type AdminDataContextType = {
     semList: string[];
     semData: TypeSemData | null;
     setSemData: React.Dispatch<React.SetStateAction<TypeSemData | null>>;
+    subjectIndex: Map<string, string> | null;
+    setSubjectIndex: React.Dispatch<React.SetStateAction<Map<string, string> | null>>;
+    subjectList: string[];
+    setSubjectList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 const AdminContext = createContext({} as AdminDataContextType);
@@ -46,6 +50,8 @@ const AdminContext = createContext({} as AdminDataContextType);
 
 
 export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
+    const [subjectIndex, setSubjectIndex] = useState<Map<string, string> | null>(null);
+    const [subjectList, setSubjectList] = useState<string[]>([''])
     const [branchList, setBranchList] = useState<string[]>([])
     const [semData, setSemData] = useState<TypeSemData | null>(null);
     const semList = ['1', '2', '3', '4', '5', '6', '7', '8']
@@ -53,7 +59,11 @@ export const AdminProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     return (
-        <AdminContext.Provider value={{ branchList, setBranchList, semList, semData, setSemData }}>
+        <AdminContext.Provider value={{
+            branchList, setBranchList, semList,
+            semData, setSemData, subjectIndex,
+            setSubjectIndex, setSubjectList, subjectList
+        }}>
             {children}
         </AdminContext.Provider>
     )

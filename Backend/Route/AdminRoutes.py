@@ -104,9 +104,7 @@ async def addteacher(form: AddTeacherModel):
 
 @router.post('/addstudent', status_code=201)
 async def addStudent(form: AddStudentModel):
-    try:
-        data = []
-        encoded = form.photo
+    # try:
         decoded = ur.urlopen(form.photo)
         img = face_recognition.load_image_file(decoded)
         face_encoding = face_recognition.face_encodings(img, num_jitters=2, model='large')[0].tolist()
@@ -125,15 +123,12 @@ async def addStudent(form: AddStudentModel):
             "division": form.division,
             'subjects': subjectsData
         }]
-
-        print(form)
-
         result = await studentsCollection.insert_one({
             '_id': form.usn,
             "firstname": form.firstname,
             "middlename": form.middlename,
             'lastname': form.lastname,
-            'dob': form.dob.astimezone(ind).date(),
+            'dob': f'{form.dob.astimezone(ind).date()}',
             'email': form.email,
             'mobile': form.mobile,
             'parentsemail': form.parentsemail,
@@ -144,12 +139,11 @@ async def addStudent(form: AddStudentModel):
             'division': form.division,
             'photo': form.photo,
             'face_encodings': face_encoding,
-            'data': data,
+            'data': semesterdata,
         })
-    except:
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
-
-    return {"message": "Student Created"}
+    # except :
+    #     raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
+        return {"message": "Student Created"}
 
 
 

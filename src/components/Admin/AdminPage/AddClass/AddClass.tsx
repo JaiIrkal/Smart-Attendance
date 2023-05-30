@@ -11,54 +11,14 @@ import styles from './AddClass.module.css'
 import { GridKeyboardArrowRight } from "@mui/x-data-grid";
 import { FormikStep, FormikStepper } from "../../../MultiStepForm/FormikStepper/FormikStepper";
 import AssignTeachers from "./AssignTeachers";
+import CreateTimetable from "./CreateTimetable";
 
-const validationSchema = yup.object({
+const timtablevalidationSchema = yup.object({
 
 })
 
 
 const AddClass: React.FC = () => {
-
-    // useEffect(() => {
-    //     const getSemesterData = async () => {
-    //         await api.get(`/admin/semdata/${formik.values.branch}/${formik.values.semester}`)
-    //             .then((response) => {
-    //                 setSemData(response.data);
-    //             }).catch((error) => {
-    //                 console.error(error);
-    //             })
-    //     }
-    //     if (formik.values.branch !== '' && formik.values.semester !== '') {
-    //         getSemesterData()
-    //     }
-    //     return () => {
-
-    //     }
-    // }, [formik.values.branch, formik.values.semester])
-
-    // useEffect(() => {
-    //     let subjects: string[] = [];
-    //     const getsubjects = () => {
-    //         if (semData !== null) {
-    //             semData.coresubjects.forEach((value) => {
-    //                 subjects.push(value.code);
-    //                 setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
-
-    //             });
-    //             semData.branchelectives.forEach((value) => {
-    //                 subjects.push(value.code);
-    //                 setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
-    //             });
-    //         }
-    //     }
-    //     setDivList(semData?.divlist)
-    //     getsubjects()
-    //     setSubjectList(subjects);
-    // }, [semData])
-
-    // useEffect(() => {
-    //     formik.setFieldValue('subjects', subjectList);
-    // }, [subjectList])
 
     return (
 
@@ -84,11 +44,14 @@ const AddClass: React.FC = () => {
             <FormikStep
                 label="Assign Teachers"
             >
-
-
                 <AssignTeachers />
             </FormikStep>
-
+            <FormikStep
+                label='Create TimeTable'
+                validationSchema={timtablevalidationSchema}
+            >
+                <CreateTimetable />
+            </FormikStep>
         </FormikStepper >
 
     )
