@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import { SemesterData } from "../../../../context/StudentProvider";
 
 import { Pie, PieChart, Cell } from "recharts"
-import { Box, Card, CardContent, Stack, Table, TableContainer, TableHead, TableBody, TableRow, Typography as Text, TableCell } from "@mui/material";
+import { Box, Card, CardContent, Stack, Table, TableContainer, TableHead, TableBody, TableRow, Typography as Text, TableCell, Typography } from "@mui/material";
 
 
 
@@ -21,16 +21,13 @@ const COLORS = ['green', 'red']
 
 export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) => {
 
-
-
-
     return (
         <Box >
-            {semData.Subjects.length !== 0 ?
-                semData.Subjects.map((subject) => {
+            {semData.subjects.length !== 0 ?
+                semData.subjects.map((subject) => {
 
-                    const present = subject.Attendance.reduce(add, 0);
-                    const absent = subject.Attendance.length - present;
+                    const present = subject.attendance.reduce(add, 0);
+                    const absent = subject.attendance.length - present;
                     const data = [
                         {
                             "Name": "Present",
@@ -51,7 +48,7 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
 
                             }}
                         ><Stack direction={'row'}>
-                                <PieChart width={200} height={180} >
+                                <PieChart width={200} height={220} >
                                     <Pie data={data} dataKey="value"
                                         nameKey="name"
                                         cx="50%"
@@ -65,21 +62,29 @@ export const StudentAttendanceTable = ({ semData }: { semData: SemesterData }) =
 
                                 <Stack>
                                     <CardContent>
-                                        <Text>Attendance Data for  {subject.Name}- {subject.Code}</Text>
-                                        <TableContainer >
-                                            <Table >
-                                                <TableHead>
-                                                    <TableRow >
-                                                        {subject?.ClassesConducted?.map((date) => (<TableCell> {date}</TableCell>))}
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    <TableRow>
-                                                        {subject?.Attendance?.map((attendance) => (<TableCell>{attendance}</TableCell>))}
-                                                    </TableRow>
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                        <Text>Attendance Data for  {subject.subject_code}</Text>
+                                        {subject.isdetained && <Typography color={'error'} fontSize={'1rem'}>Detained</Typography>}
+                                        {subject.ClassesConducted.length === 0 ?
+                                            <Box width={1} height={1} sx={{
+                                            }}>
+                                                <Typography color='error'>Attendance Data Not Available for this subject</Typography></Box>
+                                            : present === 0 ? (<Typography color={'error'}>No Classes Attended</Typography>) : (<TableContainer >
+                                                <Table >
+                                                    <TableHead>
+                                                        <TableRow >
+                                                            {subject?.ClassesConducted?.map((date) => (<TableCell> {date}</TableCell>))}
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            {subject?.ClassesConducted?.map((attendance, index) =>
+                                                            (<TableCell>{subject.attendance[index] === 1 ?
+                                                                <Typography color='green'>Present</Typography> :
+                                                                <Typography color='red'>Absent</Typography>}</TableCell>))}
+                                                        </TableRow>
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>)}
                                     </CardContent>
                                 </Stack>
                             </Stack>

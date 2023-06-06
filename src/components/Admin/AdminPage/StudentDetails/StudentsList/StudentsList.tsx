@@ -10,10 +10,12 @@ import EditStudent from '../EditStudent/EditStudent';
 
 export const StudentsList: React.FC = () => {
     const [open, setOpen] = useState(false);
+    const [editUSN, setEditUSN] = useState('');
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-    const handleClickOpen = () => {
+    const handleClickOpen = (id: string) => {
+        setEditUSN(id);
         setOpen(true);
     };
     const handleClose = () => {
@@ -78,7 +80,8 @@ export const StudentsList: React.FC = () => {
                             const onClick = (e: any) => {
                                 e.stopPropagation(); // don't select this row after clicking
                             };
-                            return <Button onClick={handleClickOpen} startIcon={<EditIcon />}>Edit</Button>;
+
+                            return <Button onClick={() => { handleClickOpen(params.id as string) }} startIcon={<EditIcon />}>Edit</Button>;
                         }
                     }
                 ]}
@@ -92,7 +95,7 @@ export const StudentsList: React.FC = () => {
             >
                 <DialogTitle> Edit Student Form</DialogTitle>
                 <DialogContent>
-                    <EditStudent usn='2SD20CS017' />
+                    <EditStudent usn={editUSN} />
                 </DialogContent>
 
             </Dialog>

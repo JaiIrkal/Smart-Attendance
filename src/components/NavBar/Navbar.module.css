@@ -1,6 +1,6 @@
 .Navbar {
     top: 25px;
-    position: sticky;
+    position: static;
     height: 40px;
     display: flex;
     flex-direction: row;

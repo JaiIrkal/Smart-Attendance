@@ -22,16 +22,14 @@ async def detailsOfStudent(USN):
     for i, sem in enumerate(student["data"]):
         classDetails = await classCollection.find_one({"_id": {
             "branch": student["branch"],
-            "academicyear": int(student['academicyear']),
-            "semester": int(sem["Semester"]),
-            "division": sem["Division"]
+            "semester": int(sem["semester"]),
+            "division": sem["division"]
         }
         },
             {"subjects", "timetable"})
         if classDetails:
             student["TimeTable"] = classDetails["timetable"]
-            for j, subject in enumerate(sem["Subjects"]):
-                subjectData = getClassConducted(subject["Code"], classDetails)
+            for j, subject in enumerate(sem["subjects"]):
+                subjectData = getClassConducted(subject["subject_code"], classDetails)
                 subject["ClassesConducted"] = subjectData["ClassDates"]
-
     return studententity(student)

@@ -1,5 +1,5 @@
-import { MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@mui/material';
-import { FieldConfig, useField } from 'formik';
+import { MenuItem, Paper, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from '@mui/material';
+import { Field, FieldConfig, FieldInputProps, FieldMetaProps, FormikBag, FormikValues, useField } from 'formik';
 import React, { useContext } from 'react'
 import AdminContext from '../../../../context/AdminContext';
 import styles from './AddClass.module.css'
@@ -19,22 +19,25 @@ function CreateTimetable() {
     }
 
     const TimeTableField = ({ label, ...props }: SelectProps) => {
-        const [field, meta, helpers] = useField(props.name);
+        return (
+            <Field name={props.name}>
+                {({ field, meta }: { field: FieldInputProps<FormikValues>, meta: FieldMetaProps<any> }) => (
+                    <TextField
+                        label={label}
+                        select
+                        {...field}
+                        error={meta.touched && Boolean(meta.error)}
+                        helperText={meta.touched && meta.error}
+                    >
+                        {
+                            subjectList.map((value, index) => (<MenuItem value={value} key={index}>{subjectIndex?.get(value)}</MenuItem>))
+                        }
+                    </TextField>
+                )}
 
+            </Field>
 
-        return (<TextField
-            select
-            label={label}
-            {...field}
-            {...props}
-            error={meta.touched && Boolean(meta.error)}
-            helperText={meta.touched && meta.error}
-            sx={{
-
-            }}
-        >
-            {subjectList.map((value, index) => (<MenuItem value={value} key={index}>{subjectIndex?.get(value)}</MenuItem>))}
-        </TextField>)
+        )
     }
 
 
@@ -101,39 +104,39 @@ function CreateTimetable() {
                     </TableRow>
                     <TableRow>
                         <TableCell>Thursday</TableCell>
-                        <TableCell>  </TableCell>
-                        <TableCell>  </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_4.P_1' /> </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_4.P_2' /> </TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell>  </TableCell>
-                        <TableCell>  </TableCell>
-                        <TableCell>  </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_4.P_3' /> </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_4.P_4' /> </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_4.P_5' /> </TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell>  </TableCell>
-                        <TableCell>  </TableCell>
+                        <TableCell>  <TimeTableField label="Select Subject" name='timetable.Day_4.P_6' /></TableCell>
+                        <TableCell>  <TimeTableField label="Select Subject" name='timetable.Day_4.P_7' /></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Friday</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>  </TableCell>
+                        <TableCell><TimeTableField label="Select Subject" name='timetable.Day_5.P_1' /></TableCell>
+                        <TableCell>  <TimeTableField label="Select Subject" name='timetable.Day_5.P_2' /></TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell> </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_5.P_3' /></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_5.P_4' /></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_5.P_5' /></TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell> </TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_5.P_6' /></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_5.P_7' /></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Saturday</TableCell>
-                        <TableCell> </TableCell>
-                        <TableCell></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_6.P_1' /></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_6.P_2' /></TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_6.P_3' /></TableCell>
+                        <TableCell> <TimeTableField label="Select Subject" name='timetable.Day_6.P_4' /></TableCell>
+                        <TableCell><TimeTableField label="Select Subject" name='timetable.Day_6.P_5' /></TableCell>
                         <TableCell>Break</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell></TableCell>
+                        <TableCell><TimeTableField label="Select Subject" name='timetable.Day_6.P_6' /></TableCell>
+                        <TableCell><TimeTableField label="Select Subject" name='timetable.Day_6.P_7' /></TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

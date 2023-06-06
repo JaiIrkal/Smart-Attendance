@@ -420,14 +420,3 @@ export const timetable = {
         "P_7": ""
     }
 }
-
-export const listofsubjects = [{
-
-    "Subject_Name": "CDSS"
-}, {
-
-    "Subject_Name": "DC"
-}, {
-    "Subject_Name": "MEPIP"
-}
-]

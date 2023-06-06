@@ -11,8 +11,6 @@ import StudentTimeTable from "./StudentTimeTable/StudentTimeTable";
 
 import styles from "./StudentPage.module.css"
 
-
-
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -49,7 +47,6 @@ function a11yProps(index: number) {
 const StudentPage: React.FC = () => {
 
     const [value, setValue] = React.useState(0);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
@@ -110,7 +107,7 @@ const StudentPage: React.FC = () => {
                                 wordWrap: 'normal',
                                 display: 'inline',
                                 width: '140px'
-                            }} label={"Semester ".concat(sem.Semester.toString())} {...a11yProps(1)}></Tab>))
+                            }} label={"Semester ".concat(sem.semester.toString())} {...a11yProps(1)}></Tab>))
                         }
                     </Tabs>
                 </Box>

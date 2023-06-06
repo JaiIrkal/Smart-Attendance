@@ -1,8 +1,14 @@
+from pydantic import BaseModel
+from starlette import status
+
 from deps import teacherCollection, classCollection, studentsCollection
 from fastapi import APIRouter, Form, File, UploadFile
 import pywhatkit
 
-router = APIRouter(
+from mailing import sendwarningMail
+from Models.TeacherModel import StudentListModel
+
+router = APIRouter(prefix='/teacher',
     tags=['teacher'])
 
 
@@ -32,7 +38,7 @@ def getClassConducted(subjectCode, semDetails) -> dict[str]:
     return {"ClassDates": None}
 
 
-@router.get("/teacher/{teacher_id}")
+@router.get("/{teacher_id}")
 async def teacher(teacher_id):
     classesData = []
     teacher = await teacherCollection.find_one({"ID": teacher_id})
@@ -83,16 +89,38 @@ async def teacher(teacher_id):
         classesData.append(classData)
 
     teacherData = {
-        "Name": teacher["Name"],
+        "Name": teacher["title"]+" " + teacher['firstname']+' '+ teacher['middlename']+' '+ teacher['lastname'],
+        'Email': teacher['email'],
+        'Mobile': teacher['mobile'],
         "Classes": classesData,
     }
     return teacherData
 
 
-@router.get('/sendmessage')
-async def sendmessage():
-    pywhatkit.sendwhatmsg("+918105323958",
-                          "Geeks For Geeks!",
-                          21, 40)
 
-    return {"message": "message sent"}
+@router.post('/sendwarning', status_code=status.HTTP_200_OK)
+async def sendwarning(req: StudentListModel):
+    await sendwarningMail(req.listofStudents, req.subjectName)
+    return {"message": "Warning sent to students"}
+
+class ScheduleClassModel(BaseModel):
+    branch: str
+    semester: int
+    division: str
+    sub: str
+    day: int
+    period: int
+
+@router.post('/schedule', status_code=status.HTTP_200_OK)
+async def scheduleclass(req: ScheduleClassModel):
+    await classCollection.find_one_and_update({"_id": {"branch": req.branch,
+                                                            "semester": req.semester,
+                                                            "division": req.division}},{
+        "$push" : {
+            'timetable.extra': {
+                'key': f'Day_{req.day}.P_{req.period}',
+                'sub': req.sub
+            }
+        }
+    }
+    )

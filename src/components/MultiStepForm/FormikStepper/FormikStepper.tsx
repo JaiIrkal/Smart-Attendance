@@ -60,7 +60,6 @@ export function FormikStepper({ children, ...props }: FormikStepperProps) {
             {(formik) => (
                 <Form autoComplete="off">
                     <Stepper
-
                         alternativeLabel
                         activeStep={step}>
                         {childrenArray.map((child, index) => (

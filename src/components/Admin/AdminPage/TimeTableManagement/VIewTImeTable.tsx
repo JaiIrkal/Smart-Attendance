@@ -9,9 +9,8 @@ import api from "../../../../api/axiosConfig"
 
 import { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
-import styles from "./TimeTable.module.css"
-import { listofsubjects } from "../../../../data";
-
+import styles from "./TimeTable.module.css";
+import { TypeSubjectData } from "../../../../context/AdminContext";
 
 
 export const ViewTimeTable = ({ branch, semester, division }:
@@ -28,22 +27,17 @@ export const ViewTimeTable = ({ branch, semester, division }:
     }
     const obj: sampletimetable = {};
     const [timetable, setClassTimeTableData] = useState(obj);
-
     const [previousSubject, setPreviousSubject] = useState("");
-
     const [timetableUpdated, setTimeTableUpdated] = useState(false);
-
-
     const [updatedSubject, setUpdatedSubject] = useState("");
-
     const [editCellId, setEditCellId] = useState("");
+    const [subjectlist, setsubjectlist] = useState<TypeSubjectData[]>([]);
 
 
 
     const gettimetable = async (branch: string, semester: string, division: string) => {
 
         try {
-
             const url = `/timetable/${branch}/${semester}/${division}`
             const response = await api.get(url);
             setClassTimeTableData(response.data);
@@ -56,6 +50,14 @@ export const ViewTimeTable = ({ branch, semester, division }:
     useEffect(() => {
         gettimetable(branch, semester, division);
 
+        const getsubjectlist = async () => {
+            await api.get(`/admin/timetable/subjectlist/${branch}/${semester}`).then((response) => {
+                setsubjectlist(response.data);
+            }).catch((error) => {
+                console.error(error);
+            })
+        }
+        getsubjectlist();
         return (() => {
             setTimeTableUpdated(false);
         })
@@ -66,11 +68,16 @@ export const ViewTimeTable = ({ branch, semester, division }:
     const BreakCell = () => {
 
         return (
-            <TableCell size="small" sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3 }}>
-                <Box >
+            <TableCell
+                size="small" sx={{
+                    border: 1,
+                    borderColor: "#27E1C1",
+                    borderWidth: 3,
+                }}>
+                <Box>
                     Break
                 </Box >
-            </TableCell>
+            </TableCell >
         )
     }
 
@@ -78,7 +85,7 @@ export const ViewTimeTable = ({ branch, semester, division }:
 
         return (
             <TableCell variant="head" align="center" padding="none">
-                <Typography fontSize={"20px"} width={"100%"}>
+                <Typography fontSize={"14px"} width={"100%"}>
                     {day}
                 </Typography>
             </TableCell>
@@ -86,12 +93,27 @@ export const ViewTimeTable = ({ branch, semester, division }:
     }
 
     const ReadOnlyCell = ({ keyid, subject }: { keyid: string, subject: string }) => {
-
         return (
-            <TableCell sx={{ border: 1, borderColor: "#27E1C1", borderWidth: 3, alignContent: 'center', justifyContent: 'center' }}>
-                <Box sx={{ flex: 'row', maxHeight: '20px', minWidth: '100px', alignContent: 'center', justifyContent: 'center' }}>{subject}
-                    <IconButton type="button" sx={{ alignContent: 'center', justifyContent: 'center' }} onClick={(event) => { handleEditClick(event, keyid, subject) }}>
-                        <EditIcon fontSize="small" />
+            <TableCell sx={{
+                border: 1,
+                borderColor: "#27E1C1",
+                borderWidth: 3,
+                justifyContent: 'left',
+                justifyItems: 'left'
+            }}>
+                <Box sx={{
+                    display: 'flex',
+                    maxHeight: '20px',
+                    minWidth: '100px',
+                    justifyContent: 'left',
+                    justifyItems: 'left',
+                    justifySelf: 'left'
+                }}>{subject}
+                    <IconButton type="button"
+                        sx={{
+                            justifyContent: 'left'
+                        }} onClick={(event) => { handleEditClick(event, keyid, subject) }}>
+                        <EditIcon fontSize={'small'} />
                     </IconButton>
                 </Box>
             </TableCell>
@@ -111,15 +133,14 @@ export const ViewTimeTable = ({ branch, semester, division }:
                             console.log(event.target.value);
                             setUpdatedSubject(event.target.value);
                         }}
-                        defaultValue={subject}
                         value={updatedSubject}
                         SelectProps={{
                             native: true,
                         }}
                     >
-                        {listofsubjects.map((sub) => (
-                            <option key={sub.Subject_Name} value={sub.Subject_Name}>
-                                {sub.Subject_Name}
+                        {subjectlist.map((sub, index) => (
+                            <option key={index} value={sub.code}>
+                                {sub.short}
                             </option>
                         ))}
                     </TextField>
@@ -152,15 +173,15 @@ export const ViewTimeTable = ({ branch, semester, division }:
 
     const handleSubmitClick = () => {
         submitUpdateTimeTableRequest();
-
         setUpdatedSubject("");
         setPreviousSubject("");
         setEditCellId("");
+        window.alert("Time Table Updated!!");
     }
 
     async function submitUpdateTimeTableRequest() {
         console.log("updated: " + updatedSubject);
-        await api.put('/updatetimetable', {
+        await api.put('/admin/updatetimetable', {
             branch: branch,
             semester: semester,
             division: division,

@@ -34,7 +34,7 @@ class AddTeacherModel(BaseModel):
     middlename: Annotated[str, Form()]
     lastname: Annotated[str, Form()]
     dob: datetime = None
-    designation: Annotated[str, Form()]
+    title: Annotated[str, Form()]
     department: Annotated[str, Form()]
     mobile: Annotated[str, Form()]
     email: Annotated[str, Form()]

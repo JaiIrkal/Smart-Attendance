@@ -1,9 +1,8 @@
 def studententity(student) -> dict:
 
     return {
-        "Name": str(student["firstname"]),
+        "Name": str(student["firstname"]) +" "+ student['middlename'] +" "+ student['lastname'],
         "USN": str(student["_id"]),
-        "Batch": int(student["academicyear"]),
         "Branch": str(student["branch"]),
         "Semester": student["semester"],
         "Division": student["division"],

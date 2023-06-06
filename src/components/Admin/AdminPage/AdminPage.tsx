@@ -123,7 +123,7 @@ const AdminPage: React.FC = () => {
                     <Tab label="Add Student" {...a11yProps(2)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
 
-                    <Tab label=" Add Class" {...a11yProps(3)}
+                    <Tab label="Modify Class Data" {...a11yProps(3)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>
                     <Tab label="List All Students" {...a11yProps(4)}
                         icon={<PersonAddIcon />} iconPosition="start"></Tab>

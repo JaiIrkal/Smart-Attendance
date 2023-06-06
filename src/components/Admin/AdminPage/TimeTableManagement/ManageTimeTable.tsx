@@ -115,8 +115,7 @@ export const ManageTimeTable = () => {
                     semester={formik.values.semester}
                     division={formik.values.division} />
                 :
-                <>
-                </>
+                null
             }
         </Box>
     )

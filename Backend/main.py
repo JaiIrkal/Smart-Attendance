@@ -1,6 +1,6 @@
+
 from datetime import datetime
 from typing import Annotated, List, Dict, Any, Set
-
 from fastapi import FastAPI, Cookie, Header
 from fastapi import status, HTTPException, Depends, Request, Response
 from jose import jwt, JWTError
@@ -9,8 +9,9 @@ from pydantic.datetime_parse import timedelta
 from starlette.middleware.cors import CORSMiddleware
 
 from Route import AdminRoutes, TeacherRoutes, StudentRoutes
-from deps import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, REFRESH_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES, \
-    oauth_2_scheme, verify_password, teacherCollection, studentsCollection, adminCollection, classCollection
+from deps import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, REFRESH_SECRET_KEY, REFRESH_TOKEN_EXPIRE_MINUTES
+from deps import oauth_2_scheme, verify_password, teacherCollection, studentsCollection, adminCollection, classCollection
+from mailing import senddetainmail
 
 app = FastAPI()
 
@@ -38,9 +39,6 @@ def home():
 class Token(BaseModel):
     access_token: str
     token_type: str
-
-
-
 def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     if expires_delta is not None:
@@ -223,36 +221,33 @@ async def getTimeTable(branch: str, semester: int, division: str):
         }
     })
     timetable = classDetails['timetable']
+    print(timetable)
     return timetable
 
 
-@app.post("/sendwarning")
-def sendwarning():
-    return {"message": "Post Successful"}
-
-
 class DetainListModel(BaseModel):
-    className: str
+    branch:str
+    semester:int
+    division:str
     subjectName: str
     listofStudents: List
 
 
-@app.post('/detainStudents')
+@app.post('/detainStudents', status_code=status.HTTP_200_OK)
 async def detainstudents(req: DetainListModel):
-    request = req.dict()
-    print(request)
+    for student in req.listofStudents:
+        await studentsCollection.find_one_and_update({'_id': student.upper()},{
+            "$set": {
+                'data.$[i].subjects.$[j].isdetained': True
+            }
+        },array_filters=[{
+            "i.semester": req.semester
+        },{
+            "j.subject_code": req.subjectName
+        }]
+        )
+    await senddetainmail(req.listofStudents, req.subjectName)
 
     return {"message": "Student detained Successfully"}
 
-# pwd = get_hashed_password("ankit1234")
-# print(pwd)
 
-# token = jwt.encode({
-#   "sub": {
-#     "USN": "2SD20CS017",
-#     "Role": "student"
-#   },
-#   "exp": 1683026494
-# }, SECRET_KEY, ALGORITHM)
-# payload = jwt.decode(token,options={"verify_sub": False } ,key=SECRET_KEY, algorithms=[ALGORITHM])
-# print(payload)

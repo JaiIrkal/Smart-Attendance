@@ -107,11 +107,7 @@ const TeacherLogin: React.FC = () => {
 
                     Log In
                 </Button>
-                <Box justifyContent="center" mb={1}>
-                    <Text fontSize="9pt" mr={1}>
-                        Forgot your password?
-                    </Text>
-                </Box>
+
             </form>
         </div>
     );

@@ -30,6 +30,8 @@ type ClassType = {
 
 type teacherDataType = {
     Name: string
+    Email: string
+    Mobile: string
     Classes: Array<ClassType>
 }
 
@@ -136,19 +138,12 @@ const TeacherView: React.FC = () => {
         }
     }, [])
 
-    console.log(teacherData)
-
-
-
     return (
         <Box display={'block'}>
-
             <Navbar />
-
-            <TeacherDetails />
-
+            <TeacherDetails name={teacherData?.Name} mobile={teacherData?.Mobile} Email={teacherData?.Email} />
             <Box
-                sx={{ BoxGrow: 1, bgcolor: 'background.paper', display: 'Box', height: '100%' }}
+                sx={{ BoxGrow: 1, bgcolor: 'background.paper', display: 'Box', height: 1, mt: '40px' }}
             >
                 <Tabs
                     orientation="vertical"
@@ -158,7 +153,7 @@ const TeacherView: React.FC = () => {
                     aria-label="Vertical tabs example"
                     sx={{ borderRight: 1, borderColor: 'divider' }}
                 >
-                    {teacherData?.Classes.map((item, j) => (<Tab label={item.Branch.concat(item.Semester.toString()).concat(item.Division)}  {...verticalTabProps(j)} />))}
+                    {teacherData?.Classes.map((item, j) => (<Tab label={item.Branch.concat('-').concat(item.Semester.toString()).concat('-').concat(item.Division)}  {...verticalTabProps(j)} />))}
                 </Tabs>
                 {teacherData?.Classes.map((item, j) => (
                     <VerticalTabPanel
@@ -166,7 +161,7 @@ const TeacherView: React.FC = () => {
                         index={j}
                     >
                         <Box flexDirection={'column'}>
-                            <Typography align="center">{item.Branch} {item.Semester}{item.Division}</Typography>
+                            <Typography align="center">{item.Branch}-{item.Semester}-{item.Division}</Typography>
                             <Box width='100%'>
                                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }} width="100%">
                                     <Tabs
@@ -180,12 +175,11 @@ const TeacherView: React.FC = () => {
                                         }
                                     </Tabs>
                                 </Box>
-
                                 {
                                     item.Attendance.map((subject, k) =>
                                     (
                                         <HorizontalTabPanel value={horizontalTabValue} index={k}>
-                                            <ClassAttendanceTable className={item.Branch.concat(item.Semester.toString()).concat(item.Division)}
+                                            <ClassAttendanceTable branch={item.Branch} semester={item.Semester} division={item.Division}
                                                 subjectCode={subject.Subject} data={item.Attendance[k]} />
                                         </HorizontalTabPanel>
                                     )

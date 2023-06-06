@@ -3,9 +3,9 @@ import MenuItem from "@mui/material/MenuItem/MenuItem";
 import { createContext, useState } from "react"
 
 
-export const semList = (num: any) => {
+export const semList = (begin: number, last: number) => {
     let semOptions = [];
-    for (let i = 1; i <= num; i++) {
+    for (let i = begin; i <= last; i++) {
         semOptions.push(<MenuItem value={i} key={i}>{i}</MenuItem>)
     }
     return semOptions;

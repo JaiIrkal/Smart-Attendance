@@ -15,13 +15,16 @@ class SemData(BaseModel):
     labs: list
     coresubjects: list
 
+
+
+
 class CreateClassModel(BaseModel):
     branch: Annotated[str, Form()]
-    academicyear: Annotated[int, Form()]
-    semester: Annotated[str, Form()]
+    semester: Annotated[int, Form()]
     division: Annotated[str, Form()]
-    subjects: Annotated[list[str], Form()]
-    timetable:Annotated[dict, Form()]
+    coresubjects: list
+    branchelectives: list
+    timetable: dict
 
 
 

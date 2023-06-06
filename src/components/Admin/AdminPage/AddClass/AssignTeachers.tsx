@@ -1,94 +1,109 @@
 
-import { MenuItem, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Divider, TextField, Typography } from '@mui/material'
 import { Stack } from '@mui/system'
-import { useField } from 'formik'
+import { Field, FieldProps } from 'formik'
 import { useContext, useEffect, useState } from 'react';
-import AdminContext, { semList } from '../../../../context/AdminContext';
+import AdminContext from '../../../../context/AdminContext';
 
 import { axiosPrivate as api } from '../../../../api/axiosConfig'
 
-export default function AssignTeachers() {
-    const [branchField, branchMeta, branchHelpers] = useField('branch');
-    const [semesterField, semesterMeta, semesterHelpers] = useField('semester');
+export type teachertype = {
+    id: string
+    name: string
+}
 
-    const [divList, setDivList] = useState<string[] | undefined>([]);
-    const { branchList, semData, setSemData, subjectIndex, setSubjectIndex, subjectList, setSubjectList } = useContext(AdminContext);
-
+export default function AssignTeachers({ branch, semester }: { branch: string, semester: string, division: string }) {
+    const { semData } = useContext(AdminContext);
+    const [teacherList, setTeacherList] = useState<teachertype[] | null>(null);
     useEffect(() => {
-        const getSemesterData = async () => {
-            await api.get(`/admin/semdata/${branchField.value}/${semesterField.value}`)
+        const getTeacherListOfBranch = async () => {
+            await api.get(`/admin/teacherlist/${branch}`)
                 .then((response) => {
-                    setSemData(response.data);
+                    setTeacherList(response.data);
                 }).catch((error) => {
                     console.error(error);
                 })
         }
-        if (branchField.value !== '' && semesterField.value !== '') {
-            getSemesterData()
-        }
-        return () => {
-
-        }
-    }, [branchField.value, semesterField.value])
-
-    useEffect(() => {
-        let subjects: string[] = [];
-        const getsubjects = () => {
-            if (semData !== null) {
-                semData.coresubjects.forEach((value) => {
-                    subjects.push(value.code);
-                    setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
-
-                });
-                semData.branchelectives.forEach((value) => {
-                    subjects.push(value.code);
-                    setSubjectIndex(map => new Map(map?.set(value.code, value.short)))
-                });
-            }
-        }
-        setDivList(semData?.divlist)
-        getsubjects()
-        setSubjectList(subjects);
-    }, [semData])
+        getTeacherListOfBranch();
+    }, [])
 
     return (
         <Stack direction={'column'} gap='25px'>
-
-            <TextField
-                select
-                label='Select Branch'
-                name='branch'
-                value={branchField.value}
-                onChange={(event) => {
-                    branchHelpers.setValue(event.target.value);
-                }}
-                error={branchMeta.touched && Boolean(branchMeta.error)}
-                helperText={branchMeta.touched && branchMeta.error}
-            >
-                {branchList.map((branch, index) => (<MenuItem key={index} value={branch}>{branch}</MenuItem>))}
-            </TextField>
-            <TextField
-                sx={{
-                    width: '25%',
-                    minWidth: '120px'
-                }}
-                disabled={Boolean(branchField.value === '')}
-                select
-                name='semester'
-                label='Semester'
-                value={semesterField.value}
-                onChange={semesterField.onChange}
-                error={semesterMeta.touched && Boolean(semesterMeta.error)}
-                helperText={semesterMeta.touched && semesterMeta.error}
-            >
-                {semList(8)}
-            </TextField>
-
-            <Typography>
-                Already Existing Divisions
-
-            </Typography>
-
+            <Stack direction={'column'} gap='15px'>
+                <Box sx={{
+                    padding: '5px'
+                }}>
+                    <Divider orientation='horizontal' textAlign='left'> Core Subjects</Divider>
+                    <Stack direction={'column'} gap='10px'>
+                        {
+                            semData?.coresubjects.map((value, index) => {
+                                return (
+                                    <Stack direction={'row'} alignItems='center' gap={'10px'} >
+                                        <Typography>{value.name}</Typography>
+                                        <Field
+                                            name={`coresubjects[${index}].teacherid`}
+                                        >
+                                            {({ field, form }: FieldProps) =>
+                                            (
+                                                <Autocomplete
+                                                    sx={{
+                                                        width: '250px'
+                                                    }}
+                                                    {...field}
+                                                    onChange={(event, value) => { form.setFieldValue(`coresubjects[${index}].teacherid`, value) }}
+                                                    disablePortal
+                                                    options={teacherList ?? []}
+                                                    getOptionLabel={(option) => option.name}
+                                                    renderInput={(params) => <TextField
+                                                        required
+                                                        {...params}
+                                                        label="Select Teacher" />}
+                                                />
+                                            )
+                                            }
+                                        </Field>
+                                    </Stack>
+                                )
+                            })
+                        }
+                    </Stack>
+                </Box>
+                <Box gap={'10px'}>
+                    <Divider orientation='horizontal' textAlign='left'>Branch Elective Subjects</Divider>
+                    <Stack direction={'column'} gap='10px'>
+                        {
+                            semData?.branchelectives.map((value, index) => {
+                                return (
+                                    <Stack direction={'row'} alignItems='center' gap={'10px'} >
+                                        <Typography>{value.name}</Typography>
+                                        <Field
+                                            name={`branchelectives[${index}].teacherid`}
+                                        >
+                                            {({ field, form }: FieldProps) =>
+                                            (
+                                                <Autocomplete
+                                                    sx={{
+                                                        width: '250px'
+                                                    }}
+                                                    {...field}
+                                                    onChange={(event, value) => { form.setFieldValue(`branchelectives[${index}].teacherid`, value) }}
+                                                    disablePortal
+                                                    options={teacherList ?? []}
+                                                    getOptionLabel={(option) => option.name}
+                                                    renderInput={(params) => <TextField
+                                                        {...params}
+                                                        label="Select Teacher" />}
+                                                />
+                                            )
+                                            }
+                                        </Field>
+                                    </Stack>
+                                )
+                            })
+                        }
+                    </Stack>
+                </Box>
+            </Stack>
         </Stack>
     )
 }

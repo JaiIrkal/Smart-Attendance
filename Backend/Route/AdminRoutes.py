@@ -1,8 +1,9 @@
-
+import asyncio
 from datetime import datetime
 import urllib.request as ur
 import face_recognition
-
+import pymongo.errors
+import numpy as np
 from dateutil import tz
 from fastapi import APIRouter, HTTPException, status
 from pydantic import BaseModel
@@ -11,7 +12,7 @@ from pymongo.errors import DuplicateKeyError
 from Models.AdminModels import AddStudentModel, AddTeacherModel
 from Models.StudentModel import StudentBasicDetailModel
 from Schemas.Admin import SemData, CreateClassModel
-from deps import classCollection, studentsCollection, branchCollection,get_hashed_password
+from deps import classCollection, studentsCollection, branchCollection, get_hashed_password, teacherCollection
 
 ind = tz.gettz('Asia/Kolkata')
 
@@ -65,43 +66,51 @@ async def getsemdata(branch, semester):
 
 @router.post('/createclass', tags=['Create Class', "admin"], summary='Create a Classroom')
 async def createclass(form: CreateClassModel):
+    form.timetable['extra'] = []
+    classId = await classCollection.insert_one({
+        "_id": {
+            "branch": form.branch,
+            'semester': form.semester,
+            'division': form.division,
+        },
+        'subjects': form.coresubjects + form.branchelectives,
+        'timetable': form.timetable,
+        'students': []
+    })
 
-    print(form.subjects)
-
-    print(form.timetable)
-
-    # classId = await classCollection.insert_one({
-    #     "_id": {
-    #             "branch": form.branch,
-    #             'academicyear' : form.batch,
-    #             'semester': form.semester,
-    #             'division': form.division,
-    #
-    #     },
-    #     'subjects': form.subjects,
-    #     'timetable': form.timetable
-    # })
-    #
-    # branchCollection.find_one_and_update({
-    #     "id": form.branch
-    # }, {
-    #     "$push": {
-    #         "semesterwisesubjects.$[i].divlist": form.division
-    #     }
-    # }, array_filters=[{
-    #     "i.semester": form.semester
-    # }])
-
+    branchCollection.find_one_and_update({
+        "id": form.branch
+    }, {
+        "$push": {
+            "semesterwisesubjects.$[i].divlist": form.division
+        }
+    }, array_filters=[{
+        "i.semester": form.semester
+    }])
 
     return "Class Created"
 
+
 @router.post('/addteacher', status_code=201)
 async def addteacher(form: AddTeacherModel):
+    try:
+        password = f'{form.firstname.lower()[0:4]}{form.dob.astimezone(ind).year}'
 
-    print(form)
-    print(form.dob.astimezone(ind).date())
+        await teacherCollection.insert_one({
+            'ID': form.id,
+            'firstname': form.firstname,
+            'middlename': form.middlename,
+            'lastname': form.lastname,
+            'dob': f'{form.dob.astimezone(ind).date()}',
+            'title': form.title,
+            'Branch': form.department,
+            'Password': get_hashed_password(password),
+            'Classes': []
+        })
+        return {'Teacher Created'}
+    except DuplicateKeyError:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail='USN already exists in database')
 
-    return {"value"}
 
 
 @router.post('/addstudent', status_code=201)
@@ -123,6 +132,8 @@ async def addStudent(form: AddStudentModel):
             "division": form.division,
             'subjects': subjectsData
         }]
+        password = f'{form.firstname.lower()[0:4]}{form.dob.astimezone(ind).year}'
+
         result = await studentsCollection.insert_one({
             '_id': form.usn.upper(),
             "firstname": form.firstname,
@@ -140,24 +151,23 @@ async def addStudent(form: AddStudentModel):
             'photo': form.photo,
             'face_encodings': face_encoding,
             'data': semesterdata,
-            'Password': get_hashed_password('1234')
+            'Password': get_hashed_password(password)
         })
-        await classCollection.find_one_and_update({"_id":{
+        await classCollection.find_one_and_update({"_id": {
             "branch": form.branch,
             "semester": int(form.semester),
-            'division': form.semester
-        }},{
+            'division': form.division
+        }}, {
             '$push': {
                 'students': form.usn
             }
         })
     except DuplicateKeyError:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail='USN already exists in database')
-    except :
-        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,detail="The image uploaded is invalid")
+    except:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail="The image uploaded is invalid")
 
     return {"message": "Student Created"}
-
 
 
 class updateTimeTableSubject(BaseModel):
@@ -169,14 +179,15 @@ class updateTimeTableSubject(BaseModel):
 
 
 @router.put('/updatetimetable')
-async def getTimeTable(updatetimetableSubjectEntry: updateTimeTableSubject):
+async def updateTimeTable(updatetimetableSubjectEntry: updateTimeTableSubject):
     updatetimetableSubjectEntrydict = updatetimetableSubjectEntry.dict()
-    print(updatetimetableSubjectEntry)
 
     classCollection.find_one_and_update({
-        "branch": updatetimetableSubjectEntry.branch,
-        "semester": updatetimetableSubjectEntry.semester,
-        "division": updatetimetableSubjectEntry.division
+        "_id": {
+            "branch": updatetimetableSubjectEntry.branch,
+            "semester": updatetimetableSubjectEntry.semester,
+            "division": updatetimetableSubjectEntry.division
+        }
     }, {
         "$set": {
             f'timetable.{updatetimetableSubjectEntry.keyid}': updatetimetableSubjectEntry.subname
@@ -196,12 +207,101 @@ async def getstudentbasicdetails(usn: str):
     return student
 
 
-@router.get('/test')
-async def test() -> str:
-    result = await studentsCollection.insert_one({
-        'USN': 'fda',
-        "key": "hello",
-        'name': 'ankit'
+@router.get('/teacherlist/{branch}', response_model=list)
+async def getteacherinbranch(branch: str):
+    teacherlist = teacherCollection.find({"Branch": branch}).to_list(100)
+    listofteachersinbranch = []
+    for teacher in await teacherlist:
+        t = {
+            "id": teacher['ID'],
+            "name": teacher['title'] + ' ' + teacher['firstname'] + " " + teacher['lastname']
+        }
+        listofteachersinbranch.append(t)
+
+    return listofteachersinbranch
+
+
+@router.put('/classdata', status_code=status.HTTP_202_ACCEPTED)
+async def updateClassData(classData: CreateClassModel):
+    subjects = []
+    classData.timetable['extra'] = []
+    for sub in classData.coresubjects + classData.branchelectives:
+        subjects.append({
+            'code': sub['code'],
+            'ClassDates': [],
+            'teacherid': sub.get("teacherid").get("id")
+        })
+
+    result = await classCollection.find_one_and_update({
+        "_id": {
+            'branch': classData.branch,
+            'semester': classData.semester,
+            'division': classData.division
+        }
+    }, {
+        "$set": {
+            'subjects': subjects,
+            'timetable': classData.timetable
+
+        }
     })
-    print(result)
-    return "success"
+
+    return {"message": "Class Data Updated"}
+
+
+@router.get('/timetable/subjectlist/{branch}/{semester}')
+async def subjectlist(branch: str, semester: int):
+    subjects = []
+    semdata = await branchCollection.find_one({'id': branch,
+                                               'semesterwisesubjects': {"$elemMatch": {
+                                                   "semester": int(semester)
+                                               }}
+                                               }, {
+                                                  'semesterwisesubjects.$': 1
+                                              })
+
+    semdata = semdata['semesterwisesubjects'][0]
+
+    for sub in semdata['coresubjects']:
+        s = {
+            'code': sub['code'],
+            'short': sub['short'],
+            'name': sub['name']
+        }
+        subjects.append(s)
+
+    for sub in semdata['branchelectives']:
+        s = {
+            'code': sub['code'],
+            'short': sub['short'],
+            'name': sub['name']
+        }
+        subjects.append(s)
+
+    for sub in semdata['labs']:
+        s = {
+            'code': sub['code'],
+            'short': sub['short'],
+            'name': sub['name']
+        }
+        subjects.append(s)
+
+    for sub in semdata['openelectives']:
+        s = {
+            'code': sub['code'],
+            'short': f'{sub["short"]}-OE',
+            'name': sub['name']
+        }
+        subjects.append(s)
+    return subjects
+
+
+
+
+# async def add():
+#     try:
+#         await teacherCollection.insert_one({'ID': "teacher001"})
+#     except pymongo.errors.DuplicateKeyError as Argument:
+#         print("Duplicate Key")
+#
+# asyncio.run(add())

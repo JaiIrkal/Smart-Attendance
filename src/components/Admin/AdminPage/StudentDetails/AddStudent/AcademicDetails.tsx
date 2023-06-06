@@ -17,6 +17,8 @@ export const AcademicDetails = (snapshot: {}) => {
     const [branchField, branchMeta, branchHelper] = useField('branch')
     const [semesterField, semesterMeta, semesterHelper] = useField('semester')
 
+    const [divField, divMeta, divHelpers] = useField('division')
+
     const [branchelectiveField, branchElectiveMeta, branchElectiveHelper] = useField('branchelectives');
     const [openelectiveField, openelectiveMeta, openElectiveHelper] = useField('openelectives');
     const [coresubjectField, coresubjectMeta, coresubjectHelper] = useField('coresubjects');
@@ -141,9 +143,18 @@ export const AcademicDetails = (snapshot: {}) => {
                 helperText={semesterMeta.touched && semesterMeta.error}
             >
                 {
-                    semList(8)
+                    semList(1, 8)
                 }
             </TextField>
+            <TextField
+                required
+                label='Division'
+                name='division'
+                value={divField.value}
+                onChange={divField.onChange}
+                error={divMeta.touched && Boolean(divMeta.error)}
+                helperText={divMeta.touched && divMeta.error}
+            ></TextField>
             {semData &&
                 <Stack direction={'row'} gap='20px'>
                     <Stack direction={'column'}>

@@ -2,16 +2,16 @@ import { createContext, useState } from "react";
 
 
 export type SubjectAttendanceData = {
-    Code: string
-    Name: string
+    subject_code: string
+    isdetained: boolean
     ClassesConducted: Array<string>
-    Attendance: Array<number>
+    attendance: Array<number>
 }
 
 export type SemesterData = {
-    Semester: number
-    Division: String
-    Subjects: Array<SubjectAttendanceData>
+    semester: number
+    division: String
+    subjects: Array<SubjectAttendanceData>
 }
 
 
