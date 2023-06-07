@@ -231,7 +231,15 @@ async def updateClassData(classData: CreateClassModel):
             'ClassDates': [],
             'teacherid': sub.get("teacherid").get("id")
         })
-
+        await teacherCollection.find_one_and_update({"ID": sub.get("teacherid").get("id")},{
+            "$push": {
+                "Classes": {
+                    "Semester": classData.semester,
+                    "Division": classData.semester,
+                    "Subjects": [sub['code']]
+                }
+            }
+        })
     result = await classCollection.find_one_and_update({
         "_id": {
             'branch': classData.branch,
@@ -245,6 +253,8 @@ async def updateClassData(classData: CreateClassModel):
 
         }
     })
+
+
 
     return {"message": "Class Data Updated"}
 

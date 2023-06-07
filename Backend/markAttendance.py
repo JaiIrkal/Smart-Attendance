@@ -34,9 +34,9 @@ async def markAttendance():
     #         continue
     #     else:
     #         break
-
-    subject = await getCurrentPeriod(branch=branch, semester=semester, division=division)
-    print(subject)
+    subject = '18UCSC500'
+    # subject = await getCurrentPeriod(branch=branch, semester=semester, division=division)
+    # print(subject)
     if subject != "None":
         all = []
         present = []
@@ -133,6 +133,5 @@ async def markAttendance():
                 }])
 
         await mailing.sendMail(absent, subject, today)
-
 
 asyncio.run(markAttendance())

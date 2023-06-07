@@ -47,6 +47,26 @@ async def sendMail(absent, course, today):
 
     s.quit()
 
+async def sendextraclass(absent, course, day, time):
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls()
+    s.login("ankit6202273766@gmail.com", "yhbovakaoavuqqip")
+    # client = Client(account_sid, auth_token)
+    for USN in absent:
+        msg = EmailMessage()
+        msg['From'] = 'ankit6202273766@gmail.com'
+        msg['subject'] = "Absent in class"
+        student = await studentsCollection.find_one({"_id": USN}, {'firstname', 'email'})
+        name = student["firstname"]
+        mail = student["email"]
+        print(mail)
+        msg['To'] = mail
+        message = f"Dear student, extra class for {course} scheduled on  {day} at {time}"
+        msg.set_content(message)
+
+        s.send_message(msg)
+
+    s.quit()
 
 async def sendwarningMail(absent, course):
     s = smtplib.SMTP('smtp.gmail.com', 587)

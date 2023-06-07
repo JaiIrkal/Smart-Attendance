@@ -1,5 +1,6 @@
 
-import { Paper, Table, TableHead, TableBody, TableCell, TableRow } from "@mui/material"
+import { Paper, Table, TableHead, TableBody, TableCell, TableRow, Typography, Stack } from "@mui/material"
+import { time } from "console"
 import { useState, useEffect } from "react"
 
 
@@ -50,7 +51,6 @@ const generateTableCell = (keyid: string, subjectName: string) => {
 }
 
 
-
 const StudentTimeTable = ({ schedule }: { schedule: any }) => {
 
     const [timetable, setSchedule] = useState({
@@ -59,11 +59,12 @@ const StudentTimeTable = ({ schedule }: { schedule: any }) => {
         Day_3: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
         Day_4: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
         Day_5: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
-        Day_6: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' }
+        Day_6: { P_1: '', P_2: '', P_3: '', P_4: '', P_5: '', P_6: '', P_7: '' },
     })
 
     useEffect(() => {
         setSchedule(schedule)
+
         return () => {
 
         }
@@ -71,8 +72,60 @@ const StudentTimeTable = ({ schedule }: { schedule: any }) => {
 
     return (
         <Paper>
+            {/* <Typography color={'#9336B4'}> Extra Classes </Typography>
+            {
+                schedule['extra'].map((value: any, index: number) => {
+
+                    var day = '';
+                    var time = '';
+                    var id = value['key']
+                    var arr = id.split('.')
+
+                    if (arr[0] === 'Day_1')
+                        day = 'Monday'
+                    else if (arr[0] === 'Day_2')
+                        day = 'Tuesday'
+                    else if (arr[0] === 'Day_3')
+                        day = 'Wednesday'
+                    else if (arr[0] === 'Day_4')
+                        day = 'Thursday'
+                    else if (arr[0] === 'Day_5')
+                        day = 'Friday'
+                    else if (arr[0] === 'Day_6')
+                        day = 'Saturday'
+
+                    if (arr[1] === 'P_1')
+                        time = '8:00'
+                    else if (arr[1] === 'P_2')
+                        time = '9:00'
+                    else if (arr[1] === 'P_3')
+                        time = '10:30'
+                    else if (arr[1] === 'P_4')
+                        time = '11:30'
+                    else if (arr[1] === 'P_5')
+                        time = '12:30'
+                    else if (arr[1] === 'P_6')
+                        time = '14:30'
+                    else if (arr[1] === 'P_7')
+                        time = '15:30'
+
+
+                    return (
+                        <Stack direction={'row'} gap='10px' >
+                            <Typography>Day: {day} </Typography>
+                            <Typography> Time: {time}</Typography>
+                            <Typography> Subject:
+                                {value['sub']}
+                            </Typography>
+                        </Stack>
+                    )
+                })
+            } */}
 
             <Table stickyHeader padding="normal" sx={{ border: 1, borderColor: "#212A3E", borderWidth: 3 }}>
+
+
+
                 <TableHead >
                     <TableRow >
                         <TableCell width={'60px'} align="center" sx={{ borderWidth: "2px", borderColor: "#146C94", bgcolor: "#19A7CE", }}>Day</TableCell>
